@@ -26,10 +26,10 @@
         </div>
 
         <div class="form-group from-floating mb-3">
-            <label for="nama">Nama Pelanggan</label>
-            <select id="nama" name="pelanggan" class="form-control" value="">
+            <label for="pelanggan">Nama Pelanggan</label>
+            <select id="pelanggan" name="pelanggan" class="form-control" value="{{ old('pelanggan') }}">
                 @foreach ($ar_pelanggan as $pelanggan)
-                <option value="{{ $pelanggan->id }} | {{$pelanggan->status_member}}" {{ $pelanggan->id == $row->id ? 'selected' : '' }}>
+                <option value="{{ $pelanggan->id }}" {{ $pelanggan->id == $row->pelanggan_id ? 'selected' : '' }}>
                     {{ $pelanggan->nama }}
                 </option>
                 @endforeach

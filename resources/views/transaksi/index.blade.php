@@ -62,7 +62,7 @@
                                     </a>
                                     @if (Auth::user()->level == 'admin')
                                     <!-- hapus data -->
-                                    <button class="btn btn-danger btn-sm delete-confirm" onclick="showConfirmationDialog(event)">
+                                    <button id="delete" class="btn btn-danger btn-sm show_confirm">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                     @endif
@@ -81,28 +81,21 @@
     </div>
 </div>
 <!-- </div> -->
-<script>
-    function showConfirmationDialog(e) {
-        e = e || window.event;
-        e.preventDefault();
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel!',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                console.log('afkar ganteng')
-                // Trigger the form submission to delete the record
-                document.getElementById('deleteForm').submit();
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // User canceled the action, show a message or redirect as needed
-                Swal.fire('Cancelled', 'Your imaginary file is safe :)', 'error');
-            }
-        });
-    }
+<script type="text/javascript">
+    $('.show_confirm').click(function(event) {
+        var form = $(this).closest("form");
+        var name = $(this).data("name");
+        event.preventDefault();
+        swal({
+                title: `Are you sure you want to delete this record?`,
+                text: "If you delete this, it will be gone forever.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) form.submit();
+            });
+    })
 </script>
 @endsection

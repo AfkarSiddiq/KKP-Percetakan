@@ -48,10 +48,7 @@ Route::get('/portfolio', function () {
 Route::get('/services', function () {
     return view('landingpage.services');
 });
-Route::get('/team', function () {
-    $ar_kategori = Kategori::all();
-    return view('landingpage.team', compact('ar_kategori'));
-});
+
 Route::get('/contact', function () {
     $ar_kategori = Kategori::all();
     return view('landingpage.contact', compact('ar_kategori'));
@@ -158,4 +155,4 @@ Route::put('/account/settings/updatePassword', [UpdatePasswordController::class,
 
 Auth::routes();
 
-Route::get('/home', [DashboardController::class, 'index'])->name('home');
+Route::get('/home', [DashboardController::class, 'index'])->middleware('auth');

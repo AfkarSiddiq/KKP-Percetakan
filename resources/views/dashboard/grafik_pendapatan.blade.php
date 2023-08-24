@@ -1,18 +1,6 @@
 <div class="col-md-4">
     <div class="card info-card sales-card text-center align-items-center">
 
-        <div class="filter">
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-        </div>
-
         <div class="card-body ">
             <h3 class="card-title">Pendapatan | tahun ini</h3>
 

@@ -10,7 +10,6 @@
                 <li><a class="nav-link scrollto " href="{{ url('/') }}">Home</a></li>
                 <li><a class="nav-link scrollto " href="{{ url('/about') }}">About</a></li>
                 <li><a class="nav-link scrollto " href="{{ url('/ourbarang') }}">Product</a></li>
-                <li><a class="nav-link scrollto " href="{{ url('/team') }}">Team</a></li>
 
                 <li class="dropdown"><a href="#"><span>Kategori</span> <i class="bi bi-chevron-down"></i></a>
                     <ul>

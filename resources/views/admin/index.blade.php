@@ -17,6 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 
 </head>
 
@@ -58,8 +59,8 @@
     </script>
     <script src="{{ asset('admin/js/scripts.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="{{ asset('admin/assets/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('admin/assets/demo/chart-bar-demo.js') }}"></script>
+    <!-- <script src="{{ asset('admin/assets/demo/chart-area-demo.js') }}"></script> -->
+    <!-- <script src="{{ asset('admin/assets/demo/chart-bar-demo.js') }}"></script> -->
     <script src="{{ asset('admin/js/datatables-simple-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 

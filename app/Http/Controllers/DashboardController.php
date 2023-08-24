@@ -15,6 +15,7 @@ class DashboardController extends Controller
                 //query untuk grafik stok barang (bar chart)
                 $ar_stok = DB::table('barang')
                         ->select('nama_barang', 'stok')
+                        ->orderBy('nama_barang', 'asc')
                         ->get();
 
                 //query untuk menampilkan jumlah barang per kategori (pie chart)
@@ -35,11 +36,17 @@ class DashboardController extends Controller
                         ->get();
 
                 $jml_pendapatan = DB::table('transaksi')
-                ->selectRaw('SUM(total_harga) as jumlah')
-                ->get();
+                        ->selectRaw('SUM(total_harga) as jumlah')
+                        ->get();
 
+                $brg_laris = DB::table('barang')
+                        ->select(array('nama_barang', DB::raw('COUNT(transaksi.jumlah) as jumlah')))
+                        ->join('transaksi', 'barang_id', '=', 'barang.id' )
+                        ->groupBy('nama_barang')
+                        ->orderBy('jumlah', 'desc')
+                        // ->limit(3)
+                        ->get();
 
-
-                return view('dashboard.index', compact('ar_stok', 'ar_jumlah', 'jml_pelanggan', 'jml_transaksi','jml_pendapatan'), ['title' => 'Dashboard']);
+                return view('dashboard.index', compact('ar_stok', 'ar_jumlah', 'jml_pelanggan', 'jml_transaksi','jml_pendapatan', 'brg_laris'), ['title' => 'Dashboard']);
         }
 }

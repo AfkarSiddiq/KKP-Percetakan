@@ -15,7 +15,7 @@
         </div>
 
         <div class="card-body">
-            <h3 class="card-title">Transaksi | tahun ini </h3>
+            <h3 class="card-title">Transaksi | Bulan ini </h3>
 
             <div class="d-flex align-items-center ">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center ">
@@ -25,7 +25,7 @@
                 <div class="ps-3">
                     <h3 class="text-primary fw-bold mb-0  ">
                         @foreach ($jml_transaksi as $jml)
-                            {{ $jml->jumlah }}
+                        {{ $jml->jumlah }}
                         @endforeach
                     </h3>
                     <h5 class=" pt-1 ">Transaksi</h5>

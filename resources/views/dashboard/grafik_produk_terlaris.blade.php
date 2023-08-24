@@ -2,34 +2,34 @@
     <div class="card mb-12">
         <div class="card-header">
             <i class="fas fa-chart-bar me-1"></i>
-            Stok Barang
+            produk terlaris
         </div>
 
         <!-- Bar Chart -->
         <div class="card-body">
-            <canvas id="Stokbarang" width="100%" height="50"></canvas>
+            <canvas id="terlaris" width="100%" height="50"></canvas>
 
             <script>
-                // ambil data nama nama dan stok dari DashboardController di fungsi index
-                var lbl = [
-                    @foreach($ar_stok as $s)
-                    '{{ $s->nama_barang }}',
+                // ambil data nama nama dan terlaris dari DashboardController di fungsi index
+                var label = [
+                    @foreach($brg_laris as $d)
+                    '{{ $d->nama_barang }}',
                     @endforeach
                 ];
-                var stk = [
-                    @foreach($ar_stok as $s)
-                    '{{ $s -> stok }}',
+                var jumlah = [
+                    @foreach($brg_laris as $d)
+                    '{{ $d -> jumlah }}',
                     @endforeach
                 ];
                 document.addEventListener("DOMContentLoaded", () => {
-                    new Chart(document.getElementById('Stokbarang'), {
+                    new Chart(document.getElementById('terlaris'), {
                         type: 'bar',
                         data: {
-                            labels: lbl,
+                            labels: label,
                             datasets: [{
-                                label: 'Grafik Stok Barang',
-                                data: stk,
-                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                label: 'Produk terlaris',
+                                data: jumlah,
+                                backgroundColor: 'rgb(255, 0, 0)',
                                 borderColor: 'rgb(54, 162, 235)',
                                 borderWidth: 1
                             }]

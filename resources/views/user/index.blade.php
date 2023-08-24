@@ -103,8 +103,6 @@
             reverseButtons: true
         }).then((result) => {
                 // if (result.isConfirmed) {
-                console.log('afkar ganteng')
-                // Trigger the form submission to delete the record
                 document.getElementById('deleteForm').submit();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 // User canceled the action, show a message or redirect as needed

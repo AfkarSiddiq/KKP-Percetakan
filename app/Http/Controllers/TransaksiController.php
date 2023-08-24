@@ -172,7 +172,7 @@ class TransaksiController extends Controller
         //     $transaksi->save();
 
         DB::table('transaksi')->where('id', $id)->update([
-            'pelanggan_id' => $idPelanggan,
+            'pelanggan_id' => $request->pelanggan,
             'barang_id' => $idBarang,
             'tgl' => $request->tgl,
             'jumlah' => $request->jumlah,

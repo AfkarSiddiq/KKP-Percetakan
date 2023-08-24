@@ -6,7 +6,7 @@
           &copy; Copyright <strong><span>Printing Manajemen</span></strong>. All Rights Reserved
         </div>
         <div class="credits">
-          Designed by <a href="https://bootstrapmade.com/">Printing Manajemen-Team 2 MSIB 4</a>
+          Designed by <a href="https://bootstrapmade.com/">Printing Manajement</a>
         </div>
       </div>
       <div class="social-links text-center text-md-right pt-3 pt-md-0">
