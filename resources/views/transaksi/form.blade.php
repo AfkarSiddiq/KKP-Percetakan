@@ -51,6 +51,72 @@
             <div class="invalid-feedback" data-sb-feedback="keterangan:required">keterangan is required.</div>
         </div>
 
+        <div class="container mt-4">
+            <div>harga</div>
+            <form>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="step" value="step1" checked>
+                    <label class="form-check-label">Harga Default</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="step" value="step2">
+                    <label class="form-check-label">Isi Harga</label>
+                </div>
+            </form>
+
+            <div id="nameForm">
+                <form>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Rp</span>
+                        <input type="text" id="nameInput" class="form-control" placeholder="Masukkan Harga" disabled>
+                        <span class="input-group-text">.00</span>
+                    </div>
+                </form>
+                <p id="nameDisplay" class="mt-3"></p>
+            </div>
+        </div>
+
+        <script>
+            const nameForm = document.getElementById('nameForm');
+            const nameInput = document.getElementById('nameInput');
+            const submitName = document.getElementById('simpan');
+            const nameDisplay = document.getElementById('nameDisplay');
+            const step1Radio = document.querySelector('input[value="step1"]');
+
+            step1Radio.addEventListener('change', function() {
+                if (this.checked) {
+                    nameForm.style.display = 'none';
+                    nameInput.disabled = true;
+                    submitName.disabled = true;
+                    nameInput.value = ''; // Clear the input
+                    nameDisplay.textContent = ''; // Clear the display
+                }
+            });
+
+            const radioButtons = document.querySelectorAll('input[name="step"]');
+
+            radioButtons.forEach(radioButton => {
+                radioButton.addEventListener('change', function() {
+                    if (this.value === 'step2') {
+                        nameForm.style.display = 'block';
+                        nameInput.disabled = false; // Enable the input
+                        submitName.disabled = false; // Enable the button
+                        nameDisplay.textContent = ''; // Clear previous name
+                    } else if (this.value === 'step1') {
+                        nameForm.style.display = 'none';
+                        nameInput.disabled = true;
+                        submitName.disabled = true;
+                        nameInput.value = ''; // Clear the input
+                        nameDisplay.textContent = ''; // Clear the display
+                    }
+                });
+            });
+
+            submitName.addEventListener('click', function() {
+                const enteredName = nameInput.value;
+                nameDisplay.textContent = `Hello, ${enteredName}!`;
+            });
+        </script>
         <script>
             // Get the current date
             var currentDate = new Date();

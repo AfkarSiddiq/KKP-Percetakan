@@ -47,33 +47,21 @@ class pelangganController extends Controller
             'nama' => 'required|max:45',
             'alamat' => 'required',
             'no_hp' => 'required|max:15',
-            'email' => 'required|email|max:45',
             'status_member' => 'required|boolean',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
         ]);
 
 
-        if (!empty($request->foto)) {
-            $fileName = 'pelanggan_' . $request->kode . '.' . $request->foto->extension();
-            $request->foto->move(public_path('admin/assets/img'), $fileName);
-        } else {
-            $fileName = '';
-        }
-
-        try {
+        
             DB::table('pelanggan')->insert([
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
                 'no_hp' => $request->no_hp,
-                'email' => $request->email,
                 'status_member' => $request->status_member,
-                'foto' => $fileName,
+                'jumlah_pesanan' => '0',
             ]);
 
             return redirect()->route('pelanggan.index')->with('success', 'Data pelanggan Baru Berhasil Disimpan');
-        } catch (\Exception $e) {
-            return redirect()->route('pelanggan.index')->with('error', 'Terjadi Kesalahan Saat Input Data!');
-        }
+        
     }
 
     /**
@@ -106,9 +94,7 @@ class pelangganController extends Controller
                 'nama' => 'required|max:45',
                 'alamat' => 'required',
                 'no_hp' => 'required|max:15',
-                'email' => 'required|email|max:45',
                 'status_member' => 'required|boolean',
-                'foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
             ],
 
             [
@@ -116,29 +102,15 @@ class pelangganController extends Controller
             ]
         );
 
-        $foto = DB::table('pelanggan')->select('foto')->where('id', $id)->get();
-        foreach ($foto as $f) {
-            $namaFileFotoLama = $f->foto;
-        }
-
-        if (!empty($request->foto)) {
-            if (!empty($namaFileFotoLama)) unlink('admin/assets/img/' . $namaFileFotoLama);
-            $fileName = 'pelanggan_' . $request->kode . '.' . $request->foto->extension();
-            $request->foto->move(public_path('admin/assets/img'), $fileName);
-        } else {
-            $fileName = $namaFileFotoLama;
-        }
-
         DB::table('pelanggan')->where('id', $id)->update([
             'nama' => $request->nama,
             'alamat' => $request->alamat,
             'no_hp' => $request->no_hp,
-            'email' => $request->email,
             'status_member' => $request->status_member,
-            'foto' => $fileName,
+            'jumlah_pesanan' => 0,
         ]);
 
-        return redirect('/pelanggan' . '/' . $id)->with('success', 'Data pelanggan Berhasil Diubah');
+        return redirect()->route('pelanggan.index')->with('success', 'Data pelanggan Berhasil Diubah');
     }
 
     /**

@@ -11,7 +11,7 @@ class Pelanggan extends Model
     use HasFactory;
     protected $table = 'pelanggan';
     protected $fillable = [
-        'nama','alamat','no_hp','email','status_member','foto'
+        'nama','alamat','no_hp','status_member'
     ];
 
     public $timestamps = false;

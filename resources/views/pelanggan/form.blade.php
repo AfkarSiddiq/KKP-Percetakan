@@ -30,15 +30,8 @@
             <div class="form-floating mb-3">
                 <input class="form-control" name="no_hp" value="" id="no_hp" type="text" placeholder="no_hp"
                     data-sb-validations="required" />
-                <label for="no_hp">No_Hp</label>
-                <div class="invalid-feedback" data-sb-feedback="no_hp:required">no_hp is required.</div>
-            </div>
-
-            <div class="form-floating mb-3">
-                <input class="form-control" name="email" value="" id="email" type="text" placeholder="Email"
-                    data-sb-validations="required" />
-                <label for="email">Email</label>
-                <div class="invalid-feedback" data-sb-feedback="email:required">Email is required.</div>
+                <label for="no_hp">No Hp</label>
+                <div class="invalid-feedback" data-sb-feedback="no_hp:required">no hp is required.</div>
             </div>
 
             <div class="form-floating mb-3">
@@ -51,13 +44,6 @@
                 <div class="invalid-feedback" data-sb-feedback="status_member:required">Status Member is required.</div>
             </div>
 
-            <!-- UPLOAD FOTO -->
-            <div class="form-floating mb-3">
-                <input class="form-control" name="foto" value="" id="foto" type="file" placeholder="Foto"
-                    data-sb-validations="required" />
-                <label for="foto"></label>
-                <div class="invalid-feedback" data-sb-feedback="foto:required">Foto is required.</div>
-            </div>
             <button class="btn btn-primary" name="proses" value="simpan" id="simpan" type="submit">Simpan</button>
             <a href="{{ url('/pelanggan') }}" class="btn btn-info">Batal</a>
 

@@ -43,9 +43,9 @@
                             <th>Nama Pelanggan</th>
                             <th>Alamat</th>
                             <th>No Handphone</th>
-                            <th>Email</th>
                             <th>Status Member</th>
-                            <th>Action</th>
+                            <th>jumlah Pesanan</th>
+                            <th>action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,12 +58,12 @@
                             <td>{{ $data->nama }}</td>
                             <td>{{ $data->alamat }}</td>
                             <td>{{ $data->no_hp }}</td>
-                            <td>{{ $data->email }}</td>
                             @if ($data->status_member)
                             <td>Member</td>
                             @else
                             <td>Bukan Member</td>
                             @endif
+                            <td>{{$data->jumlah_pesanan}}</td>
 
                             <td>
                                 <form id='deleteForm' method="POST" action="{{ route('pelanggan.destroy', $data->id) }}">

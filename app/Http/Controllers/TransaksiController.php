@@ -33,6 +33,7 @@ class TransaksiController extends Controller
 
         return view('transaksi.index', compact('ar_transaksi'), ['title' => 'Data Transaksi']);
     }
+    
     public function dataTerpilih()
     {
         $ar_transaksi = transaksi::all(); //eloquent
