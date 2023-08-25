@@ -1,9 +1,36 @@
-window.addEventListener('DOMContentLoaded', event => {
-    // Simple-DataTables
-    // https://github.com/fiduswriter/Simple-DataTables/wiki
+let minDate, maxDate;
 
-    const datatablesSimple = document.getElementById('datatablesSimple');
-    if (datatablesSimple) {
-        new simpleDatatables.DataTable(datatablesSimple);
+// Custom filtering function which will search data in column four between two values
+DataTable.ext.search.push(function (settings, data, dataIndex) {
+    let min = minDate.val();
+    let max = maxDate.val();
+    let date = new Date(data[4]);
+
+    if (
+        (min === null && max === null) ||
+        (min === null && date <= max) ||
+        (min <= date && max === null) ||
+        (min <= date && date <= max)
+    ) {
+        return true;
     }
+    return false;
 });
+
+// Create date inputs
+minDate = new DateTime("#minDate", {
+    format: "MMMM Do YYYY",
+});
+maxDate = new DateTime("#maxDate", {
+    format: "MMMM Do YYYY",
+});
+
+// // DataTables initialisation
+let table = new DataTable('#datatablesSimple');
+
+// Refilter the table
+document.querySelectorAll("#minDate, #maxDate").forEach((el) => {
+    el.addEventListener("change", () => table.draw());
+});
+
+

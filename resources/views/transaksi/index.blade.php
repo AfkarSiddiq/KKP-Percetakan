@@ -20,6 +20,17 @@
             @endif
             <br />
             <a href="{{ route('transaksi.create') }}" class="btn btn-primary">Tambah</a>
+            <div class="row">
+                <div class="col-md-6">
+                    <td>Minimum date:</td>
+                    <td><input type="text" id="minDate" name="minDate"></td>
+                    </tr>
+                </div>
+                <div class="col-md-6">
+                    <td>Maximum date:</td>
+                    <td><input type="text" id="maxDate" name="maxDate"></td>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-hover" id="datatablesSimple">
                     <thead>
