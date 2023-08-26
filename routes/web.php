@@ -136,7 +136,7 @@ Route::get('transaksitable', [TransaksiController::class, 'show']);
 Route::resource('kategori', KategoriController::class)->middleware('auth');
 Route::resource('barang', BarangController::class)->middleware('auth');
 Route::resource('pelanggan', PelangganController::class)->middleware('auth');
-Route::resource('suplier', SuplierController::class)->middleware('auth');
+Route::resource('bahan', BahanController::class)->middleware('auth');
 Route::resource('bahan', BahanController::class)->middleware('auth');
 Route::resource('user', UserController::class)->middleware('auth');
 Route::resource('transaksi', TransaksiController::class)->middleware('auth');

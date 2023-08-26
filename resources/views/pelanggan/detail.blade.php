@@ -37,9 +37,9 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="h6">Email</td>
+                                            <td class="h6">Jumlah Transaksi</td>
                                             <td class="h6">:</td>
-                                            <td class="h6">{{ $rs->email }}</td>
+                                            <td class="h6">{{ $rs->jumlah_pesanan }}</td>
                                         </tr>
 
                                         <tr>

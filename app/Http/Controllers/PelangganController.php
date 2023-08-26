@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\QueryException;
 
 
-class pelangganController extends Controller
+class PelangganController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,12 @@ class pelangganController extends Controller
     public function index()
     {
         $ar_pelanggan = Pelanggan::orderBy('id', 'desc')->get();
-
+        //count transaksi by id pelanggan
+        foreach ($ar_pelanggan as $p) {
+            $p->jumlah_pesanan = DB::table('transaksi')
+                ->where('pelanggan_id', '=', $p->id)
+                ->count();
+        }
 
         return view('pelanggan.index', compact('ar_pelanggan'), ['title' => 'Data Pelanggan']);
     }
@@ -47,7 +52,7 @@ class pelangganController extends Controller
             'nama' => 'required|max:45',
             'alamat' => 'required',
             'no_hp' => 'required|max:15',
-            'status_member' => 'required|boolean',
+            'status_member' => 'required',
         ]);
 
 
@@ -70,6 +75,10 @@ class pelangganController extends Controller
     public function show(string $id)
     {
         $rs = Pelanggan::find($id);
+        //count transaksi by id pelanggan
+        $rs->jumlah_pesanan = DB::table('transaksi')
+            ->where('pelanggan_id', '=', $id)
+            ->count();
 
         return view('pelanggan.detail', compact('rs'), ['title' => 'Detail Pelanggan']);
     }

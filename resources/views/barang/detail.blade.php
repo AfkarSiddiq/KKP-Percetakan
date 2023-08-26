@@ -42,9 +42,9 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="h6">Stok Barang</td>
+                                            <td class="h6">Harga Studio</td>
                                             <td class="h6">:</td>
-                                            <td class="h6">{{ $rs->stok }}</td>
+                                            <td class="h6">Rp. {{ number_format($rs->harga_studio, 0, ',', '.') }}
                                         </tr>
                                         <tr>
                                             <td class="h6">Kategori Barang</td>

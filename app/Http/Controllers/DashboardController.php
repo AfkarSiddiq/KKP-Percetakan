@@ -14,7 +14,7 @@ class DashboardController extends Controller
         {
                 //query untuk grafik stok barang (bar chart)
                 $ar_stok = DB::table('barang')
-                        ->select('nama_barang', 'stok')
+                        ->select('nama_barang')
                         ->orderBy('nama_barang', 'asc')
                         ->get();
 
