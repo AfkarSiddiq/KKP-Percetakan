@@ -48,16 +48,11 @@
                 <div class="invalid-feedback" data-sb-feedback="jumlah:required">jumlah is required.</div>
             </div>
 
-            <div class="form-check mb-3">
-                <input checked class="form-check-input" type="checkbox" id="useDefaultPrice" onchange="toggleCustomPrice()">
-                <label class="form-check-label" for="useDefaultPrice">Use Default Price</label>
-            </div>
-
             <div class="row align-items-center">
                 <div class="form-group form-floating mb-3 col-md">
                     <input onchange="updateHargaTotal()" class="form-control" name="harga" id="harga" type="text"
                         placeholder="harga" disabled />
-                    <label for="harga">Harga</label>
+                    <label for="harga">Harga per Satuan</label>
                 </div>
 
                 <div class="luas col-md" style="display: none">
@@ -81,6 +76,11 @@
                         <div class="col-md-1 mb-3">Meter</div>
                     </div>
                 </div>
+            </div>
+
+            <div class="form-check mb-3">
+                <input checked class="form-check-input" type="checkbox" id="useDefaultPrice" onchange="toggleCustomPrice()">
+                <label class="form-check-label" for="useDefaultPrice">Gunakan Harga Default</label>
             </div>
 
             <div class="form-group form-floating mb-3">
