@@ -10,6 +10,16 @@ class Transaksi extends Model
     use HasFactory;
     protected $table = 'transaksi';
     protected $fillable = [
-        'kode', 'barang_id', 'pelanggan_id', 'tanggal', 'jumlah', 'keterangan'
+        'kode', 'barang_id', 'pelanggan_id', 'tanggal', 'jumlah', 'keterangan', 'panjang', 'lebar'
     ];
+
+    public function barang()
+    {
+        return $this->belongsTo(Barang::class);
+    }
+
+    public function pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class);
+    }
 }
