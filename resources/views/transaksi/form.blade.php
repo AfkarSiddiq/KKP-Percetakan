@@ -94,7 +94,12 @@
                 <input class="form-control" name="keterangan" value="" id="keterangan" type="text"
                     placeholder="keterangan" data-sb-validations="required" />
                 <label for="keterangan">keterangan</label>
-                <div class="invalid-feedback" data-sb-feedback="keterangan:required">keterangan is required.</div>
+            </div>
+            
+            <div class="form-group form-floating mb-3">
+                <input class="form-control" name="diskon" value="" id="diskon" type="text"
+                    placeholder="diskon" data-sb-validations="required" oninput="updateHargaTotal()"/>
+                <label for="diskon">Masukkan Diskon (opsional) (%)</label>
             </div>
 
             <div class="form-group form-floating mb-3">
@@ -102,6 +107,7 @@
                     placeholder="harga_total" readonly />
                 <label for="harga_total">Harga Total</label>
             </div>
+
 
             <script>
                 //function to check satuan barang and display if satuan = meter
@@ -158,6 +164,8 @@
                     var panjang = parseFloat(document.getElementById("panjang").value);
                     var lebar = parseFloat(document.getElementById("lebar").value);
                     var hargaTotalField = document.getElementById("harga_total");
+                    var discount = parseInt(document.getElementById("diskon").value);
+                    
 
                     var hargaTotal = 0;
                     var luas = 1;
@@ -167,6 +175,11 @@
                     }
 
                     hargaTotal = harga * jumlah * luas;
+
+                    if (!isNaN(discount)) {
+                        hargaTotal -= discount * hargaTotal / 100;
+                    }
+                    
 
                     // Update the harga total field with the calculated value
                     hargaTotalField.value = hargaTotal;

@@ -29,7 +29,7 @@
         <br>
         <br>
         <div class="row">
-            @include('dashboard.grafik_stok_barang')
+            <!-- @include('dashboard.grafik_stok_barang') -->
         </div>
 
         <br>

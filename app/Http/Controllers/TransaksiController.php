@@ -74,7 +74,7 @@ class TransaksiController extends Controller
         $dataPelanggan = explode(' | ', $selectedPelanggan);
 
         $idPelanggan = $dataPelanggan[0];
-
+        
         // pembulatan keatas panjang dan lebar
         $panjang = ceil($request->panjang * 2) / 2;
         $lebar = ceil($request->lebar * 2) / 2;        
