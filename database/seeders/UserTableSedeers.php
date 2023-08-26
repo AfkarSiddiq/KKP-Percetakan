@@ -16,8 +16,11 @@ class UserTableSedeers extends Seeder
     {
         DB::table('users')->insert([
             'name' => 'admin',
-            'username' => 'admin',
-            'password' => Hash::make('admin'),
-        ]);
+            'level' => 'admin',
+            'alamat' => 'Darussalam',
+            'no_hp' => '081234567890',
+            'email' => 'admin123@gmail.com',
+            'password' => Hash::make('yokbisayok'),
+          ]);
     }
 }

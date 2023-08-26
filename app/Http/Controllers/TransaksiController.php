@@ -61,8 +61,9 @@ class TransaksiController extends Controller
         $request->validate([
             'tgl' => 'required|date',
             'jumlah' => 'required|integer',
+            'panjang' => 'double',
+            'lebar' => 'double',
             'keterangan' => '',
-            'total_harga' => '',
         ]);
 
 
@@ -83,10 +84,14 @@ class TransaksiController extends Controller
         $idPelanggan = $dataPelanggan[0];
         $statusMember = $dataPelanggan[1];
 
+        // pembulatan keatas panjang dan lebar
+        $panjang = ceil($request->panjang * 2) / 2;
+        $lebar = ceil($request->lebar * 2) / 2;        
+
         if ($statusMember) {
-            $total = $hargaMember * $request->jumlah;
+            $total = $hargaMember * $request->jumlah * $panjang * $lebar;
         } else {
-            $total = $hargaBarang * $request->jumlah;
+            $total = $hargaBarang * $request->jumlah * $panjang * $lebar;
         }
 
         DB::table('transaksi')->insert([
@@ -94,6 +99,8 @@ class TransaksiController extends Controller
             'barang_id' => $idBarang,
             'tgl' => $request->tgl,
             'jumlah' => $request->jumlah,
+            'panjang' => $panjang,
+            'lebar' => $lebar,
             'total_harga' => $total,
             'keterangan' => $request->keterangan,
         ]);
@@ -129,6 +136,8 @@ class TransaksiController extends Controller
         $request->validate([
             'tgl' => 'required|date',
             'jumlah' => 'required|integer',
+            'panjang' => 'double',
+            'lebar' => 'double',
             'keterangan' => '',
             'total_harga' => '',
         ]);
@@ -177,6 +186,8 @@ class TransaksiController extends Controller
             'barang_id' => $idBarang,
             'tgl' => $request->tgl,
             'jumlah' => $request->jumlah,
+            'panjang' => $request->panjang,
+            'lebar' => $request->lebar,
             'total_harga' => $request->total_harga,
             'keterangan' => $request->keterangan,
         ]);
