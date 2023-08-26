@@ -61,8 +61,6 @@ class TransaksiController extends Controller
         $request->validate([
             'tgl' => 'required|date',
             'jumlah' => 'required|integer',
-            'panjang' => 'double',
-            'lebar' => 'double',
             'keterangan' => '',
         ]);
 
@@ -71,37 +69,24 @@ class TransaksiController extends Controller
         $dataBarang = explode(' | ', $selectedBarang);
 
         $idBarang = $dataBarang[0];
-        $hargaBarang = $dataBarang[1];
-        $hargaMember = $dataBarang[2];
-
-        if ($hargaMember == 0) {
-            $hargaMember = $hargaBarang;
-        }
 
         $selectedPelanggan = $request->input('nama');
         $dataPelanggan = explode(' | ', $selectedPelanggan);
 
         $idPelanggan = $dataPelanggan[0];
-        $statusMember = $dataPelanggan[1];
 
         // pembulatan keatas panjang dan lebar
         $panjang = ceil($request->panjang * 2) / 2;
         $lebar = ceil($request->lebar * 2) / 2;        
 
-        if ($statusMember) {
-            $total = $hargaMember * $request->jumlah * $panjang * $lebar;
-        } else {
-            $total = $hargaBarang * $request->jumlah * $panjang * $lebar;
-        }
-
-        DB::table('transaksi')->insert([
+        $ps_store = DB::table('transaksi')->insert([
             'pelanggan_id' => $idPelanggan,
             'barang_id' => $idBarang,
             'tgl' => $request->tgl,
             'jumlah' => $request->jumlah,
             'panjang' => $panjang,
             'lebar' => $lebar,
-            'total_harga' => $total,
+            'total_harga' => $request->harga_total,
             'keterangan' => $request->keterangan,
         ]);
         // DB::table('barang')->where('id', $idBarang)->update(
@@ -109,8 +94,11 @@ class TransaksiController extends Controller
         //         'stok' => DB::raw('stok + ' . $request->jumlah),
         //     ]
         // );
-        return redirect('transaksi')
-            ->with('pesan', 'Barang Masuk berhasil disimpan');
+        if($ps_store){
+            return redirect('transaksi')->with('pesan', 'Barang Masuk berhasil disimpan');
+        }else{
+            return back()->with('errror', 'Barang Masuk gagal disimpan');
+        }
     }
     public function edit(string $id)
     {

@@ -37,12 +37,13 @@
                 <select class="form-select" name="status_member" id="status_member" data-sb-validations="required">
                     <option value="1" {{ $row->status_member ? 'selected' : '' }}>Member</option>
                     <option value="0" {{ !$row->status_member ? 'selected' : '' }}>Bukan Member</option>
+                    <option value="2" {{ $row->status_member ? 'selected' : '' }}>Studio</option>
                 </select>
                 <label for="status_member">Status Member</label>
                 <div class="invalid-feedback" data-sb-feedback="status_member:required">Status Member is required.</div>
             </div>
             <button class="btn btn-primary" name="proses" value="ubah" id="ubah" type="submit">
-                <i class="fas fa-edit"></i> Ubah
+                <i class="fas fa-edit"></i> Simpan
             </button>
             <input type="hidden" name="id" value="{{ $row->id }}" />
             <a href="{{ url('/pelanggan') }}" class="btn btn-info">

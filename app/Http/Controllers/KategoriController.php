@@ -55,8 +55,8 @@ class KategoriController extends Controller
             ],
             //custom pesan errornya
             [
-                'nama.required' => 'Nama Wajib Diisi',
-                'nama.max' => 'Nama Maksimal 45 karakter',
+                'nama.required' => 'Nama kategori Wajib Diisi',
+                'nama.max' => 'Nama kategori Maksimal 45 karakter',
             ]
         );
         //Kategori::create($request->all());

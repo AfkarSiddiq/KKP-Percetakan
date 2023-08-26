@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('jumlah');
             $table->double('panjang');
             $table->double('lebar');
-            $table->integer('total_harga');
+            $table->double('total_harga');
             $table->string('keterangan');
             $table->timestamps();
         });

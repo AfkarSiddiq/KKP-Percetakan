@@ -13,7 +13,7 @@ use Illuminate\Database\QueryException;
 use File;
 
 
-class barangController extends Controller
+class BarangController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -60,6 +60,7 @@ class barangController extends Controller
                 //'harga' => 'required|double',
                 'harga' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
                 'harga_member' => 'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+                'harga_studio' => 'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
                 'satuan' => 'required|max:45',
                 'kategori' => 'required|integer',
                 //'foto' => 'nullable|max:45',
@@ -74,7 +75,8 @@ class barangController extends Controller
                 'nama_barang.max' => 'Nama Maksimal 45 karakter',
                 'harga.required' => 'Harga Wajib Diisi',
                 'harga.regex' => 'Harga Harus Berupa Angka',
-                'harga_member.regex' => 'harga_member Harus Berupa Angka',
+                'harga_member.regex' => 'Harga Member Harus Berupa Angka',
+                'harga_studio.regex' => 'Harga Studio Harus Berupa Angka',
                 'satuan.required' => 'satuan Wajib Diisi',
                 'satuan.max' => 'satuan Maksimal 45 karakter',
                 'kategori_id.required' => 'kategori barang Wajib Diisi',
@@ -105,6 +107,7 @@ class barangController extends Controller
                     'kategori_id' => $request->kategori,
                     'harga' => $request->harga,
                     'harga_member' => $request->harga_member,
+                    'harga_studio' => $request->harga_studio,
                     'satuan' => $request->satuan,
                     //'foto'=>$request->foto,
                     'foto' => $fileName,
@@ -158,6 +161,7 @@ class barangController extends Controller
                 //'harga' => 'required|double',
                 'harga' => 'required|regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
                 'harga_member' => 'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
+                'harga_studio' => 'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
                 'satuan' => 'required|max:45',
                 'kategori' => 'required|integer',
                 //'foto' => 'nullable|max:45',
@@ -172,7 +176,8 @@ class barangController extends Controller
                 'nama_barang.max' => 'Nama Maksimal 45 karakter',
                 'harga.required' => 'Harga Wajib Diisi',
                 'harga.regex' => 'Harga Harus Berupa Angka',
-                'harga_member.regex' => 'Harga Harus Berupa Angka',
+                'harga_member.regex' => 'Harga Member Harus Berupa Angka',
+                'harga_studio.regex' => 'Harga Studio Harus Berupa Angka',
                 'satuan.required' => 'Satuan Wajib Diisi',
                 'satuan.max' => 'Satuan Maksimal 45 karakter',
                 'kategori.required' => 'kategori barang Wajib Diisi',
@@ -209,6 +214,7 @@ class barangController extends Controller
                 'kategori_id' => $request->kategori,
                 'harga' => $request->harga,
                 'harga_member' => $request->harga_member,
+                'harga_studio' => $request->harga_studio,
                 'satuan' => $request->satuan,
                 //'foto'=>$request->foto,
                 'foto' => $fileName,

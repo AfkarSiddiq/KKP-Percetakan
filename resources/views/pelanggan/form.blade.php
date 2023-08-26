@@ -39,6 +39,7 @@
                     <option value="">Pilih Status Member</option>
                     <option value="1">Member</option>
                     <option value="0">Bukan Member</option>
+                    <option value="2">Studio</option>
                 </select>
                 <label for="status_member">Status Member</label>
                 <div class="invalid-feedback" data-sb-feedback="status_member:required">Status Member is required.</div>
