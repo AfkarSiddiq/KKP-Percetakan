@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\BahanController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\PelangganController;

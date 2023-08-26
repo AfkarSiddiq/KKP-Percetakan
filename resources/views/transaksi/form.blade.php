@@ -50,8 +50,9 @@
 
             <div class="row align-items-center">
                 <div class="form-group form-floating mb-3 col-md">
-                    <input class="form-control" name="harga" id="harga" type="text" placeholder="harga" readonly />
-                    <label for="harga">Harga</label>
+                    <input onchange="updateHargaTotal()" class="form-control" name="harga" id="harga" type="text"
+                        placeholder="harga" disabled />
+                    <label for="harga">Harga per Satuan</label>
                 </div>
 
                 <div class="luas col-md" style="display: none">
@@ -77,6 +78,11 @@
                 </div>
             </div>
 
+            <div class="form-check mb-3">
+                <input checked class="form-check-input" type="checkbox" id="useDefaultPrice" onchange="toggleCustomPrice()">
+                <label class="form-check-label" for="useDefaultPrice">Gunakan Harga Default</label>
+            </div>
+
             <div class="form-group form-floating mb-3">
                 <input class="form-control" name="tgl" value="" id="date" type="text" placeholder="date"
                     data-sb-validations="required" />
@@ -92,8 +98,8 @@
             </div>
 
             <div class="form-group form-floating mb-3">
-                <input class="form-control" name="harga_total" id="harga_total" type="text" placeholder="harga_total"
-                    readonly />
+                <input class="form-control" name="harga_total" id="harga_total" type="text"
+                    placeholder="harga_total" readonly />
                 <label for="harga_total">Harga Total</label>
             </div>
 
@@ -110,24 +116,24 @@
                     }
                 }
 
-                // Function to update harga based on selected barang
+                // Function to update harga based on selected barang and user's choice
                 function updateHarga() {
                     var selectedBarang = document.getElementById("barang").value;
+                    var useDefaultPrice = document.getElementById("useDefaultPrice").checked;
                     var hargaField = document.getElementById("harga");
                     var selectedPelanggan = document.getElementById("nama").value;
                     var harga = 0;
 
-                    // If a barang is selected, then update harga with the price of the selected barang
+                    // If the user chooses to use default price, update harga with the price of the selected barang
                     if (selectedBarang.length != 0) {
                         var barang = selectedBarang.split(" | ");
                         if (selectedPelanggan.length != 0) {
                             var pelanggan = selectedPelanggan.split(" | ");
-                            if (pelanggan[1] == "1") {
-                                harga = barang[2];
-                            } else if (pelanggan[1] == "2") {
-                                harga = barang[3];
+                            if (useDefaultPrice) {
+                                harga = pelanggan[1] === "1" ? barang[2] : pelanggan[1] === "2" ? barang[3] : barang[1];
                             } else {
-                                harga = barang[1];
+                                // If not using default price, set harga to empty to let user input
+                                harga = "";
                             }
                         } else {
                             harga = barang[1];
@@ -136,7 +142,9 @@
 
                     // Update the harga field with the retrieved value
                     hargaField.value = harga;
+                    updateHargaTotal();
                 }
+
 
                 // Function to round up panjang and lebar
                 function roundUp(value) {
@@ -145,8 +153,7 @@
 
                 // Function to update harga total based on selected barang and jumlah
                 function updateHargaTotal() {
-                    var selectedBarang = document.getElementById("barang").value;
-                    var selectedPelanggan = document.getElementById("nama").value;
+                    var harga = parseInt(document.getElementById("harga").value);
                     var jumlah = parseInt(document.getElementById("jumlah").value);
                     var panjang = parseFloat(document.getElementById("panjang").value);
                     var lebar = parseFloat(document.getElementById("lebar").value);
@@ -159,24 +166,28 @@
                         luas = roundUp(panjang) * roundUp(lebar);
                     }
 
-                    if (selectedBarang !== "") {
-                        var barang = selectedBarang.split(" | ");
-                        if (selectedPelanggan !== "") {
-                            var pelanggan = selectedPelanggan.split(" | ");
-                            if (pelanggan[1] === "1") {
-                                hargaTotal = parseInt(barang[2]) * jumlah * luas;
-                            } else if (pelanggan[1] === "2") {
-                                hargaTotal = parseInt(barang[3]) * jumlah * luas;
-                            } else {
-                                hargaTotal = parseInt(barang[1]) * jumlah * luas;
-                            }
-                        } else {
-                            hargaTotal = parseInt(barang[1]) * jumlah * luas;
-                        }
-                    }
+                    hargaTotal = harga * jumlah * luas;
 
                     // Update the harga total field with the calculated value
                     hargaTotalField.value = hargaTotal;
+                }
+
+                // Function to toggle the custom price input field based on user's choice
+                function toggleCustomPrice() {
+                    var useDefaultPrice = document.getElementById("useDefaultPrice").checked;
+                    var hargaField = document.getElementById("harga");
+
+                    // Enable or disable the price input field based on user's choice
+                    hargaField.disabled = useDefaultPrice;
+
+                    // If using default price, update the harga field
+                    if (useDefaultPrice) {
+                        updateHarga();
+                    } else {
+                        // Clear the harga field when not using default price
+                        hargaField.value = "";
+                        updateHargaTotal();
+                    }
                 }
             </script>
 
