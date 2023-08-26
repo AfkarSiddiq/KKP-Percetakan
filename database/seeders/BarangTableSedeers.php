@@ -36,5 +36,9 @@ class BarangTableSedeers extends Seeder
                 'satuan' => 'pcs',
             ]
         ];
+
+        foreach ($data as $key => $value) {
+            Barang::create($value);
+        }
     }
 }

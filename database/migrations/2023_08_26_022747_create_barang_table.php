@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('harga_member');
             $table->integer('harga_studio');
             $table->string('satuan');
-            $table->string('foto');
+            $table->string('foto')->default('');
             $table->timestamps();
         });
     }
