@@ -84,7 +84,7 @@
             </div>
 
             <div class="form-group form-floating mb-3">
-                <input class="form-control" name="tgl" value="" id="date" type="text" placeholder="date"
+                <input class="form-control" name="tgl" value="" id="date" type="date" placeholder="date"
                     data-sb-validations="required" />
                 <label for="date">date</label>
                 <div class="invalid-feedback" data-sb-feedback="date:required">date is required.</div>
@@ -158,6 +158,17 @@
                     var panjang = parseFloat(document.getElementById("panjang").value);
                     var lebar = parseFloat(document.getElementById("lebar").value);
                     var hargaTotalField = document.getElementById("harga_total");
+
+                    // make all number to positive
+                    if (panjang < 0) {
+                        panjang = panjang * -1;
+                    } else if (lebar < 0) {
+                        lebar = lebar * -1;
+                    } else if (jumlah < 0) {
+                        jumlah = jumlah * -1;
+                    } else if (harga < 0) {
+                        harga = harga * -1;
+                    }
 
                     var hargaTotal = 0;
                     var luas = 1;

@@ -60,8 +60,10 @@
                                     <td>{{ $trs->pelanggan }}</td>
                                     @if ($trs->status == 1)
                                         <td>Member</td>
-                                    @else
+                                    @elseif ($trs->status == 0)
                                         <td>Bukan Member</td>
+                                    @elseif ($trs->status == 2)
+                                        <td>Studio</td>
                                     @endif
                                     <td>{{ $trs->tgl }}</td>
                                     <td>{{ $trs->jumlah }}</td>

@@ -17,8 +17,10 @@ return new class extends Migration
             $table->foreignId('pelanggan_id');
             $table->date('tgl');
             $table->integer('jumlah');
+            $table->double('harga');    
             $table->double('panjang');
             $table->double('lebar');
+            $table->double('luas');
             $table->double('total_harga');
             $table->string('keterangan');
             $table->timestamps();
