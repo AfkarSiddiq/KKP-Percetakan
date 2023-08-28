@@ -18,6 +18,6 @@ class Pelanggan extends Model
 
     public function pesanan(): HasMany
     {
-        return $this->hasMany(Pesanan::class);
+        return $this->hasMany(Transaksi::class);
     }
 }

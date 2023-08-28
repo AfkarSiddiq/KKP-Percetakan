@@ -16,11 +16,12 @@ return new class extends Migration
             $table->string('kode')->unique();
             $table->string('nama_barang');
             $table->foreignId('kategori_id');
+            $table->foreignId('bahan_id');
             $table->integer('harga');
             $table->integer('harga_member');
             $table->integer('harga_studio');
             $table->string('satuan');
-            $table->string('foto');
+            $table->string('foto')->default('');
             $table->timestamps();
         });
     }

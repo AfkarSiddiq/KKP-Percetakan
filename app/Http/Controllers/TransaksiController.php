@@ -86,6 +86,8 @@ class TransaksiController extends Controller
             'jumlah' => $request->jumlah,
             'panjang' => $panjang,
             'lebar' => $lebar,
+            'harga' => $request->harga,
+            'luas' => $panjang * $lebar, 
             'total_harga' => $request->harga_total,
             'keterangan' => $request->keterangan,
         ]);
@@ -169,13 +171,19 @@ class TransaksiController extends Controller
         //     $transaksi->keterangan = $request->input('keterangan');
         //     $transaksi->save();
 
+        // pembulatan keatas panjang dan lebar
+        $panjang = ceil($request->panjang * 2) / 2;
+        $lebar = ceil($request->lebar * 2) / 2;   
+
         DB::table('transaksi')->where('id', $id)->update([
             'pelanggan_id' => $request->pelanggan,
             'barang_id' => $idBarang,
             'tgl' => $request->tgl,
             'jumlah' => $request->jumlah,
-            'panjang' => $request->panjang,
-            'lebar' => $request->lebar,
+            'harga' => $request->harga,
+            'panjang' => $panjang,
+            'lebar' => $lebar,
+            'luas' => $panjang * $lebar,
             'total_harga' => $request->total_harga,
             'keterangan' => $request->keterangan,
         ]);
