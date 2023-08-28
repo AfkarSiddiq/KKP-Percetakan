@@ -6,13 +6,15 @@
 
 ## Installation
 
-1. clone the repository
+##### 1. Clone the repository
 
 ```bash
 git clone https://github.com/AfkarSiddiq/KKP-Percetakan.git
 ```
 
-2. go to folder and run
+<br>
+
+##### 2. Go to folder and run
 
 ```bash
 composer install
@@ -22,7 +24,9 @@ composer install
 composer update
 ```
 
-3. migrate the table
+<br>
+
+##### 3. migrate the table
 
 Copy the contents of `.env.example` file to new `.env` file:
 
@@ -44,7 +48,10 @@ Run the migrations:
 php artisan migrate --seed
 ```
 
-4. Run serve
+<br>
+
+##### 4. Run serve
+
  <p>run serve with</p>
 
 ```bash
@@ -53,7 +60,7 @@ php artisan serve
 
 ## Contact info
 
-if any problem contact whatsapp or email
+if any problem u can contact us on whatsapp or email:
 
 ```bash
 frisrsyd@gmail.com

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Transaksi;
 use App\Models\Barang; //panggil model
+use App\Models\Bahan;
 use Illuminate\Support\Facades\DB; // jika pakai query builder
 use Illuminate\Database\Eloquent\Model; //jika pakai eloquent
 use PDF;
@@ -61,14 +62,17 @@ class TransaksiController extends Controller
         $request->validate([
             'tgl' => 'required|date',
             'jumlah' => 'required|integer',
+            'harga' => 'required|numeric',
             'keterangan' => '',
         ]);
 
+        $request->all();
 
         $selectedBarang = $request->input('barang');
         $dataBarang = explode(' | ', $selectedBarang);
 
         $idBarang = $dataBarang[0];
+        $idBahan = $dataBarang[5];
 
         $selectedPelanggan = $request->input('nama');
         $dataPelanggan = explode(' | ', $selectedPelanggan);
@@ -77,7 +81,22 @@ class TransaksiController extends Controller
 
         // pembulatan keatas panjang dan lebar
         $panjang = ceil($request->panjang * 2) / 2;
-        $lebar = ceil($request->lebar * 2) / 2;        
+        $lebar = ceil($request->lebar * 2) / 2;
+        
+        //update jumlah stok barang pada bahan
+        $bahan = DB::table('bahan')->where('id', $idBahan)->first();
+        $jumlahBahan = $bahan->jumlah;
+        $jumlahBahan = $jumlahBahan - ($panjang * $lebar * $request->jumlah);
+        //check apakah stok bahan cukup
+        if ($jumlahBahan < 0) {
+            return back()->with('errors', 'Stok bahan tidak cukup');
+        }
+
+        $ps_update = DB::table('bahan')->where('id', $idBahan)->update(
+            [
+                'jumlah' => $jumlahBahan,
+            ]
+        );
 
         $ps_store = DB::table('transaksi')->insert([
             'pelanggan_id' => $idPelanggan,
@@ -88,7 +107,7 @@ class TransaksiController extends Controller
             'lebar' => $lebar,
             'harga' => $request->harga,
             'luas' => $panjang * $lebar, 
-            'total_harga' => $request->harga_total,
+            'total_harga' => $request->total_harga,
             'keterangan' => $request->keterangan,
         ]);
         // DB::table('barang')->where('id', $idBarang)->update(
@@ -97,6 +116,7 @@ class TransaksiController extends Controller
         //     ]
         // );
         if($ps_store){
+            $ps_update;
             return redirect('transaksi')->with('pesan', 'Barang Masuk berhasil disimpan');
         }else{
             return back()->with('errror', 'Barang Masuk gagal disimpan');
