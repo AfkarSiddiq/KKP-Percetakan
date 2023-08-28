@@ -22,7 +22,7 @@ return new class extends Migration
             $table->double('lebar');
             $table->double('luas');
             $table->double('total_harga');
-            $table->string('keterangan');
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

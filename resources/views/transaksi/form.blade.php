@@ -19,10 +19,11 @@
                     <option value="">--Pilih Barang--</option>
                     @foreach ($ar_barang as $barang)
                         <option
-                            value=" {{ $barang->id }} | {{ $barang->harga }} | {{ $barang->harga_member }} | {{ $barang->harga_studio }} | {{ $barang->satuan }}">
+                            value=" {{ $barang->id }} | {{ $barang->harga }} | {{ $barang->harga_member }} | {{ $barang->harga_studio }} | {{ $barang->satuan }} | {{ $barang->bahan_id }}">
                             {{ $barang->kode }} - {{ $barang->nama_barang }}</option>
                     @endforeach
                 </select>
+
             </div>
 
             <div class="row align-items-center">
@@ -42,7 +43,7 @@
             </div>
 
             <div class="form-group form-floating mb-3">
-                <input onchange="updateHargaTotal()" class="form-control" name="jumlah" value="" id="jumlah"
+                <input onchange="updateHargaTotal();" class="form-control" name="jumlah" value="" id="jumlah"
                     type="text" placeholder="jumlah" data-sb-validations="required" />
                 <label for="jumlah">Jumlah dibeli</label>
                 <div class="invalid-feedback" data-sb-feedback="jumlah:required">jumlah is required.</div>
@@ -50,8 +51,8 @@
 
             <div class="row align-items-center">
                 <div class="form-group form-floating mb-3 col-md">
-                    <input onchange="updateHargaTotal()" class="form-control" name="harga" id="harga" type="text"
-                        placeholder="harga" disabled />
+                    <input onchange="updateHargaTotal()" class="form-control" name="harga" id="harga" type="number"
+                        placeholder="harga" @readonly(true) />
                     <label for="harga">Harga per Satuan</label>
                 </div>
 
@@ -98,9 +99,9 @@
             </div>
 
             <div class="form-group form-floating mb-3">
-                <input class="form-control" name="harga_total" id="harga_total" type="text"
-                    placeholder="harga_total" readonly />
-                <label for="harga_total">Harga Total</label>
+                <input class="form-control" name="total_harga" id="total_harga" type="number"
+                    placeholder="total_harga" readonly />
+                <label for="total_harga">Harga Total</label>
             </div>
 
             <script>
@@ -133,13 +134,14 @@
                                 harga = pelanggan[1] === "1" ? barang[2] : pelanggan[1] === "2" ? barang[3] : barang[1];
                             } else {
                                 // If not using default price, set harga to empty to let user input
-                                harga = "";
+                                harga = 0;
                             }
                         } else {
                             harga = barang[1];
                         }
                     }
 
+                    harga = parseInt(harga);
                     // Update the harga field with the retrieved value
                     hargaField.value = harga;
                     updateHargaTotal();
@@ -157,7 +159,7 @@
                     var jumlah = parseInt(document.getElementById("jumlah").value);
                     var panjang = parseFloat(document.getElementById("panjang").value);
                     var lebar = parseFloat(document.getElementById("lebar").value);
-                    var hargaTotalField = document.getElementById("harga_total");
+                    var hargaTotalField = document.getElementById("total_harga");
 
                     // make all number to positive
                     if (panjang < 0) {
@@ -188,8 +190,8 @@
                     var useDefaultPrice = document.getElementById("useDefaultPrice").checked;
                     var hargaField = document.getElementById("harga");
 
-                    // Enable or disable the price input field based on user's choice
-                    hargaField.disabled = useDefaultPrice;
+                    // readonly the price input field based on user's choice
+                    hargaField.readOnly = useDefaultPrice;
 
                     // If using default price, update the harga field
                     if (useDefaultPrice) {

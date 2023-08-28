@@ -19,7 +19,7 @@
                 <label for="barang">Nama barang</label>
                 <select id="barang" name="barang" onchange="updateHarga();checkSatuan()" class="form-control">
                     @foreach ($ar_barang as $barang)
-                        <option
+                        <option readonly
                             value=" {{ $barang->id }} | {{ $barang->harga }} | {{ $barang->harga_member }} | {{ $barang->harga_studio }} | {{ $barang->satuan }}"{{ $barang->id == $row->barang_id ? 'selected' : '' }}>
                             {{ $barang->kode }} - {{ $barang->nama_barang }}</option>
                     @endforeach
@@ -95,9 +95,9 @@
             </div>
 
             <div class="form-group form-floating mb-3">
-                <input class="form-control" name="harga_total" id="harga_total" type="text" placeholder="harga_total"
+                <input class="form-control" name="total_harga" id="total_harga" type="text" placeholder="total_harga"
                     readonly />
-                <label for="harga_total">Harga Total</label>
+                <label for="total_harga">Harga Total</label>
             </div>
 
             <script>
