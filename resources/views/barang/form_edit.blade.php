@@ -38,6 +38,17 @@
                 <label for="kategoribarang">kategori barang</label>
             </div>
             <div class="form-floating mb-3">
+                <select class="form-select" name="bahan" aria-label="bahan barang">
+                    <option value="">-- Pilih bahan barang --</option>
+                    @foreach ($ar_bahan as $k)
+                        @php
+                        $sel = $k->id == $row->bahan_id ? 'selected' : ''; @endphp
+                        <option value="{{ $k->id }}" {{ $sel }}>{{ $k->nama_bahan }}</option>
+                    @endforeach
+                </select>
+                <label for="bahanbarang">Bahan barang</label>
+            </div>
+            <div class="form-floating mb-3">
                 <input class="form-control" name="harga" value="{{ $row->harga }}" id="harga" type="text"
                     placeholder="Harga" data-sb-validations="required" />
                 <label for="harga">Harga</label>

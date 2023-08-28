@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang; //panggil model
-use App\Models\kategori; //panggil model
+use App\Models\Kategori; //panggil model
+use App\Models\Bahan; //panggil model
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // jika pakai query builder
@@ -32,7 +33,7 @@ class BarangController extends Controller
 
     public function dataBahan()
     {
-        $ar_bahan = barang::all(); //eloquent
+        $ar_bahan = Barang::all(); //eloquent
         return view('landingpage.hero', compact('ar_bahan'), ['title' => 'Data Barang']);
     }
 
@@ -43,8 +44,10 @@ class BarangController extends Controller
     {
         //ambil master untuk dilooping di select option
         $ar_kategori = Kategori::all();
+        //ambil bahan untuk dilooping di select option
+        $ar_bahan = Bahan::all();
         //arahkan ke form input data
-        return view('barang.form', compact('ar_kategori'), ['title' => 'Input Barang Baru']);
+        return view('barang.form', compact('ar_kategori', 'ar_bahan'), ['title' => 'Tambah Data Barang']);
     }
 
     /**
@@ -63,6 +66,7 @@ class BarangController extends Controller
                 'harga_studio' => 'regex:/^[0-9]+(\.[0-9][0-9]?)?$/',
                 'satuan' => 'required|max:45',
                 'kategori' => 'required|integer',
+                'bahan' => 'required|integer',
                 //'foto' => 'nullable|max:45',
                 'foto' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
             ],
@@ -105,6 +109,7 @@ class BarangController extends Controller
                     'kode' => $request->kode,
                     'nama_barang' => $request->nama_barang,
                     'kategori_id' => $request->kategori,
+                    'bahan_id' => $request->bahan,
                     'harga' => $request->harga,
                     'harga_member' => $request->harga_member,
                     'harga_studio' => $request->harga_studio,
@@ -129,9 +134,10 @@ class BarangController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        $rs = barang::find($id);
-
+    {   
+        //ambil data barang sesuai id dan dapatkan bahan dasarnya
+        $rs = Barang::find($id);
+        
         return view('barang.detail', compact('rs'), ['title' => 'Detail Barang']);
     }
 
@@ -141,11 +147,13 @@ class BarangController extends Controller
     public function edit(string $id)
     {
         //ambil master untuk dilooping di select option
-        $ar_kategori = kategori::all();
+        $ar_kategori = Kategori::all();
         //tampilkan data lama di form
-        $row = barang::find($id);
+        $row = Barang::find($id);
+        //tamplikan bahan untuk dilooping di select option
+        $ar_bahan = Bahan::all();
 
-        return view('barang.form_edit', compact('row', 'ar_kategori'), ['title' => 'Edit Barang']);
+        return view('barang.form_edit', compact('row', 'ar_kategori', 'ar_bahan'), ['title' => 'Edit Barang']);
     }
 
     /**

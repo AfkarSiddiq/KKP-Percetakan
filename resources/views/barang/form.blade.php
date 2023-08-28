@@ -31,8 +31,17 @@
             <div class="form-floating mb-3">
                 <input class="form-control" name="nama_barang" value="" id="barang" type="text"
                     placeholder="barang" data-sb-validations="required" />
-                <label for="barang">barang</label>
-                <div class="invalid-feedback" data-sb-feedback="barang:required">barang is required.</div>
+                <label for="barang">Nama barang</label>
+                <div class="invalid-feedback" data-sb-feedback="barang:required">Nama barang is required.</div>
+            </div>
+            <div class="form-floating mb-3">
+                <select class="form-select" name="bahan" aria-label="bahan barang">
+                    <option value="">-- Pilih bahan barang --</option>
+                    @foreach ($ar_bahan as $k)
+                        <option value="{{ $k->id }}">{{ $k->nama_bahan }}</option>
+                    @endforeach
+                </select>
+                <label for="bahanbarang">Bahan barang</label>
             </div>
             <div class="form-floating mb-3">
                 <select class="form-select" name="kategori" aria-label="Kategori barang">
