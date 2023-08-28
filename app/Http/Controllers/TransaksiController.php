@@ -121,14 +121,14 @@ class TransaksiController extends Controller
     public function update(Request $request, string $id)
     {
         //proses input barang dari form
-        $request->validate([
-            'tgl' => 'required|date',
-            'jumlah' => 'required|integer',
-            'panjang' => 'double',
-            'lebar' => 'double',
-            'keterangan' => '',
-            'total_harga' => '',
-        ]);
+        // $request->validate([
+        //     'tgl' => 'required|date',
+        //     'jumlah' => 'required|integer',
+        //     'panjang' => 'double',
+        //     'lebar' => 'double',
+        //     'keterangan' => '',
+        //     'total_harga' => '',
+        // ]);
 
         //lakukan update data dari request form edit
         $transaksi = transaksi::find($id);
@@ -176,7 +176,7 @@ class TransaksiController extends Controller
             'jumlah' => $request->jumlah,
             'panjang' => $request->panjang,
             'lebar' => $request->lebar,
-            'total_harga' => $request->total_harga,
+            'total_harga' => $request->harga_total,
             'keterangan' => $request->keterangan,
         ]);
 

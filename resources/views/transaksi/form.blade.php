@@ -69,7 +69,7 @@
                         <div class="form-group form-floating mb-3 col-md">
                             <input onchange="updateHargaTotal()" class="form-control" name="lebar" value="1"
                                 id="lebar" type="text" placeholder="lebar" />
-                            <label for="lebar">Lebar</label>
+                                                                                                                  .   <label for="lebar">Lebar</label>
                             <div class="invalid-feedback" data-sb-feedback="lebar:required">Lebar is required.</div>
                         </div>
 
