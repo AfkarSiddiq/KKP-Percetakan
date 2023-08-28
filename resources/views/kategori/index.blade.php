@@ -69,8 +69,8 @@
                                             @endif
                                             <!-- hapus data -->
                                             @if (Auth::user()->level == 'admin')
-                                                <button class="btn btn-danger btn-sm show_confirm" title="Hapus"
-                                                    name="proses">
+                                                <button onclick="deleteData(this)" type="button"
+                                                    class="btn btn-danger show_confirm btn-sm">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             @endif
@@ -86,22 +86,25 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        $('.show_confirm').click(function(event) {
-            var form = $(this).closest("form");
-            var name = $(this).data("name");
-            event.preventDefault();
-            swal({
-                    title: `Are you sure you want to delete this record?`,
-                    text: "If you delete this, it will be gone forever.",
-                    icon: "warning",
+    <script>
+        function deleteData(button) {
+            var form = button.closest('form'); // Find the parent form element
+            if (form) {
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
                     buttons: true,
                     dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) form.submit();
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        form.submit(); // Submit the parent form
+                    } else {
+                        swal('Your data is safe');
+                    }
                 });
-        })
+            }
+        }
     </script>
     <style>
         #datatablesSimple th {

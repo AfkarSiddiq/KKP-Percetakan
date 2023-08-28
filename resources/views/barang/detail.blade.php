@@ -30,6 +30,11 @@
                                             <td class="h6">{{ $rs->kode }}</td>
                                         </tr>
                                         <tr>
+                                            <td class="h6">Bahan Dasar</td>
+                                            <td class="h6">:</td>
+                                            <td class="h6">{{ $rs->bahan->nama_bahan }}</td>
+                                        </tr>
+                                        <tr>
                                             <td class="h6">Harga Barang</td>
                                             <td class="h6">:</td>
                                             <td class="h6">Rp. {{ number_format($rs->harga, 0, ',', '.') }}
