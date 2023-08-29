@@ -146,8 +146,8 @@ class TransaksiController extends Controller
         $request->validate([
             'tgl' => 'required|date',
             'jumlah' => 'required|integer',
-            'panjang' => 'double',
-            'lebar' => 'double',
+            'panjang' => 'required|numeric',
+            'lebar' => 'required|numeric',
             'keterangan' => '',
             'total_harga' => '',
         ]);
@@ -165,8 +165,9 @@ class TransaksiController extends Controller
         // if (is_null($hargaMember)) {
         //     $hargaMember = $hargaBarang;
         // }
-
-        $selectedPelanggan = $request->input('pelanggan');
+        $barang = DB::table('barang')->where('id', $idBarang)->first();
+        $idBahan = $barang->bahan_id;
+        $selectedPelanggan = $request->input('nama');
         $dataPelanggan = explode(' | ', $selectedPelanggan);
 
         $idPelanggan = $dataPelanggan[0];
@@ -195,8 +196,19 @@ class TransaksiController extends Controller
         $panjang = ceil($request->panjang * 2) / 2;
         $lebar = ceil($request->lebar * 2) / 2;   
 
-        DB::table('transaksi')->where('id', $id)->update([
-            'pelanggan_id' => $request->pelanggan,
+        //update jumlah stok barang pada bahan
+        $bahan = DB::table('bahan')->where('id', $idBahan)->first();
+        $jumlahBahanLama = $bahan->jumlah;
+        $penguranganLama = $transaksi->luas * $transaksi->jumlah;
+        $penguranganBaru = $panjang * $lebar * $request->jumlah;
+        $jumlahBahanBaru = $jumlahBahanLama + $penguranganLama - $penguranganBaru;
+        //check apakah stok bahan cukup
+        if ($jumlahBahanBaru < 0) {
+            return back()->with('errors', 'Stok bahan tidak cukup');
+        }
+
+        $ps_update = DB::table('transaksi')->where('id', $id)->update([
+            'pelanggan_id' => $idPelanggan,
             'barang_id' => $idBarang,
             'tgl' => $request->tgl,
             'jumlah' => $request->jumlah,
@@ -207,9 +219,21 @@ class TransaksiController extends Controller
             'total_harga' => $request->total_harga,
             'keterangan' => $request->keterangan,
         ]);
+        if($ps_update){
+            DB::table('bahan')->where('id', $idBahan)->update(
+                [
+                    'jumlah' => $jumlahBahanBaru,
+                ]
+            );
+            return redirect()->route('transaksi.show', $id)->with('success', 'Data Transaksi Berhasil Diubah');
+        }else{
+            return back()->with('errors', 'Data Transaksi Gagal Diubah');
+        }
+        
 
-        return redirect()->route('transaksi.show', $id)
-            ->with('success', 'Data Transaksi Berhasil Diubah');
+        
+
+        
     }
     //     return redirect()->back()
     //         ->with('error', 'Data Transaksi tidak ditemukan');
