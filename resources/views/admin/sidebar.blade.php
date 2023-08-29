@@ -42,9 +42,9 @@
                         </nav>
                     </div>
                     <div class="sb-sidenav-menu-heading">Addons</div>
-                    <a class="nav-link" href="{{ url('/suplaibarang') }}">
+                    <a class="nav-link" href="{{ url('/suplaibahan') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-cart-plus"></i></div>
-                        Suplai Barang
+                        Suplai Bahan
                     </a>
 
                     <a class="nav-link" href="{{ url('/bahan') }}">

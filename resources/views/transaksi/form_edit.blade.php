@@ -53,15 +53,15 @@
             <div class="row align-items-center">
                 <div class="form-group form-floating mb-3 col-md">
                     <input onchange="updateHargaTotal()" value="{{ $row->harga }}" class="form-control" name="harga"
-                        id="harga" type="text" placeholder="harga" />
+                        id="harga" type="text" placeholder="harga" @readonly(true) />
                     <label for="harga">Harga per Satuan</label>
                 </div>
 
                 <div class="luas col-md" style="display: block">
                     <div class="row align-items-center">
                         <div class="form-group form-floating mb-3 col-md">
-                            <input onchange="updateHargaTotal()" class="form-control" name="panjang" value="1"
-                                id="panjang" type="text" placeholder="panjang" />
+                            <input value="{{ $row->panjang }}" onchange="updateHargaTotal()" class="form-control"
+                                name="panjang" value="1" id="panjang" type="text" placeholder="panjang" />
                             <label for="panjang">Panjang</label>
                             <div class="invalid-feedback" data-sb-feedback="panjang:required">Panjang is required.</div>
                         </div>
@@ -69,8 +69,8 @@
                         <div class="col-md-1 mb-3">Meter</div>
 
                         <div class="form-group form-floating mb-3 col-md">
-                            <input onchange="updateHargaTotal()" class="form-control" name="lebar" value="1"
-                                id="lebar" type="text" placeholder="lebar" />
+                            <input onchange="updateHargaTotal()" class="form-control" name="lebar"
+                                value="{{ $row->lebar }}" id="lebar" type="text" placeholder="lebar" />
                             <label for="lebar">Lebar</label>
                             <div class="invalid-feedback" data-sb-feedback="lebar:required">Lebar is required.</div>
                         </div>
@@ -80,23 +80,28 @@
                 </div>
             </div>
 
+            <div class="form-check mb-3">
+                <input checked class="form-check-input" type="checkbox" id="useDefaultPrice" onchange="toggleCustomPrice()">
+                <label class="form-check-label" for="useDefaultPrice">Gunakan Harga Default</label>
+            </div>
+
             <div class="form-group form-floating mb-3">
-                <input class="form-control" name="tgl" value="" id="date" type="date" placeholder="date"
-                    data-sb-validations="required" />
+                <input class="form-control" name="tgl" value="{{ $row->tgl }}" id="date" type="date"
+                    placeholder="date" data-sb-validations="required" />
                 <label for="date">date</label>
                 <div class="invalid-feedback" data-sb-feedback="date:required">date is required.</div>
             </div>
 
             <div class="form-group form-floating mb-3">
-                <input class="form-control" name="keterangan" value="" id="keterangan" type="text"
+                <input class="form-control" name="keterangan" value="{{ $row->keterangan }}" id="keterangan" type="text"
                     placeholder="keterangan" data-sb-validations="required" />
                 <label for="keterangan">keterangan</label>
                 <div class="invalid-feedback" data-sb-feedback="keterangan:required">keterangan is required.</div>
             </div>
 
             <div class="form-group form-floating mb-3">
-                <input class="form-control" name="total_harga" id="total_harga" type="text" placeholder="total_harga"
-                    readonly />
+                <input value="{{ $row->total_harga }}" class="form-control" name="total_harga" id="total_harga"
+                    type="text" placeholder="total_harga" readonly />
                 <label for="total_harga">Harga Total</label>
             </div>
 
@@ -154,7 +159,7 @@
                     var jumlah = parseInt(document.getElementById("jumlah").value);
                     var panjang = parseFloat(document.getElementById("panjang").value);
                     var lebar = parseFloat(document.getElementById("lebar").value);
-                    var hargaTotalField = document.getElementById("harga_total");
+                    var hargaTotalField = document.getElementById("total_harga");
 
                     // make all number to positive
                     if (panjang < 0) {
@@ -186,7 +191,7 @@
                     var hargaField = document.getElementById("harga");
 
                     // Enable or disable the price input field based on user's choice
-                    hargaField.disabled = useDefaultPrice;
+                    hargaField.readOnly = useDefaultPrice;
 
                     // If using default price, update the harga field
                     if (useDefaultPrice) {
