@@ -11,6 +11,8 @@ use App\Models\Transaksi;
 use App\Models\Barang; //panggil model
 use App\Models\Bahan;
 use App\Models\Pelanggan;
+//toko model
+use App\Models\Toko;
 use Illuminate\Support\Facades\DB; // jika pakai query builder
 use Illuminate\Database\Eloquent\Model; //jika pakai eloquent
 use PDF;
@@ -38,7 +40,8 @@ class TransaksiController extends Controller
     public function struk($id)
     {   
         $ar_transaksi = Transaksi::find($id); //eloquent
-        return view('transaksi.one_transaksi_pdf', compact('ar_transaksi'), ['title' => 'Data Transaksi yang belum lunas']);
+        $toko = Toko::find(1);
+        return view('transaksi.one_transaksi_pdf', compact('ar_transaksi', 'toko'), ['title' => 'Data Transaksi yang belum lunas']);
     }
     
     public function dataTerpilih()
@@ -314,7 +317,9 @@ class TransaksiController extends Controller
         $tgl_akhir = $request->input('tgl_akhir');
     
         $query = Transaksi::query();
-    
+
+        $toko = Toko::find(1);
+
         if ($idPelanggan) {
             $query->where('pelanggan_id', $idPelanggan);
             $pelanggan = Pelanggan::find($idPelanggan);
@@ -328,10 +333,10 @@ class TransaksiController extends Controller
         
         if($idPelanggan){
             $hutang = $ar_transaksi->sum('sisa');
-            return view('transaksi.transaksi_pdf_2', compact('ar_transaksi', 'tgl_mulai', 'tgl_akhir', 'hutang', 'pelanggan'), ['title' => 'Cetak Data Transaksi'])
+            return view('transaksi.transaksi_pdf_2', compact('toko', 'ar_transaksi', 'tgl_mulai', 'tgl_akhir', 'hutang', 'pelanggan'), ['title' => 'Cetak Data Transaksi'])
             ->render();
         }
-        return view('transaksi.transaksi_pdf', compact('ar_transaksi', 'tgl_mulai', 'tgl_akhir'), ['title' => 'Cetak Data Transaksi'])
+        return view('transaksi.transaksi_pdf', compact('toko', 'ar_transaksi', 'tgl_mulai', 'tgl_akhir'), ['title' => 'Cetak Data Transaksi'])
             ->render();
     }
     

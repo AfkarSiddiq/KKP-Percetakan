@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             BarangTableSedeers::class,
             PelangganTableSedeers::class,
             BahanTableSedeers::class,
+            TokoTableSedeers::class,
         ]);
     }
 }

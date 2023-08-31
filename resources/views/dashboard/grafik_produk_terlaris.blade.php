@@ -2,7 +2,7 @@
     <div class="card mb-12">
         <div class="card-header">
             <i class="fas fa-chart-bar me-1"></i>
-            produk terlaris
+            Produk terlaris
         </div>
 
         <!-- Bar Chart -->
@@ -12,13 +12,13 @@
             <script>
                 // ambil data nama nama dan terlaris dari DashboardController di fungsi index
                 var label = [
-                    @foreach($brg_laris as $d)
-                    '{{ $d->nama_barang }}',
+                    @foreach ($brg_laris as $d)
+                        '{{ $d->nama_barang }}',
                     @endforeach
                 ];
                 var jumlah = [
-                    @foreach($brg_laris as $d)
-                    '{{ $d -> jumlah }}',
+                    @foreach ($brg_laris as $d)
+                        '{{ $d->jumlah }}',
                     @endforeach
                 ];
                 document.addEventListener("DOMContentLoaded", () => {
@@ -27,7 +27,7 @@
                         data: {
                             labels: label,
                             datasets: [{
-                                label: 'Produk terlaris',
+                                label: 'Jumlah transaksi',
                                 data: jumlah,
                                 backgroundColor: 'rgb(255, 0, 0)',
                                 borderColor: 'rgb(54, 162, 235)',

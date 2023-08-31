@@ -55,6 +55,11 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
                         Bahan Mentah
                     </a>
+                    <a class="nav-link" href="{{ url('/toko') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-solid fa-shop"></i></div>
+                        Profil Toko
+                    </a>
+                    </a>
                     <a class="nav-link" href="{{ url('/datauser') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-solid fa-user"></i></div>
                         User

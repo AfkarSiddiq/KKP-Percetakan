@@ -84,6 +84,10 @@
             align-items: center;
         }
 
+        .rekening {
+            text-align: left;
+        }
+
         .signature {
             justify-content: flex-end;
             display: grid;
@@ -105,11 +109,11 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" class="logo">
+            <img src="{{ asset('assets/img') }}/{{ $toko->logo }}" alt="Logo" class="logo">
             <div class="store-info">
-                <strong style="font-size: 16px">Pacific Printing</strong>
-                <p style="font-size: 12px">Jl. Prof. Ali Hasyimi No.7, Lamteh, Ulee Kareng, Kota Banda Aceh</p>
-                <p style="font-size: 12px">0823 2121 6131</p>
+                <strong style="font-size: 16px">{{ $toko->nama }}</strong>
+                <p style="font-size: 12px">{{ $toko->alamt }}</p>
+                <p style="font-size: 12px">{{ $toko->no_telp }}</p>
             </div>
             <div class="title">
                 <h4>Faktur Penjualan</h4>
@@ -247,6 +251,9 @@
             </div>
             <div class="total grid-item">
                 <h4>Total: Rp. {{ $total }}</h4>
+            </div>
+            <div class="grid-item rekening">
+                <p>No. Rekening: {{ $toko->no_rekening }}</p>
             </div>
             <div class="grid-item"></div>
 

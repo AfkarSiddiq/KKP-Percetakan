@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TokoController;
 
 
 
@@ -143,19 +144,20 @@ Route::resource('transaksi', TransaksiController::class)->middleware('auth');
 Route::resource('updatelevel', UpdateLevelController::class)->middleware('auth');
 Route::resource('suplaibahan', SuplaiBahanController::class)->middleware('auth');
 Route::resource('member', MemberController::class)->middleware('auth');
-Route::delete('/suplaibahan/deleteAll', [SuplaiBahanController::class, 'deleteAll']);
-Route::get('/transaksi-pdf', [TransaksiController::class, 'transaksiPDF'])->name('transaksi.pdf');
-Route::get('/transaksi-pdf/cetak', [TransaksiController::class, 'transaksiPDFCetak'])->name('transaksi.pdf.cetak');
-Route::get('/struk/{id}', [TransaksiController::class, 'struk']);
+Route::resource('toko', TokoController::class)->middleware('auth');
+Route::delete('/suplaibahan/deleteAll', [SuplaiBahanController::class, 'deleteAll'])->middleware('auth');
+Route::get('/transaksi-pdf', [TransaksiController::class, 'transaksiPDF'])->name('transaksi.pdf')->middleware('auth');
+Route::get('/transaksi-pdf/cetak', [TransaksiController::class, 'transaksiPDFCetak'])->name('transaksi.pdf.cetak')->middleware('auth');
+Route::get('/struk/{id}', [TransaksiController::class, 'struk'])->middleware('auth');
 Route::get('/pelunasan', [TransaksiController::class, 'pelunasan']);
-Route::get('/transaksi/{id}/pelunasan', [TransaksiController::class, 'editLunas'])->name('transaksi.editLunas');
-Route::put('/transaksi/{id}/pelunasan', [TransaksiController::class, 'lunas'])->name('transaksi.lunas');
-Route::get('/suplaibahan-pdf', [SuplaiBahanController::class, 'suplaibahanPDF']);
-Route::get('/transaksi-excel', [TransaksiController::class, 'transaksiExcel']);
-Route::get('/account/settings', [AccountSettingController::class, 'index'])->name('user.setting');
-Route::put('/account/settings', [AccountSettingController::class, 'update'])->name('user.setting.update');
-Route::get('/account/settings/updatePassword', [UpdatePasswordController::class, 'index'])->name('user.settingpassword');
-Route::put('/account/settings/updatePassword', [UpdatePasswordController::class, 'update'])->name('user.settingpassword.update');
+Route::get('/transaksi/{id}/pelunasan', [TransaksiController::class, 'editLunas'])->name('transaksi.editLunas')->middleware('auth');
+Route::put('/transaksi/{id}/pelunasan', [TransaksiController::class, 'lunas'])->name('transaksi.lunas')->middleware('auth');
+Route::get('/suplaibahan-pdf', [SuplaiBahanController::class, 'suplaibahanPDF'])->middleware('auth');
+Route::get('/transaksi-excel', [TransaksiController::class, 'transaksiExcel'])->middleware('auth');
+Route::get('/account/settings', [AccountSettingController::class, 'index'])->name('user.setting')->middleware('auth');
+Route::put('/account/settings', [AccountSettingController::class, 'update'])->name('user.setting.update')->middleware('auth');
+Route::get('/account/settings/updatePassword', [UpdatePasswordController::class, 'index'])->name('user.settingpassword')->middleware('auth');
+Route::put('/account/settings/updatePassword', [UpdatePasswordController::class, 'update'])->name('user.settingpassword.update')->middleware('auth');
 
 
 Auth::routes();
