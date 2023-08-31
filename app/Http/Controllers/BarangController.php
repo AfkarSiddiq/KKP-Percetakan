@@ -102,29 +102,22 @@ class BarangController extends Controller
             $fileName = '';
         }
 
-        //lakukan insert data dari request form
-        try {
-            DB::table('barang')->insert(
-                [
-                    'kode' => $request->kode,
-                    'nama_barang' => $request->nama_barang,
-                    'kategori_id' => $request->kategori,
-                    'bahan_id' => $request->bahan,
-                    'harga' => $request->harga,
-                    'harga_member' => $request->harga_member,
-                    'harga_studio' => $request->harga_studio,
-                    'satuan' => $request->satuan,
-                    //'foto'=>$request->foto,
-                    'foto' => $fileName,
+        $barang = Barang::create([
+            'kode' => $request->kode,
+            'nama_barang' => $request->nama_barang,
+            'kategori_id' => $request->kategori,
+            'bahan_id' => $request->bahan,
+            'harga' => $request->harga,
+            'harga_member' => $request->harga_member,
+            'harga_studio' => $request->harga_studio,
+            'satuan' => $request->satuan,
+            'foto' => $fileName,
+        ]);
 
-                    //'created_at'=>now(),
-                ]
-            );
-
+        if ($barang) {
             return redirect()->route('barang.index')
                 ->with('success', 'Data barang Baru Berhasil Disimpan');
-        } catch (\Exception $e) {
-            //return redirect()->back()
+        } else {
             return redirect()->route('barang.index')
                 ->with('error', 'Terjadi Kesalahan Saat Input Data!');
         }
@@ -196,6 +189,8 @@ class BarangController extends Controller
                 'foto.mimes' => 'Extension file selain jpg,jpeg,png,gif,svg',
             ]
         );
+        // Find the existing record
+        $barang = Barang::findOrFail($id);
         //barang::create($request->all());
         //------------ambil foto lama apabila user ingin ganti foto-----------
         $foto = DB::table('barang')->select('foto')->where('id', $id)->get();
@@ -213,23 +208,18 @@ class BarangController extends Controller
         } else {
             $fileName = $namaFileFotoLama;
         }
-
-        //lakukan update data dari request form edit
-        DB::table('barang')->where('id', $id)->update(
-            [
-                'kode' => $request->kode,
-                'nama_barang' => $request->nama_barang,
-                'kategori_id' => $request->kategori,
-                'harga' => $request->harga,
-                'harga_member' => $request->harga_member,
-                'harga_studio' => $request->harga_studio,
-                'satuan' => $request->satuan,
-                //'foto'=>$request->foto,
-                'foto' => $fileName,
-
-                //'updated_at'=>now(),
-            ]
-        );
+        
+        // Update the record
+        $barang->update([
+            'kode' => $request->kode,
+            'nama_barang' => $request->nama_barang,
+            'kategori_id' => $request->kategori,
+            'harga' => $request->harga,
+            'harga_member' => $request->harga_member,
+            'harga_studio' => $request->harga_studio,
+            'satuan' => $request->satuan,
+            'foto' => $fileName, // Keep existing foto if no new file is uploaded
+        ]);
 
         return redirect('/barang' . '/' . $id)
             ->with('success', 'Data barang Berhasil Diubah');

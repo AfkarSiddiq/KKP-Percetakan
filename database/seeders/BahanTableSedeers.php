@@ -37,8 +37,8 @@ class BahanTableSedeers extends Seeder
             ],
             [
                 'nama_bahan' => 'PVC Card',
-                'jumlah' => 224,
-                'satuan' => 'meter',
+                'jumlah' => 200,
+                'satuan' => 'lembar',
             ],
             [
                 'nama_bahan' => 'Satin',
@@ -56,18 +56,18 @@ class BahanTableSedeers extends Seeder
                 'satuan' => 'meter',
             ],
             [
-                'nama_bahan' => 'Matte 220g',
-                'jumlah' => 224,
-                'satuan' => 'meter',
+                'nama_bahan' => 'Tik 260g',
+                'jumlah' => 200,
+                'satuan' => 'lembar',
             ],
             [
-                'nama_bahan' => 'Art Carton 260g',
-                'jumlah' => 224,
-                'satuan' => 'meter',
+                'nama_bahan' => 'Konstruks 1500g',
+                'jumlah' => 200,
+                'satuan' => 'lembar',
             ],
             [
                 'nama_bahan' => 'PIN',
-                'jumlah' => 224,
+                'jumlah' => 200,
                 'satuan' => 'pcs',
             ],
         ];

@@ -47,9 +47,9 @@
                 <!-- </div> -->
             </div>
             <!-- </div> -->
-            @include('admin.footer')
+        </main>
+        @include('admin.footer')
     </div>
-    </main>
 
 
     </div>

@@ -4,7 +4,11 @@ let minDate, maxDate;
 DataTable.ext.search.push(function (settings, data, dataIndex) {
     let min = minDate.val();
     let max = maxDate.val();
-    let date = new Date(data[4]);
+    var selectedStatus = $('#status').val();
+
+    let date = new Date(data[3]);
+    var statusColumn = data[8]; // Assuming "Status" is the 9th column
+    statusColumn = statusColumn;
 
     if (
         (min === null && max === null) ||
@@ -12,7 +16,9 @@ DataTable.ext.search.push(function (settings, data, dataIndex) {
         (min <= date && max === null) ||
         (min <= date && date <= max)
     ) {
-        return true;
+        if (selectedStatus === "" || statusColumn === selectedStatus) {
+            return true;
+        }
     }
     return false;
 });
@@ -33,4 +39,7 @@ document.querySelectorAll("#minDate, #maxDate").forEach((el) => {
     el.addEventListener("change", () => table.draw());
 });
 
-
+// Refilter the table
+document.querySelectorAll("#status").forEach((el) => {
+    el.addEventListener("change", () => table.draw());
+});

@@ -1,6 +1,6 @@
 @extends('admin.index')
 @section('content')
-    <h1 class="mt-4">Form Update Transaksi</h1>
+    <h1 class="mt-4">{{ $title }}</h1>
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -11,7 +11,7 @@
         </div>
     @endif
     <div class="container px-5 my-5">
-        <form method="POST" action="{{ route('transaksi.update', $row->id) }}" id="contactForm"
+        <form method="POST" action="{{ route('transaksi.lunas', $row->id) }}" id="contactForm"
             data-sb-form-api-token="API_TOKEN">
             @csrf
             @method('PUT')
@@ -19,8 +19,8 @@
                 <label for="barang">Nama barang</label>
                 <select id="barang" name="barang" onchange="updateHarga();checkSatuan()" class="form-control">
                     <option readonly
-                        value=" {{ $barang->id }} | {{ $barang->harga }} | {{ $barang->harga_member }} | {{ $barang->harga_studio }} | {{ $barang->satuan }}"{{ $barang->id == $row->barang_id ? 'selected' : '' }}>
-                        {{ $barang->kode }} - {{ $barang->nama_barang }}</option>
+                        value=" {{ $ar_barang->id }} | {{ $ar_barang->harga }} | {{ $ar_barang->harga_member }} | {{ $ar_barang->harga_studio }} | {{ $ar_barang->satuan }}"{{ $ar_barang->id == $row->barang_id ? 'selected' : '' }}>
+                        {{ $ar_barang->kode }} - {{ $ar_barang->nama_barang }}</option>
                 </select>
             </div>
 
@@ -41,7 +41,7 @@
 
             <div class="form-group form-floating mb-3">
                 <input onchange="updateHargaTotal()" class="form-control" name="jumlah" value="{{ $row->jumlah }}"
-                    id="jumlah" type="text" placeholder="jumlah" data-sb-validations="required" />
+                    id="jumlah" type="text" placeholder="jumlah" data-sb-validations="required" readonly />
                 <label for="jumlah">Jumlah dibeli</label>
                 <div class="invalid-feedback" data-sb-feedback="jumlah:required">jumlah is required.</div>
             </div>
@@ -57,7 +57,8 @@
                     <div class="row align-items-center">
                         <div class="form-group form-floating mb-3 col-md">
                             <input value="{{ $row->panjang }}" onchange="updateHargaTotal()" class="form-control"
-                                name="panjang" value="1" id="panjang" type="text" placeholder="panjang" />
+                                name="panjang" value="1" id="panjang" type="text" placeholder="panjang"
+                                readonly />
                             <label for="panjang">Panjang</label>
                             <div class="invalid-feedback" data-sb-feedback="panjang:required">Panjang is required.</div>
                         </div>
@@ -66,7 +67,7 @@
 
                         <div class="form-group form-floating mb-3 col-md">
                             <input onchange="updateHargaTotal()" class="form-control" name="lebar"
-                                value="{{ $row->lebar }}" id="lebar" type="text" placeholder="lebar" />
+                                value="{{ $row->lebar }}" id="lebar" type="text" placeholder="lebar" readonly />
                             <label for="lebar">Lebar</label>
                             <div class="invalid-feedback" data-sb-feedback="lebar:required">Lebar is required.</div>
                         </div>
@@ -76,21 +77,16 @@
                 </div>
             </div>
 
-            <div class="form-check mb-3">
-                <input checked class="form-check-input" type="checkbox" id="useDefaultPrice" onchange="toggleCustomPrice()">
-                <label class="form-check-label" for="useDefaultPrice">Gunakan Harga Default</label>
-            </div>
-
             <div class="form-group form-floating mb-3">
                 <input class="form-control" name="tgl" value="{{ $row->tgl }}" id="date" type="date"
-                    placeholder="date" data-sb-validations="required" />
+                    placeholder="date" data-sb-validations="required" readonly />
                 <label for="date">date</label>
                 <div class="invalid-feedback" data-sb-feedback="date:required">date is required.</div>
             </div>
 
             <div class="form-group form-floating mb-3">
                 <input class="form-control" name="keterangan" value="{{ $row->keterangan }}" id="keterangan" type="text"
-                    placeholder="keterangan" data-sb-validations="required" />
+                    placeholder="keterangan" data-sb-validations="required" readonly />
                 <label for="keterangan">keterangan</label>
                 <div class="invalid-feedback" data-sb-feedback="keterangan:required">keterangan is required.</div>
             </div>
@@ -101,15 +97,21 @@
                 <label for="total_harga">Harga Total</label>
             </div>
 
+            <div class="form-group form-floating mb-3">
+                <input value="{{ $row->total_bayar }}" class="form-control" name="dp" id="dp"
+                    type="text" placeholder="dp" readonly />
+                <label for="dp">Yang sudah dibayar(DP)</label>
+            </div>
+
             <div class="row align-items-center mb-3">
                 <div class="form-group form-floating col-md">
-                    <input onchange="updateSisa()" class="form-control" name="total_bayar" id="total_bayar"
-                        type="number" placeholder="total_bayar" />
+                    <input onchange="updateSisa()" value="" class="form-control" name="total_bayar"
+                        id="total_bayar" type="number" placeholder="total_bayar" />
                     <label for="total_bayar">Total Bayar</label>
                 </div>
                 <div class="form-group form-floating col-md sisa" style="display: block">
-                    <input class="form-control" name="sisa" id="sisa" type="number" placeholder="sisa"
-                        readonly />
+                    <input value="{{ $row->sisa }}" class="form-control" name="sisa" id="sisa"
+                        type="number" placeholder="sisa" readonly />
                     <label for="sisa">Sisa</label>
                 </div>
                 <div class="form-group form-floating col-md kembalian" style="display: block">
@@ -119,26 +121,32 @@
                 </div>
             </div>
 
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="lunas" onchange="toggleLunas()">
+                <label class="form-check-label" for="lunas">Lunas</label>
+            </div>
+
             <script>
-                // function to update sisa
                 function updateSisa() {
                     var totalHarga = document.getElementById("total_harga").value;
                     var totalBayar = document.getElementById("total_bayar").value;
+                    var dp = document.getElementById("dp").value;
                     var kembalian = document.getElementById("kembalian");
-                    var sisa = document.getElementById("sisa");
+                    var sisaNow = document.getElementById("sisa");
                     var displaySisa = document.getElementsByClassName("sisa")[0];
                     var displayKembalian = document.getElementsByClassName("kembalian")[0];
-                    var sisaOrKembalian = totalHarga - totalBayar;
+                    var sisa = totalHarga - dp;
+                    var sisaOrKembalian = sisa - totalBayar;
 
                     if (sisaOrKembalian < 0) {
                         displaySisa.style.display = "none";
                         displayKembalian.style.display = "block";
                         kembalian.value = sisaOrKembalian * -1;
-                        sisa.value = 0;
+                        sisaNow.value = 0;
                     } else {
                         displaySisa.style.display = "block";
                         displayKembalian.style.display = "none";
-                        sisa.value = sisaOrKembalian;
+                        sisaNow.value = sisaOrKembalian;
                         kembalian.value = 0;
                     }
                 }
@@ -239,6 +247,23 @@
                         hargaField.value = "";
                         updateHargaTotal();
                     }
+                }
+
+                function toggleLunas() {
+                    updateSisa();
+                    var lunas = document.getElementById("lunas").checked;
+                    var totalBayar = document.getElementById("total_bayar");
+                    var totalHarga = document.getElementById("total_harga").value;
+                    var dp = document.getElementById("dp").value;
+                    var sisa = totalHarga - dp;
+
+                    if (lunas) {
+                        totalBayar.value = sisa;
+                    } else {
+                        totalBayar.value = 0;
+                    }
+                    totalBayar.readOnly = lunas;
+                    updateSisa();
                 }
             </script>
 
