@@ -10,7 +10,7 @@ class Transaksi extends Model
     use HasFactory;
     protected $table = 'transaksi';
     protected $fillable = [
-        'barang_id', 'pelanggan_id', 'tgl', 'jumlah', 'harga', 'panjang', 'lebar', 'luas', 'total_harga', 'keterangan',
+        'barang_id', 'pelanggan_id', 'tgl', 'jumlah', 'harga', 'panjang', 'lebar', 'luas', 'total_harga', 'keterangan', 'total_bayar', 'status','sisa'
     ];
 
     public function barang()

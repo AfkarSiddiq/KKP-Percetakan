@@ -22,6 +22,9 @@ return new class extends Migration
             $table->double('lebar');
             $table->double('luas');
             $table->double('total_harga');
+            $table->double('total_bayar');
+            $table->double('sisa');
+            $table->integer('status')->default(0);
             $table->string('keterangan')->nullable();
             $table->timestamps();
         });

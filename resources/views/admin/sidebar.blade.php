@@ -13,6 +13,10 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-cash-register"></i></div>
                         Transaksi
                     </a>
+                    <a class="nav-link" href="{{ url('/pelunasan') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-money-bill-alt"></i></div>
+                        Pelunasan DP
+                    </a>
 
                     <div class="sb-sidenav-menu-heading">Interface</div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
@@ -50,6 +54,11 @@
                     <a class="nav-link" href="{{ url('/bahan') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
                         Bahan Mentah
+                    </a>
+                    <a class="nav-link" href="{{ url('/toko') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-solid fa-shop"></i></div>
+                        Profil Toko
+                    </a>
                     </a>
                     <a class="nav-link" href="{{ url('/datauser') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-solid fa-user"></i></div>

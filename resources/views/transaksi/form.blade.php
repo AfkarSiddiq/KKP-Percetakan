@@ -44,7 +44,7 @@
 
             <div class="form-group form-floating mb-3">
                 <input onchange="updateHargaTotal();" class="form-control" name="jumlah" value="" id="jumlah"
-                    type="text" placeholder="jumlah" data-sb-validations="required" />
+                    type="number" placeholder="jumlah" data-sb-validations="required" min="0" />
                 <label for="jumlah">Jumlah dibeli</label>
                 <div class="invalid-feedback" data-sb-feedback="jumlah:required">jumlah is required.</div>
             </div>
@@ -104,7 +104,48 @@
                 <label for="total_harga">Harga Total</label>
             </div>
 
+            <div class="row align-items-center mb-3">
+                <div class="form-group form-floating col-md">
+                    <input onchange="updateSisa()" class="form-control" name="total_bayar" id="total_bayar"
+                        type="number" placeholder="total_bayar" />
+                    <label for="total_bayar">Total Bayar</label>
+                </div>
+                <div class="form-group form-floating col-md sisa" style="display: block">
+                    <input class="form-control" name="sisa" id="sisa" type="number" placeholder="sisa"
+                        readonly />
+                    <label for="sisa">Sisa</label>
+                </div>
+                <div class="form-group form-floating col-md kembalian" style="display: block">
+                    <input class="form-control" name="kembalian" id="kembalian" type="number" placeholder="kembalian"
+                        readonly />
+                    <label for="kembalian">Kembalian</label>
+                </div>
+            </div>
+
             <script>
+                // function to update sisa
+                function updateSisa() {
+                    var totalHarga = document.getElementById("total_harga").value;
+                    var totalBayar = document.getElementById("total_bayar").value;
+                    var kembalian = document.getElementById("kembalian");
+                    var sisa = document.getElementById("sisa");
+                    var displaySisa = document.getElementsByClassName("sisa")[0];
+                    var displayKembalian = document.getElementsByClassName("kembalian")[0];
+                    var sisaOrKembalian = totalHarga - totalBayar;
+
+                    if (sisaOrKembalian < 0) {
+                        displaySisa.style.display = "none";
+                        displayKembalian.style.display = "block";
+                        kembalian.value = sisaOrKembalian * -1;
+                        sisa.value = 0;
+                    } else {
+                        displaySisa.style.display = "block";
+                        displayKembalian.style.display = "none";
+                        sisa.value = sisaOrKembalian;
+                        kembalian.value = 0;
+                    }
+                }
+
                 //function to check satuan barang and display if satuan = meter
                 function checkSatuan() {
                     var selectedBarang = document.getElementById("barang").value;
@@ -183,6 +224,7 @@
 
                     // Update the harga total field with the calculated value
                     hargaTotalField.value = hargaTotal;
+                    updateSisa();
                 }
 
                 // Function to toggle the custom price input field based on user's choice

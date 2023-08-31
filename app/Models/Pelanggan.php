@@ -14,7 +14,7 @@ class Pelanggan extends Model
         'nama','alamat','no_hp','status_member', 'jumlah_pesanan',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function pesanan(): HasMany
     {

@@ -10,6 +10,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Transaksi;
 use App\Models\Barang; //panggil model
 use App\Models\Bahan;
+use App\Models\Pelanggan;
+//toko model
+use App\Models\Toko;
 use Illuminate\Support\Facades\DB; // jika pakai query builder
 use Illuminate\Database\Eloquent\Model; //jika pakai eloquent
 use PDF;
@@ -24,20 +27,26 @@ class TransaksiController extends Controller
 
     public function index()
     {
-        $ar_transaksi = DB::table('transaksi')
-            ->join('barang', 'barang.id', '=', 'transaksi.barang_id')
-            ->join('pelanggan', 'pelanggan.id', '=', 'transaksi.pelanggan_id')
-            ->select('transaksi.*', 'barang.kode as kode', 'barang.nama_barang as barang', 'pelanggan.nama as pelanggan', 'pelanggan.status_member as status')
-            // ->select('pelanggan.status_member as status', 'barang.nama_barang as barang')
-            ->orderBy('transaksi.id', 'desc')
-            ->get();
-
+        $ar_transaksi = Transaksi::all(); //eloquent
         return view('transaksi.index', compact('ar_transaksi'), ['title' => 'Data Transaksi']);
+    }
+
+    public function pelunasan()
+    {
+        $ar_transaksi = Transaksi::where('status', 0)->get(); //eloquent
+        return view('transaksi.pelunasan', compact('ar_transaksi'), ['title' => 'Data Transaksi yang belum lunas']);
+    }
+
+    public function struk($id)
+    {   
+        $ar_transaksi = Transaksi::find($id); //eloquent
+        $toko = Toko::find(1);
+        return view('transaksi.one_transaksi_pdf', compact('ar_transaksi', 'toko'), ['title' => 'Data Transaksi yang belum lunas']);
     }
     
     public function dataTerpilih()
     {
-        $ar_transaksi = transaksi::all(); //eloquent
+        $ar_transaksi = Transaksi::all(); //eloquent
         return view('landingpage.hero', compact('ar_terpilih'));
     }
     public function create()
@@ -64,6 +73,9 @@ class TransaksiController extends Controller
             'jumlah' => 'required|integer',
             'harga' => 'required|numeric',
             'keterangan' => '',
+            'total_harga' => 'required|numeric',
+            'total_bayar' => 'required|numeric',
+            'sisa' => 'required|numeric',
         ]);
 
         $request->all();
@@ -91,14 +103,16 @@ class TransaksiController extends Controller
         if ($jumlahBahan < 0) {
             return back()->with('errors', 'Stok bahan tidak cukup');
         }
+        
+        $sisa = $request->sisa;
+        $status = 0;
+        if($sisa == 0){
+            $status = 1;
+        }else{
+            $status = 0;
+        }
 
-        $ps_update = DB::table('bahan')->where('id', $idBahan)->update(
-            [
-                'jumlah' => $jumlahBahan,
-            ]
-        );
-
-        $ps_store = DB::table('transaksi')->insert([
+        $transaksi = new Transaksi([
             'pelanggan_id' => $idPelanggan,
             'barang_id' => $idBarang,
             'tgl' => $request->tgl,
@@ -106,8 +120,11 @@ class TransaksiController extends Controller
             'panjang' => $panjang,
             'lebar' => $lebar,
             'harga' => $request->harga,
-            'luas' => $panjang * $lebar, 
+            'luas' => $panjang * $lebar,
             'total_harga' => $request->total_harga,
+            'total_bayar' => $request->total_bayar,
+            'sisa' => $sisa,
+            'status' => $status,
             'keterangan' => $request->keterangan,
         ]);
         // DB::table('barang')->where('id', $idBarang)->update(
@@ -115,26 +132,27 @@ class TransaksiController extends Controller
         //         'stok' => DB::raw('stok + ' . $request->jumlah),
         //     ]
         // );
-        if($ps_store){
-            $ps_update;
+        if ($transaksi->save()) {
+            // Update bahan and other relevant data if needed
+            Bahan::where('id', $idBahan)->update(
+                [
+                    'jumlah' => $jumlahBahan,
+                ]
+            );
             return redirect('transaksi')->with('pesan', 'Barang Masuk berhasil disimpan');
-        }else{
+        } else {
             return back()->with('errror', 'Barang Masuk gagal disimpan');
         }
     }
     public function edit(string $id)
     {
-        //ambil master untuk dilooping di select option
-        $ar_barang = DB::table('barang')
-            ->orderBy('barang.id', 'desc')
-            ->get();
-        //$ar_pelanggan = pelanggan::all();
-        $ar_pelanggan = DB::table('pelanggan')
-            ->orderBy('pelanggan.id', 'desc')
-            ->get();
+        
         //tampilkan data lama di form
-        $row = transaksi::find($id);
-        return view('transaksi.form_edit', compact('row', 'ar_barang', 'ar_pelanggan'), ['title' => 'Edit Data Transaksi']);
+        $row = Transaksi::find($id);
+
+        $barang = Barang::find($row->barang_id);
+        $pelanggan = Pelanggan::find($row->pelanggan_id);
+        return view('transaksi.form_edit', compact('row', 'barang', 'pelanggan'), ['title' => 'Edit Data Transaksi']);
     }
 
     /**
@@ -150,47 +168,23 @@ class TransaksiController extends Controller
             'lebar' => 'required|numeric',
             'keterangan' => '',
             'total_harga' => '',
+            'total_bayar' => 'required|numeric',
+            'sisa' => 'required|numeric',
         ]);
 
         //lakukan update data dari request form edit
-        $transaksi = transaksi::find($id);
+        $transaksi = Transaksi::find($id);
 
         $selectedBarang = $request->input('barang');
         $dataBarang = explode(' | ', $selectedBarang);
 
-        $idBarang = $dataBarang[0]; //id
-        // $hargaBarang = $dataBarang[1]; //harga
-        // $hargaMember = $dataBarang[2]; //harga_member
-
-        // if (is_null($hargaMember)) {
-        //     $hargaMember = $hargaBarang;
-        // }
+        $idBarang = $dataBarang[0]; 
         $barang = DB::table('barang')->where('id', $idBarang)->first();
         $idBahan = $barang->bahan_id;
         $selectedPelanggan = $request->input('nama');
         $dataPelanggan = explode(' | ', $selectedPelanggan);
 
         $idPelanggan = $dataPelanggan[0];
-        // $statusMember = $dataPelanggan[1];
-
-        // if ($hargaBarang) {
-        //     $total = $hargaBarang * $request->jumlah;
-        // }
-
-        // if ($statusMember) {
-        //     $total = $hargaMember * $request->jumlah;
-        // } else {
-        //     $total = $hargaBarang * $request->jumlah;
-        // }
-
-        // if ($transaksi) {
-        //     $transaksi->pelanggan_id = $idPelanggan;
-        //     $transaksi->barang_id = $idBarang;
-        //     $transaksi->tgl = $request->input('tgl');
-        //     $transaksi->jumlah = $request->input('jumlah');
-        //     $transaksi->total_harga = $request->input('total_harga');
-        //     $transaksi->keterangan = $request->input('keterangan');
-        //     $transaksi->save();
 
         // pembulatan keatas panjang dan lebar
         $panjang = ceil($request->panjang * 2) / 2;
@@ -207,33 +201,69 @@ class TransaksiController extends Controller
             return back()->with('errors', 'Stok bahan tidak cukup');
         }
 
-        $ps_update = DB::table('transaksi')->where('id', $id)->update([
-            'pelanggan_id' => $idPelanggan,
-            'barang_id' => $idBarang,
-            'tgl' => $request->tgl,
-            'jumlah' => $request->jumlah,
-            'harga' => $request->harga,
-            'panjang' => $panjang,
-            'lebar' => $lebar,
-            'luas' => $panjang * $lebar,
-            'total_harga' => $request->total_harga,
-            'keterangan' => $request->keterangan,
-        ]);
-        if($ps_update){
-            DB::table('bahan')->where('id', $idBahan)->update(
-                [
-                    'jumlah' => $jumlahBahanBaru,
-                ]
-            );
-            return redirect()->route('transaksi.show', $id)->with('success', 'Data Transaksi Berhasil Diubah');
+        // Update the attributes
+        $transaksi->pelanggan_id = $idPelanggan;
+        $transaksi->barang_id = $idBarang;
+        $transaksi->tgl = $request->tgl;
+        $transaksi->jumlah = $request->jumlah;
+        $transaksi->harga = $request->harga;
+        $transaksi->panjang = $panjang;
+        $transaksi->lebar = $lebar;
+        $transaksi->luas = $panjang * $lebar;
+        $transaksi->total_harga = $request->total_harga;
+        $transaksi->keterangan = $request->keterangan;
+        $transaksi->total_bayar = $request->total_bayar;
+
+        $sisa = $request->sisa;
+        $status = $transaksi->status;
+        if($sisa == 0){
+            $status = 1;
         }else{
+            $status = 0;
+        }
+
+        $transaksi->sisa = $sisa;
+        $transaksi->status = $status;
+
+        if ($transaksi->save()) {
+            // Update bahan and other relevant data if needed
+            Bahan::where('id', $idBahan)->update([
+                'jumlah' => $jumlahBahanBaru,
+            ]);
+            return redirect()->route('transaksi.show', $id)->with('success', 'Data Transaksi Berhasil Diubah');
+        } else {
             return back()->with('errors', 'Data Transaksi Gagal Diubah');
         }
         
+    }
+    
+    public function editLunas(string $id)
+    {
+        //ambil master untuk dilooping di select option
+        $row = Transaksi::find($id);
+        $ar_barang = Barang::find($row->barang_id);
+        $pelanggan = Pelanggan::find($row->pelanggan_id);
 
-        
+        return view('transaksi.pelunasan_edit', compact('row', 'ar_barang', 'pelanggan'), ['title' => 'Pelunasan Transaksi']);
+    }
 
-        
+    public function lunas(Request $request, string $id)
+    {
+        $transaksi = Transaksi::find($id);
+        $sisa = $request->sisa;
+        $status = $transaksi->status;
+        if($sisa == 0){
+            $status = 1;
+        }else{
+            $status = 0;
+        }
+        $transaksi->status = $status;
+        $transaksi->sisa = $sisa;
+        $transaksi->total_bayar += $request->total_bayar;
+
+        if($transaksi->save()){
+            return redirect()->route('transaksi.show', $id)->with('success', 'Data Transaksi Berhasil Diubah');
+        }
     }
     //     return redirect()->back()
     //         ->with('error', 'Data Transaksi tidak ditemukan');
@@ -250,7 +280,7 @@ class TransaksiController extends Controller
     public function destroy(string $id)
     {
         //hapus data di database
-        transaksi::where('id', $id)->delete();
+        Transaksi::where('id', $id)->delete();
         return redirect()->route('transaksi.index')
             ->with('success', 'Data Transaksi Berhasil Dihapus');
     }
@@ -267,20 +297,56 @@ class TransaksiController extends Controller
 
         return view('transaksi.index', compact('ar_transaksi'), ['title' => 'Data Transaksi']);
     }
-    public function transaksiPDF()
-    {
-        //$ar_transaksi = Transaksi::all(); //eloquent
-        $ar_transaksi = DB::table('transaksi')
-            ->join('barang', 'barang.id', '=', 'transaksi.barang_id')
-            ->select('transaksi.*', 'barang.kode as barang')
-            ->join('pelanggan', 'pelanggan.id', '=', 'transaksi.pelanggan_id')
-            ->select('transaksi.*', 'barang.nama_barang as barang', 'barang.kode as barang', 'pelanggan.nama as pelanggan', 'pelanggan.status_member as status')
-            ->orderBy('transaksi.id', 'desc')
-            ->get();
 
-        $pdf = PDF::loadView('transaksi.transaksi_pdf', ['ar_transaksi' => $ar_transaksi]);
-        return $pdf->download('Data_Transaksi_' . date('d-m-Y') . '.pdf');
+    public function transaksiPDFCetak(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'nama' => 'nullable',
+            'status' => 'nullable|string',
+            'tgl_mulai' => 'required|date',
+            'tgl_akhir' => 'required|date|after_or_equal:tgl_mulai',
+        ]);
+    
+        $selectedPelanggan = $request->input('nama');
+        $dataPelanggan = explode('|', $selectedPelanggan);
+        $idPelanggan = $dataPelanggan[0];
+
+        $status = $request->input('status');
+        $tgl_mulai = $request->input('tgl_mulai');
+        $tgl_akhir = $request->input('tgl_akhir');
+    
+        $query = Transaksi::query();
+
+        $toko = Toko::find(1);
+
+        if ($idPelanggan) {
+            $query->where('pelanggan_id', $idPelanggan);
+            $pelanggan = Pelanggan::find($idPelanggan);
+        }
+    
+        if ($status) {
+            $query->where('status', $status == 'Lunas' ? 1 : 0);
+        }
+    
+        $ar_transaksi = $query->whereBetween('tgl', [$tgl_mulai, $tgl_akhir])->get();
+        
+        if($idPelanggan){
+            $hutang = $ar_transaksi->sum('sisa');
+            return view('transaksi.transaksi_pdf_2', compact('toko', 'ar_transaksi', 'tgl_mulai', 'tgl_akhir', 'hutang', 'pelanggan'), ['title' => 'Cetak Data Transaksi'])
+            ->render();
+        }
+        return view('transaksi.transaksi_pdf', compact('toko', 'ar_transaksi', 'tgl_mulai', 'tgl_akhir'), ['title' => 'Cetak Data Transaksi'])
+            ->render();
     }
+    
+
+    public function transaksiPDF(){
+        $ar_pelanggan = Pelanggan::all();
+
+        return view('transaksi.pdf_form', compact('ar_pelanggan'), ['title' => 'Cetak Data Transaksi']);
+    }
+
     public function transaksiExcel()
     {
         return Excel::download(new transaksiExport, 'data_transaksi_' . date('d-m-Y') . '.xlsx');

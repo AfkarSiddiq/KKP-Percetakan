@@ -2,7 +2,7 @@
     <div class="card mb-12">
         <div class="card-header">
             <i class="fas fa-chart-bar me-1"></i>
-            Stok Barang
+            Bahan Paling banyak habis 1 bulan terakhir(Meter)
         </div>
 
         <!-- Bar Chart -->
@@ -12,13 +12,13 @@
             <script>
                 // ambil data nama nama dan stok dari DashboardController di fungsi index
                 var lbl = [
-                    @foreach($ar_stok as $s)
-                    '{{ $s->nama_barang }}',
+                    @foreach ($ar_stok as $s)
+                        '{{ $s->nama_bahan }}',
                     @endforeach
                 ];
                 var stk = [
-                    @foreach($ar_stok as $s)
-                    '{{ $s -> stok }}',
+                    @foreach ($ar_stok as $s)
+                        '{{ $s->jumlah }}',
                     @endforeach
                 ];
                 document.addEventListener("DOMContentLoaded", () => {
@@ -27,7 +27,7 @@
                         data: {
                             labels: lbl,
                             datasets: [{
-                                label: 'Grafik Stok Barang',
+                                label: 'Bahan paling banyak habis dalam bulan ini',
                                 data: stk,
                                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
                                 borderColor: 'rgb(54, 162, 235)',
