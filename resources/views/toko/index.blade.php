@@ -26,6 +26,11 @@
                                     <h2 class="card-title">{{ $rs->nama }}</h2>
                                     <table class="table table-hover">
                                         <tr>
+                                            <td class="h6">Kode Nota</td>
+                                            <td class="h6">:</td>
+                                            <td class="h6">{{ $rs->kode_nota }}</td>
+                                        </tr>
+                                        <tr>
                                             <td class="h6">Alamat</td>
                                             <td class="h6">:</td>
                                             <td class="h6">{{ $rs->alamat }}</td>

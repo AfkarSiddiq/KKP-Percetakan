@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('toko', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
+            $table->string('kode_nota');
             $table->string('alamat');
             $table->string('no_telp');
             $table->integer('no_rekening');

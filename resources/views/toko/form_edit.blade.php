@@ -15,10 +15,16 @@
             @csrf
             @method('PUT')
             <div class="form-floating mb-3">
-                <input class="form-control" name="nama" value="{{ $row->nama }}" id="namapelanggan" type="text"
+                <input class="form-control" name="nama" value="{{ $row->nama }}" id="namaToko" type="text"
                     placeholder="Nama pelanggan" data-sb-validations="required" />
-                <label for="namapelanggan">Nama pelanggan</label>
-                <div class="invalid-feedback" data-sb-feedback="namapelanggan:required">Nama pelanggan is required.</div>
+                <label for="namaToko">Nama pelanggan</label>
+                <div class="invalid-feedback" data-sb-feedback="namaToko:required">Nama Toko is required.</div>
+            </div>
+            <div class="form-floating mb-3">
+                <input class="form-control" name="kode_nota" value="{{ $row->kode_nota }}" id="kode_nota" type="text"
+                    placeholder="Kode Nota" data-sb-validations="required" />
+                <label for="kode_nota">Kode Nota</label>
+                <div class="invalid-feedback" data-sb-feedback="kode_nota:required">Kode Nota is required.</div>
             </div>
             <div class="form-floating mb-3">
                 <input class="form-control" name="alamat" value="{{ $row->alamat }}" id="alamat" type="text"

@@ -107,6 +107,15 @@
                         type="number" placeholder="total_bayar" />
                     <label for="total_bayar">Total Bayar</label>
                 </div>
+                <div class="form-group from-floating col-md">
+                    <select id="pembayaran" name="pembayaran" class="form-select">
+                        <option value="">--Pilih Metode Pembayaran</option>
+                        <option value="cash"{{ $row->pembayaran == 'cash' ? 'selected' : '' }}>
+                            Cash
+                        </option>
+                        <option value="transfer">Transfer</option>
+                    </select>
+                </div>
                 <div class="form-group form-floating col-md sisa" style="display: block">
                     <input class="form-control" name="sisa" id="sisa" type="number" placeholder="sisa"
                         readonly />
