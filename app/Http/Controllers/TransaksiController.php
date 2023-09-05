@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model; //jika pakai eloquent
 use PDF;
 use App\Exports\transaksiExport;
 use Maatwebsite\Excel\Facades\Excel;
-
+use DateTime;
 
 
 class TransaksiController extends Controller
@@ -41,6 +41,10 @@ class TransaksiController extends Controller
     {   
         $ar_transaksi = Transaksi::find($id); //eloquent
         $toko = Toko::find(1);
+        if($ar_transaksi->keterangan == null){
+            $ar_transaksi->keterangan = "-";
+        }
+
         return view('transaksi.one_transaksi_pdf', compact('ar_transaksi', 'toko'), ['title' => 'Data Transaksi yang belum lunas']);
     }
     
@@ -76,6 +80,7 @@ class TransaksiController extends Controller
             'total_harga' => 'required|numeric',
             'total_bayar' => 'required|numeric',
             'sisa' => 'required|numeric',
+            'pembayaran' => 'required',
         ]);
 
         $request->all();
@@ -95,10 +100,18 @@ class TransaksiController extends Controller
         $panjang = ceil($request->panjang * 2) / 2;
         $lebar = ceil($request->lebar * 2) / 2;
         
+        $barang = Barang::find($idBarang);
+
         //update jumlah stok barang pada bahan
         $bahan = DB::table('bahan')->where('id', $idBahan)->first();
         $jumlahBahan = $bahan->jumlah;
-        $jumlahBahan = $jumlahBahan - ($panjang * $lebar * $request->jumlah);
+        if(strtolower($bahan->satuan) == strtolower($barang->satuan)){
+            $jumlahBahan = $jumlahBahan - ($panjang * $lebar * $request->jumlah);
+        }
+        else if(strtolower($bahan->satuan) == 'lembar' && strtolower($barang->satuan) == 'pcs'){
+            $jumlahBahan = $jumlahBahan - ($panjang * $lebar * $request->jumlah) * 0.2;
+        }
+
         //check apakah stok bahan cukup
         if ($jumlahBahan < 0) {
             return back()->with('errors', 'Stok bahan tidak cukup');
@@ -111,7 +124,7 @@ class TransaksiController extends Controller
         }else{
             $status = 0;
         }
-
+        $pembayaran = $request->pembayaran;
         $transaksi = new Transaksi([
             'pelanggan_id' => $idPelanggan,
             'barang_id' => $idBarang,
@@ -126,6 +139,7 @@ class TransaksiController extends Controller
             'sisa' => $sisa,
             'status' => $status,
             'keterangan' => $request->keterangan,
+            'pembayaran' => $pembayaran,
         ]);
         // DB::table('barang')->where('id', $idBarang)->update(
         //     [
@@ -170,6 +184,7 @@ class TransaksiController extends Controller
             'total_harga' => '',
             'total_bayar' => 'required|numeric',
             'sisa' => 'required|numeric',
+            'pembayaran' => 'required',
         ]);
 
         //lakukan update data dari request form edit
@@ -186,6 +201,8 @@ class TransaksiController extends Controller
 
         $idPelanggan = $dataPelanggan[0];
 
+        $barang = Barang::find($idBarang);
+
         // pembulatan keatas panjang dan lebar
         $panjang = ceil($request->panjang * 2) / 2;
         $lebar = ceil($request->lebar * 2) / 2;   
@@ -193,9 +210,19 @@ class TransaksiController extends Controller
         //update jumlah stok barang pada bahan
         $bahan = DB::table('bahan')->where('id', $idBahan)->first();
         $jumlahBahanLama = $bahan->jumlah;
-        $penguranganLama = $transaksi->luas * $transaksi->jumlah;
-        $penguranganBaru = $panjang * $lebar * $request->jumlah;
-        $jumlahBahanBaru = $jumlahBahanLama + $penguranganLama - $penguranganBaru;
+        
+        if(strtolower($bahan->satuan) == strtolower($barang->satuan)){
+            $penguranganLama = $transaksi->luas * $transaksi->jumlah;
+            $penguranganBaru = $panjang * $lebar * $request->jumlah;
+            $jumlahBahanBaru = $jumlahBahanLama + $penguranganLama - $penguranganBaru;
+        }
+        else if(strtolower($bahan->satuan) == 'lembar' && strtolower($barang->satuan) == 'pcs'){
+            $penguranganLama = $transaksi->luas * $transaksi->jumlah * 0.2;
+            $penguranganBaru = $panjang * $lebar * $request->jumlah * 0.2;
+            $jumlahBahanBaru = $jumlahBahanLama + $penguranganLama - $penguranganBaru;
+        }
+        
+        
         //check apakah stok bahan cukup
         if ($jumlahBahanBaru < 0) {
             return back()->with('errors', 'Stok bahan tidak cukup');
@@ -213,6 +240,7 @@ class TransaksiController extends Controller
         $transaksi->total_harga = $request->total_harga;
         $transaksi->keterangan = $request->keterangan;
         $transaksi->total_bayar = $request->total_bayar;
+        $transaksi->pembayaran = $request->pembayaran;
 
         $sisa = $request->sisa;
         $status = $transaksi->status;
@@ -315,6 +343,9 @@ class TransaksiController extends Controller
         $status = $request->input('status');
         $tgl_mulai = $request->input('tgl_mulai');
         $tgl_akhir = $request->input('tgl_akhir');
+        // format tgl to d-m-Y
+        $tgl_mulai = date('d/m/Y', strtotime($tgl_mulai));
+        $tgl_akhir = date('d/m/Y', strtotime($tgl_akhir));
     
         $query = Transaksi::query();
 
@@ -328,8 +359,10 @@ class TransaksiController extends Controller
         if ($status) {
             $query->where('status', $status == 'Lunas' ? 1 : 0);
         }
-    
+        
         $ar_transaksi = $query->whereBetween('tgl', [$tgl_mulai, $tgl_akhir])->get();
+        // sort by newest date
+        $ar_transaksi = $ar_transaksi->sortByDesc('tgl');
         
         if($idPelanggan){
             $hutang = $ar_transaksi->sum('sisa');

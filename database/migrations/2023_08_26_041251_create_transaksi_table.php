@@ -26,6 +26,7 @@ return new class extends Migration
             $table->double('sisa');
             $table->integer('status')->default(0);
             $table->string('keterangan')->nullable();
+            $table->string('pembayaran')->default('');
             $table->timestamps();
         });
     }
