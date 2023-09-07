@@ -28,6 +28,8 @@ class TransaksiController extends Controller
     public function index()
     {
         $ar_transaksi = Transaksi::all(); //eloquent
+        // sort by newest date
+        $ar_transaksi = $ar_transaksi->sortByDesc('created_at');
         return view('transaksi.index', compact('ar_transaksi'), ['title' => 'Data Transaksi']);
     }
 
@@ -44,7 +46,6 @@ class TransaksiController extends Controller
         if($ar_transaksi->keterangan == null){
             $ar_transaksi->keterangan = "-";
         }
-
         return view('transaksi.one_transaksi_pdf', compact('ar_transaksi', 'toko'), ['title' => 'Data Transaksi yang belum lunas']);
     }
     
@@ -343,9 +344,6 @@ class TransaksiController extends Controller
         $status = $request->input('status');
         $tgl_mulai = $request->input('tgl_mulai');
         $tgl_akhir = $request->input('tgl_akhir');
-        // format tgl to d-m-Y
-        $tgl_mulai = date('d/m/Y', strtotime($tgl_mulai));
-        $tgl_akhir = date('d/m/Y', strtotime($tgl_akhir));
     
         $query = Transaksi::query();
 
@@ -362,7 +360,7 @@ class TransaksiController extends Controller
         
         $ar_transaksi = $query->whereBetween('tgl', [$tgl_mulai, $tgl_akhir])->get();
         // sort by newest date
-        $ar_transaksi = $ar_transaksi->sortByDesc('tgl');
+        $ar_transaksi = $ar_transaksi->sortByDesc('created_at');
         
         if($idPelanggan){
             $hutang = $ar_transaksi->sum('sisa');

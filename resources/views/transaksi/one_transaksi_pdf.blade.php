@@ -24,14 +24,14 @@
         }
 
         .logo {
-            width: 200px;
-            height: 80px;
+            width: 150px;
+            height: 60px;
         }
 
         .store-info {
             text-align: left;
             flex: 1;
-            margin-left: 2em;
+            margin-left: 0.5em;
             margin-bottom: 0;
         }
 
@@ -79,10 +79,11 @@
             margin: 10px;
             text-align: right;
             font-weight: bold;
+            width: 50%;
         }
 
         .transaction-table-2 .lunas {
-            width: fit-content;
+            width: 100%;
             padding-left: 1.5em;
             padding-right: 1.5em;
             padding-top: 0.5em;
@@ -91,9 +92,11 @@
         }
 
         .transaction-table-2 .lunas-luar {
-            width: fit-content;
-            padding: 2px;
             border: 1px solid #000;
+            padding: 2px;
+            width: 20%;
+            justify-content: center;
+            display: flex;
         }
 
         .transaction-table th,
@@ -122,7 +125,7 @@
         }
 
         .dashed {
-            border-top: 3px dashed #bbb;
+            border-top: 2px dashed #bbb;
         }
 
         #nama_toko {
@@ -130,6 +133,12 @@
             margin-right: 0;
             margin-top: 0;
             margin-bottom: 8px;
+        }
+
+        .rekening {
+            text-align: left;
+            width: fit-content;
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -144,8 +153,8 @@
                     $toko->nama = strtoupper($toko->nama);
                 @endphp
                 <p id="nama_toko" style="font-size: 20px">{{ $toko->nama }}</p>
-                <p style="font-size: 12px; margin:0;">{{ $toko->alamat }}</p>
-                <p style="font-size: 12px; margin:0;">{{ $toko->no_telp }}</p>
+                <p style="font-size: 10px; margin:0;">{{ $toko->alamat }}</p>
+                <p style="font-size: 11px; margin:0;">{{ $toko->no_telp }}</p>
             </div>
             <div class="title">
                 <p>FAKTUR PENJUALAN</p>
@@ -159,6 +168,8 @@
                     @php
                         $tgl = explode(' ', $ar_transaksi->updated_at);
                         $tanggal = $tgl[0];
+                        // make tanggal format is d-m-y
+                        $tanggal = date('d/m/Y', strtotime($tanggal));
                         $jam = $tgl[1];
                         // make format nota mmddyy-hhmmss
                         $nota = date('mdy', strtotime($tanggal)) . '/' . date('His', strtotime($jam));
@@ -167,7 +178,7 @@
                     @endphp
                     <table>
                         <tr>
-                            <td>Costumer</td>
+                            <td>Customer</td>
                             <td>:</td>
                             <td>{{ $ar_transaksi->pelanggan->nama }}</td>
                         </tr>
@@ -224,7 +235,13 @@
                         $harga = number_format($ar_transaksi->harga, 0, ',', '.');
                     @endphp
                     <td>Rp. {{ $harga }}</td>
-                    <td>{{ $ar_transaksi->panjang }} M x {{ $ar_transaksi->lebar }} M</td>
+                    <td>
+                        @if (strtolower($ar_transaksi->barang->satuan) == 'pcs')
+                            Pcs
+                        @else
+                            {{ $ar_transaksi->panjang }} M x {{ $ar_transaksi->lebar }} M
+                        @endif
+                    </td>
                     <td>{{ $ar_transaksi->jumlah }}</td>
                     {{-- covert sub total to fromat rupiah from numeric --}}
                     @php
@@ -262,7 +279,11 @@
                 </div>
             </div>
             <hr>
-
+            <div class=" rekening">
+                @php
+                @endphp
+                No. Rekening: {{ $toko->no_rekening }} A.N {{ $toko->nama }}
+            </div>
             <div class="user-signature">
                 <div class="signature">
                     <div class="grid-item"></div>

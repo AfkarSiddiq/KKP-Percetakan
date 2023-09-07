@@ -28,7 +28,7 @@
             <tr>
                 <th>No</th>
                 <th>Nama Barang</th>
-                <th>Costumer</th>
+                <th>Customer</th>
                 <th>Status</th>
                 <th>Tanggal</th>
                 <th>Qty</th>
@@ -69,7 +69,13 @@
                     @endif
                     <td>{{ $trs->tgl }}</td>
                     <td>{{ $trs->jumlah }}</td>
-                    <td>{{ $trs->panjang }} x {{ $trs->lebar }}</td>
+                    <td>
+                        @if (strtolower($trs->barang->satuan) == 'pcs')
+                            Pcs
+                        @else
+                            {{ $trs->panjang }} M x {{ $trs->lebar }} M
+                        @endif
+                    </td>
                     <td>Rp. {{ $total_harga }}</td>
                     <td>Rp. {{ $total_bayar }}</td>
                     <td>Rp. {{ $sisa }}</td>
@@ -96,11 +102,11 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
                 @php
                     $pemasukan = number_format($pemasukan, 0, ',', '.');
                 @endphp
                 <td><strong>Rp. {{ $pemasukan }}</strong></td>
+                <td></td>
                 <td></td>
             </tr>
             <tr>
@@ -112,12 +118,12 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
                 @php
                     $sisaTotal = number_format($sisaTotal, 0, ',', '.');
                 @endphp
                 <td></td>
                 <td><strong>Rp. {{ $sisaTotal }}</strong></td>
+                <td></td>
             </tr>
         </tbody>
     </table>
