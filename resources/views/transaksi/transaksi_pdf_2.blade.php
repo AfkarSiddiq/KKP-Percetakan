@@ -31,7 +31,7 @@
         .store-info {
             text-align: left;
             flex: 1;
-            margin-left: 2em;
+            margin-left: 0.5em;
             margin-bottom: 0;
         }
 
@@ -79,17 +79,17 @@
             margin: 10px;
             text-align: right;
             font-weight: bold;
+            width: 50%;
         }
 
         .rekening {
             text-align: left;
             width: fit-content;
-            font-weight: bold;
             margin-left: 1.5em;
         }
 
         .transaction-table-2 .lunas {
-            width: fit-content;
+            width: 100%;
             padding-left: 1.5em;
             padding-right: 1.5em;
             padding-top: 0.5em;
@@ -98,9 +98,11 @@
         }
 
         .transaction-table-2 .lunas-luar {
-            width: fit-content;
-            padding: 2px;
             border: 1px solid #000;
+            padding: 2px;
+            width: 20%;
+            justify-content: center;
+            display: flex;
         }
 
         .transaction-table th,
@@ -129,7 +131,7 @@
         }
 
         .dashed {
-            border-top: 3px dashed #bbb;
+            border-top: 2px dashed #bbb;
         }
 
         #nama_toko {
@@ -151,8 +153,8 @@
                     $toko->nama = strtoupper($toko->nama);
                 @endphp
                 <p id="nama_toko" style="font-size: 20px">{{ $toko->nama }}</p>
-                <p style="font-size: 12px; margin:0;">{{ $toko->alamat }}</p>
-                <p style="font-size: 12px; margin:0;">{{ $toko->no_telp }}</p>
+                <p style="font-size: 10px; margin:0;">{{ $toko->alamat }}</p>
+                <p style="font-size: 11px; margin:0;">{{ $toko->no_telp }}</p>
             </div>
             <div class="title">
                 <p>FAKTUR PENJUALAN</p>
@@ -178,7 +180,7 @@
                             $toko->kode_nota = strtoupper($toko->kode_nota);
                         @endphp
                         <tr>
-                            <td>Costumer</td>
+                            <td>Customer</td>
                             <td>:</td>
                             <td>{{ $pelanggan->nama }}</td>
                         </tr>
@@ -210,6 +212,11 @@
                             <td>{{ $jam }}</td>
                         </tr>
                         <tr>
+                            {{-- make format tgl_mulai and tgl_akhir is d/m/y --}}
+                            @php
+                                $tgl_mulai = date('d/m/Y', strtotime($tgl_mulai));
+                                $tgl_akhir = date('d/m/Y', strtotime($tgl_akhir));
+                            @endphp
                             <td>Tanggal</td>
                             <td>:</td>
                             <td>{{ $tgl_mulai }}</td>
@@ -253,7 +260,13 @@
                                 $harga = number_format($transaksi->harga, 0, ',', '.');
                             @endphp
                             <td>Rp. {{ $harga }}</td>
-                            <td>{{ $transaksi->panjang }}M x {{ $transaksi->lebar }} M</td>
+                            <td>
+                                @if (strtolower($transaksi->barang->satuan) == 'pcs')
+                                    Pcs
+                                @else
+                                    {{ $transaksi->panjang }} M x {{ $transaksi->lebar }} M
+                                @endif
+                            </td>
                             <td>{{ $transaksi->jumlah }}</td>
                             {{-- covert sub total to fromat rupiah from numeric --}}
                             @php
