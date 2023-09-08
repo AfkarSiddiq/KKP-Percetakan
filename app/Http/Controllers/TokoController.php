@@ -22,6 +22,7 @@ class TokoController extends Controller
     public function update(Request $request, string $id){
         $this->validate($request, [
             'nama' => 'required',
+            'kode_nota' => 'required',
             'alamat' => 'required',
             'no_telp' => 'required',
             'no_rekening' => 'required',
@@ -62,6 +63,7 @@ class TokoController extends Controller
         
         $data = [
             'nama' => $request->nama,
+            'kode_nota' => $request->kode_nota,
             'alamat' => $request->alamat,
             'no_telp' => $request->no_telp,
             'no_rekening' => $request->no_rekening,

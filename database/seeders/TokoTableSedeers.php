@@ -16,6 +16,7 @@ class TokoTableSedeers extends Seeder
     {
         Toko::create([
             'nama' => 'Pacific Printing',
+            'kode_nota' => 'PDP',
             'alamat' => 'Jl. Prof. Ali Hasyimi No.7, Lamteh, Ulee Kareng, Kota Banda Aceh',
             'no_telp' => '0823 2121 6131',
             'no_rekening' => '1234567890',
