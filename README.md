@@ -17,11 +17,11 @@ git clone https://github.com/AfkarSiddiq/KKP-Percetakan.git
 ##### 2. Go to folder and run
 
 ```bash
-composer install
+composer update
 ```
 
 ```bash
-composer update
+composer install
 ```
 
 <br>
