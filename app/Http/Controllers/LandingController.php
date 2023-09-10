@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
+use App\Models\Toko;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,8 +22,8 @@ class LandingController extends Controller
             ->get();
 
         $ar_kategori = Kategori::all();
-
-        return view('landingpage.hero', compact('ar_barang', 'ar_kategori'));
+        $toko = Toko::find(1);
+        return view('landingpage.hero', compact('ar_barang', 'toko', 'ar_kategori'));
     }
 
     /**

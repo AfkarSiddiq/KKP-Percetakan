@@ -22,6 +22,7 @@ use App\Http\Controllers\SuplaiBahanController;
 use App\Http\Controllers\UpdateLevelController;
 use App\Http\Controllers\UpdatePasswordController;
 use App\Models\Kategori;
+use App\Models\Toko;
 use Illuminate\Support\Facades\DB;
 
 /*
@@ -40,8 +41,8 @@ Route::resource('categories', ProductCategoryController::class);
 
 //---------route landingpage-------
 Route::get('/about', function () {
-    $ar_kategori = Kategori::all();
-    return view('landingpage.about', compact('ar_kategori'));
+    $toko = Toko::find(1); 
+    return view('landingpage.about', compact('toko'));
 });
 Route::get('/portfolio', function () {
     $ar_kategori = Kategori::all();

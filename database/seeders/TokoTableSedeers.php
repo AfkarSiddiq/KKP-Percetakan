@@ -21,7 +21,8 @@ class TokoTableSedeers extends Seeder
             'no_telp' => '0823 2121 6131',
             'no_rekening' => '1234567890',
             'logo' => 'logo.png',
-            'foto' => 'about.jpeg',
+            'foto' => 'about.jpg',
+            'deskripsi' => 'Pasific Printing merupakan manajemen percetakan yang bergelut pada bidang percetakan dan memiliki 5000+ pelanggan setia yang berada di seluruh Indonesia. Anda bisa mencetak sesuai keinginan anda dengan hasil yang sangat memuaskan.'
         ]);
     }
 }

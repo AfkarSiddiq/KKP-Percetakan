@@ -35,7 +35,7 @@
                         Jatuh Tempo
                     </a>
 
-                    <div class="sb-sidenav-menu-heading">Interface</div>
+                    <div class="sb-sidenav-menu-heading">Data</div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                         data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -52,7 +52,7 @@
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                         data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                         <div class="sb-nav-link-icon"><i class="fa-solid fa-users"></i></div>
-                        Costumer
+                        Customer
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
@@ -62,7 +62,7 @@
                             <a class="nav-link" href="{{ url('/member') }}">Member</a>
                         </nav>
                     </div>
-                    <div class="sb-sidenav-menu-heading">Addons</div>
+                    <div class="sb-sidenav-menu-heading">Management</div>
                     <a class="nav-link" href="{{ url('/suplaibahan') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-cart-plus"></i></div>
                         Suplai Bahan

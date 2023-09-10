@@ -17,6 +17,7 @@ class Toko extends Model
         'no_telp',
         'no_rekening',
         'logo',
-        'foto'
+        'foto',
+        'deskripsi',
     ];
 }

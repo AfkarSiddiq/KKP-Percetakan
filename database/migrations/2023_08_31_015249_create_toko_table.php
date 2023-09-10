@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('no_rekening');
             $table->string('logo')->default('logo.png');
             $table->string('foto')->default('');
+            $table->string('deskripsi');
             $table->timestamps();
         });
     }

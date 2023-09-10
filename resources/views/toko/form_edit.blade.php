@@ -14,17 +14,19 @@
         <form method="POST" action="{{ route('toko.update', $row->id) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <div class="form-floating mb-3">
-                <input class="form-control" name="nama" value="{{ $row->nama }}" id="namaToko" type="text"
-                    placeholder="Nama pelanggan" data-sb-validations="required" />
-                <label for="namaToko">Nama pelanggan</label>
-                <div class="invalid-feedback" data-sb-feedback="namaToko:required">Nama Toko is required.</div>
-            </div>
-            <div class="form-floating mb-3">
-                <input class="form-control" name="kode_nota" value="{{ $row->kode_nota }}" id="kode_nota" type="text"
-                    placeholder="Kode Nota" data-sb-validations="required" />
-                <label for="kode_nota">Kode Nota</label>
-                <div class="invalid-feedback" data-sb-feedback="kode_nota:required">Kode Nota is required.</div>
+            <div class="row">
+                <div class="form-floating mb-3 col-md">
+                    <input class="form-control" name="nama" value="{{ $row->nama }}" id="namaToko" type="text"
+                        placeholder="Nama pelanggan" data-sb-validations="required" />
+                    <label for="namaToko">Nama pelanggan</label>
+                    <div class="invalid-feedback" data-sb-feedback="namaToko:required">Nama Toko is required.</div>
+                </div>
+                <div class="form-floating mb-3 col-md">
+                    <input class="form-control" name="kode_nota" value="{{ $row->kode_nota }}" id="kode_nota" type="text"
+                        placeholder="Kode Nota" data-sb-validations="required" />
+                    <label for="kode_nota">Kode Nota</label>
+                    <div class="invalid-feedback" data-sb-feedback="kode_nota:required">Kode Nota is required.</div>
+                </div>
             </div>
             <div class="form-floating mb-3">
                 <input class="form-control" name="alamat" value="{{ $row->alamat }}" id="alamat" type="text"
@@ -32,37 +34,44 @@
                 <label for="alamat">Alamat</label>
                 <div class="invalid-feedback" data-sb-feedback="alamat:required">alamat is required.</div>
             </div>
+            <div class="row">
+                <div class="form-floating mb-3 col-md">
+                    <input class="form-control" name="no_telp" value="{{ $row->no_telp }}" id="no_telp" type="string"
+                        placeholder="No Hp" data-sb-validations="required" />
+                    <label for="no_telp">No Hp</label>
+                    <div class="invalid-feedback" data-sb-feedback="no_telp:required">No Telpon is required.</div>
+                </div>
 
-            <div class="form-floating mb-3">
-                <input class="form-control" name="no_telp" value="{{ $row->no_telp }}" id="no_telp" type="string"
-                    placeholder="No Hp" data-sb-validations="required" />
-                <label for="no_telp">No Hp</label>
-                <div class="invalid-feedback" data-sb-feedback="no_telp:required">No Telpon is required.</div>
+                <div class="form-floating mb-3 col-md">
+                    <input class="form-control" name="no_rekening" value="{{ $row->no_rekening }}" id="no_rekening"
+                        type="string" placeholder="No Hp" data-sb-validations="required" />
+                    <label for="no_rekening">No Rekening</label>
+                    <div class="invalid-feedback" data-sb-feedback="no_rekening:required">No Rekening is required.</div>
+                </div>
             </div>
+            <div class="row">
+                <!-- UPLOAD FOTO -->
+                <div class="form-floating mb-3 col-md">
+                    <input class="form-control" name="foto" value="" id="foto" type="file"
+                        placeholder="Foto" accept="image/*" />
+                    <label for="foto">Masukkan Foto</label>
+                    <div class="invalid-feedback" data-sb-feedback="foto:required">Foto is required.</div>
+                </div>
 
-            <div class="form-floating mb-3">
-                <input class="form-control" name="no_rekening" value="{{ $row->no_rekening }}" id="no_rekening"
-                    type="string" placeholder="No Hp" data-sb-validations="required" />
-                <label for="no_rekening">No Rekening</label>
-                <div class="invalid-feedback" data-sb-feedback="no_rekening:required">No Rekening is required.</div>
+                <!-- UPLOAD FOTO -->
+                <div class="form-floating mb-3 col-md">
+                    <input class="form-control" name="logo" value="" id="logo" type="file"
+                        placeholder="Logo" accept="image/*" />
+                    <label for="logo">Masukkan Logo</label>
+                    <div class="invalid-feedback" data-sb-feedback="logo:required">Logo is required.</div>
+                </div>
             </div>
-
-            <!-- UPLOAD FOTO -->
-            <div class="form-floating mb-3">
-                <input class="form-control" name="foto" value="" id="foto" type="file" placeholder="Foto"
-                    accept="image/*" />
-                <label for="foto">Masukkan Foto</label>
-                <div class="invalid-feedback" data-sb-feedback="foto:required">Foto is required.</div>
+            <div class="form-group mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi</label>
+                <textarea rows="3" class="form-control " name="deskripsi" id="deskripsi" type="text" placeholder="Deskripsi"
+                    data-sb-validations="required">{{ $row->deskripsi }}</textarea>
+                <div class="invalid-feedback" data-sb-feedback="deskripsi:required">Deskripsi is required.</div>
             </div>
-
-            <!-- UPLOAD FOTO -->
-            <div class="form-floating mb-3">
-                <input class="form-control" name="logo" value="" id="logo" type="file" placeholder="Logo"
-                    accept="image/*" />
-                <label for="logo">Masukkan Logo</label>
-                <div class="invalid-feedback" data-sb-feedback="logo:required">Logo is required.</div>
-            </div>
-
             <button class="btn btn-primary" name="proses" value="ubah" id="ubah" type="submit">
                 <i class="fas fa-edit"></i> Simpan
             </button>
