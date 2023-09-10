@@ -1,44 +1,59 @@
 @extends('landingpage.index')
 @section('content')
-    <section id="services" class="services section-bg">
-        <div class="container" data-aos="fade-up">
-            <div class="section-title">
-                <br><br>
-                <h2>{{ $title }}</h2>
-                <p>
-                    Berikut merupakan beberapa produk unggulan kami
-                </p>
+<section id="services" class="services section-bg">
+    <div class="container" data-aos="fade-up">
+        <div class="section-title">
+            <br><br>
+            <h2>{{ $title }}</h2>
+            <p>
+                Berikut merupakan beberapa produk unggulan kami
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="container">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-header">
+                            Kategori
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            @isset($ar_kategori)
+                            @foreach ($ar_kategori as $kategori)
+                            <a href="{{ route('categories.index', ['category' => $kategori->nama]) }}">
+                                <li class="list-group-item">{{ $kategori->nama }}</li>
+                            </a>
+
+                            @endforeach
+                            @endisset
+                        </ul>
+                    </div>
+                </div>
             </div>
-          <div class="row">
-          <section class="py-5">
-              <div class="container px-4 px-lg-5 mt-5">
-                  <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    @foreach($barang as $barang)
-                      <div class="col mb-5">
-                          <div class="card h-100 shadow">
-                              <!-- Product image-->
-                              <img class="card-img-top" src="admin/assets/img/{{ $barang->foto }}" alt="..." />
-                              <!-- Product details-->
-                              <div class="card-body p-4">
-                                  <div class="text-center">
-                                      <!-- Product name-->
-                                      <h5 class="fw-bolder">{{$barang->nama_barang}}</h5>
-                                      <!-- Product price-->
-                                 From: Rp {{$barang->harga_member}}
-                                  </div>
-                              </div>
-                              <!-- Product actions-->
-                              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto bg-new shadow" href="https://wa.me/6282169019974"><i class="bi-whatsapp">&nbsp;Pesan ke Whatsapp</i></a>  
+            <div class="col-md-9">
+                <section class="py-5">
+                <div class="row justify-content">
+                        @foreach( $barang as $barang )
+                        <div class="col-md-4 mb-4">
+                            <div class="card" style="width: 300px;">
+                                <img src="admin/assets/img/{{ $barang->foto }}" class="card-img-top" alt="Product Image" height="200px">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $barang->nama_barang }}</h5>
+                                    <p class="card-text">
+                                        <!-- Product price -->
+                                        From: Rp {{ $barang->harga_member }},-
+                                    </p>
+                                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                        <div class="text-center"><a class="btn btn-outline-dark mt-auto bg-new shadow" href="https://wa.me/6282169019974"><i class="bi-whatsapp">&nbsp;Pesan ke Whatsapp</i></a>
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
-                          </div>
-                      </div>
-                      @endforeach
-                  </div>
-              </div>
-          </section>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </section>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 @endsection
