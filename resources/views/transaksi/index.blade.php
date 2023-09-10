@@ -72,7 +72,7 @@
                         <tr>
                             <th>{{ $no }}</th>
                             <td>{{ $trs->barang->kode }} - {{ $trs->barang->nama_barang }}</td>
-                            <td>{{ $trs->pelanggan->nama }}</td>
+                            <td>{{ $trs->nama }}</td>
                             <td>{{ $trs->tgl }}</td>
                             <td>{{ $trs->jumlah }}</td>
                             <td>{{ $trs->panjang }}</td>
