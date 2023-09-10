@@ -7,9 +7,9 @@
 
         <nav id="navbar" class="navbar">
             <ul>
-                <li><a class="nav-link scrollto " href="{{ url('/') }}">Home</a></li>
-                <li><a class="nav-link scrollto " href="{{ url('/about') }}">About</a></li>
-                <li><a class="nav-link scrollto " href="{{ url('/ourbarang') }}">Product</a></li>
+                <li><a class="nav-link scrollto active" href="{{url ('/')}}">Home</a></li>
+                <li><a class="nav-link scrollto " href="#services">Product</a></li>
+                <li><a class="nav-link scrollto " href="#about">About</a></li>
 
                 <li class="dropdown"><a href="#"><span>Kategori</span> <i class="bi bi-chevron-down"></i></a>
                     <ul>
@@ -20,12 +20,6 @@
                                 </li>
                             @endforeach
                         @endisset
-                        <!-- nanti di on in lagi -->
-                        <!-- <li><a href="{{ url('/signage') }}" class="nav-link disabled">Signage</a></li> -->
-                        <!-- <li><a href="{{ url('/stationary') }}" class="nav-link disabled">Stationary</a></li> -->
-                        <!-- <li><a href="{{ url('/umkm') }}" class="nav-link disabled">UMKM</a></li> -->
-
-
                     </ul>
                 </li>
                 @if (Auth::user())
