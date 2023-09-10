@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Transaksi;
 
 use Illuminate\Http\Request;
 
@@ -13,7 +14,8 @@ class UpdatePasswordController extends Controller
     public function index()
     {
         $ar_user = Auth::user();
-        return view('user.updatepassword', ['title' => 'Update Password']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('user.updatepassword', compact('jatuhTempoCount') , ['title' => 'Update Password']);
     }
 
     public function update()

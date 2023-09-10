@@ -4,19 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Toko;
+use App\Models\Transaksi;
 
 class TokoController extends Controller
 {
     public function index()
     {   
         $rs = Toko::find(1);
-        return view('toko.index', compact('rs'), ['title' => "Pengaturan Profil Toko"]);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('toko.index', compact('rs', 'jatuhTempoCount'), ['title' => "Pengaturan Profil Toko"]);
     }
 
     public function edit(string $id){
 
         $row = Toko::findOrFail($id);
-        return view('toko.form_edit', compact('row'), ['title' => "Edit Profil Toko"]);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('toko.form_edit', compact('row', 'jatuhTempoCount'), ['title' => "Edit Profil Toko"]);
     }
 
     public function update(Request $request, string $id){

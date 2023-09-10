@@ -45,20 +45,23 @@ class TransaksiController extends Controller
                 }
             }
         }
-        return view('transaksi.index', compact('ar_transaksi'), ['title' => 'Data Transaksi']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('transaksi.index', compact('ar_transaksi', 'jatuhTempoCount'), ['title' => 'Data Transaksi']);
     }
 
     public function pelunasan()
     {
         $ar_transaksi = Transaksi::where('status', 0)->orWhere('status', 2)->get(); //eloquent
-        return view('transaksi.pelunasan', compact('ar_transaksi'), ['title' => 'Transaksi yang belum lunas']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('transaksi.pelunasan', compact('ar_transaksi', 'jatuhTempoCount'), ['title' => 'Transaksi yang belum lunas']);
     }
 
     public function jatuhTempo()
     {
         // transaksi where status 0 dan tanggal jatuh tempo lebih dari = hari ini
         $ar_transaksi = Transaksi::where('status', 2)->get(); //eloquent
-        return view('transaksi.jatuh_tempo', compact('ar_transaksi'), ['title' => 'Transaksi yang jatuh tempo']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('transaksi.jatuh_tempo', compact('ar_transaksi', 'jatuhTempoCount'), ['title' => 'Transaksi yang jatuh tempo']);
     }
 
     public function struk($id)
@@ -68,13 +71,15 @@ class TransaksiController extends Controller
         if($ar_transaksi->keterangan == null){
             $ar_transaksi->keterangan = "-";
         }
-        return view('transaksi.one_transaksi_pdf', compact('ar_transaksi', 'toko'), ['title' => 'Data Transaksi yang belum lunas']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('transaksi.one_transaksi_pdf', compact('ar_transaksi', 'toko', 'jatuhTempoCount'), ['title' => 'Data Transaksi yang belum lunas']);
     }
     
     public function dataTerpilih()
     {
         $ar_transaksi = Transaksi::all(); //eloquent
-        return view('landingpage.hero', compact('ar_terpilih'));
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('landingpage.hero', compact('ar_terpilih', 'jatuhTempoCount'));
     }
     public function create()
     {
@@ -85,8 +90,10 @@ class TransaksiController extends Controller
         $ar_pelanggan = DB::table('pelanggan')
             ->orderBy('pelanggan.id', 'desc')
             ->get();
+
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
         //arahkan ke form input data
-        return view('transaksi.form', compact('ar_barang', 'ar_pelanggan'), ['title' => 'Input Transaksi Baru']);
+        return view('transaksi.form', compact('ar_barang', 'ar_pelanggan', 'jatuhTempoCount'), ['title' => 'Input Transaksi Baru']);
     }
 
     /**
@@ -192,7 +199,9 @@ class TransaksiController extends Controller
 
         $barang = Barang::find($row->barang_id);
         $pelanggan = Pelanggan::find($row->pelanggan_id);
-        return view('transaksi.form_edit', compact('row', 'barang', 'pelanggan'), ['title' => 'Edit Data Transaksi']);
+
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('transaksi.form_edit', compact('row', 'barang', 'pelanggan', 'jatuhTempoCount'), ['title' => 'Edit Data Transaksi']);
     }
 
     /**
@@ -300,7 +309,9 @@ class TransaksiController extends Controller
         $ar_barang = Barang::find($row->barang_id);
         $pelanggan = Pelanggan::find($row->pelanggan_id);
 
-        return view('transaksi.pelunasan_edit', compact('row', 'ar_barang', 'pelanggan'), ['title' => 'Pelunasan Transaksi']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+
+        return view('transaksi.pelunasan_edit', compact('row', 'ar_barang', 'pelanggan', 'jatuhTempoCount'), ['title' => 'Pelunasan Transaksi']);
     }
 
     public function lunas(Request $request, string $id)
@@ -368,8 +379,8 @@ class TransaksiController extends Controller
             ->select('transaksi.*', 'barang.nama_barang as barang', 'barang.kode as kode', 'pelanggan.nama as pelanggan')
             ->orderBy('transaksi.id', 'desc')
             ->get();
-
-        return view('transaksi.index', compact('ar_transaksi'), ['title' => 'Data Transaksi']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('transaksi.index', compact('ar_transaksi', 'jatuhTempoCount'), ['title' => 'Data Transaksi']);
     }
 
     public function transaksiPDFCetak(Request $request)
@@ -427,8 +438,9 @@ class TransaksiController extends Controller
 
     public function transaksiPDF(){
         $ar_pelanggan = Pelanggan::all();
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('transaksi.pdf_form', compact('ar_pelanggan'), ['title' => 'Cetak Data Transaksi']);
+        return view('transaksi.pdf_form', compact('ar_pelanggan', 'jatuhTempoCount'), ['title' => 'Cetak Data Transaksi']);
     }
 
     public function transaksiExcel()

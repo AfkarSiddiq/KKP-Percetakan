@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Transaksi;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,8 +15,9 @@ class UserController extends Controller
     public function index()
     {
         $data = User::all();
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('user.index', ['title' => 'data user'], compact('data'));
+        return view('user.index', ['title' => 'data user'], compact('data', 'jatuhTempoCount'));
     }
 
     public function destroy(string $id)
@@ -42,7 +44,8 @@ class UserController extends Controller
     public function show()
     {
         $data = User::all();
-        return view('user.index', ['title' => 'data user'], compact('data'));
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('user.index', ['title' => 'data user'], compact('data', 'jatuhTempoCount'));
     }
 
     // public function update(Request $request, User $user)

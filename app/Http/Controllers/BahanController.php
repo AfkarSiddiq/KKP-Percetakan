@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 //model
 use App\Models\Bahan;
 use App\Models\Barang;
+use App\Models\Transaksi;
 
 class BahanController extends Controller
 {
@@ -15,8 +16,9 @@ class BahanController extends Controller
         $ar_bahan = Bahan::with('barang')->get();
 
         $title = 'Data Bahan';
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('bahan.index', compact('ar_bahan'), ['title'=>$title]);
+        return view('bahan.index', compact('ar_bahan', 'jatuhTempoCount'), ['title'=>$title]);
     }
 
     public function show($id)
@@ -24,13 +26,16 @@ class BahanController extends Controller
         $rs = Barang::where('bahan_id', $id)->get();
         $title = Bahan::findOrFail($id)->nama_bahan;
 
-        return view('bahan.detail', compact('rs'), ['title'=>$title]);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+
+        return view('bahan.detail', compact('rs', 'jatuhTempoCount'), ['title'=>$title]);
     }
 
     public function create()
     {
         $ar_barang = Barang::all();
-        return view('bahan.form', compact('ar_barang'), ['title'=>'Tambah Data Bahan']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('bahan.form', compact('ar_barang', 'jatuhTempoCount'), ['title'=>'Tambah Data Bahan']);
     }
 
     public function store(Request $request)
@@ -52,8 +57,9 @@ class BahanController extends Controller
     public function edit($id)
     {
         $row = Bahan::findOrFail($id);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('bahan.form_edit', compact('row'), ['title'=>'Edit Data Bahan']);
+        return view('bahan.form_edit', compact('row', 'jatuhTempoCount'), ['title'=>'Edit Data Bahan']);
     }
 
     public function update(Request $request, $id)

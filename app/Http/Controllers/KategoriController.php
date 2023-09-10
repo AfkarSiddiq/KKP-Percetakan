@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Barang; //panggil model
 use App\Models\Kategori; //panggil model
+use App\Models\Transaksi; //panggil model
 use Illuminate\Support\Facades\DB; // jika pakai query builder
 use Illuminate\Database\Eloquent\Model; //jika pakai eloquent
 use Illuminate\Database\QueryException;
@@ -20,25 +21,28 @@ class KategoriController extends Controller
         $ar_kategori = DB::table('kategori')
             ->orderBy('kategori.id', 'desc')
             ->get();
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-
-        return view('kategori.index', compact('ar_kategori'), ['title' => 'kategori']);
+        return view('kategori.index', compact('ar_kategori', 'jatuhTempoCount'), ['title' => 'kategori']);
     }
 
     public function dataPilihan()
     {
         $ar_pilihan = Kategori::all(); //eloquent
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('landingpage.about', compact('ar_pilihan'), ['title' => 'kategori']);
+        return view('landingpage.about', compact('ar_pilihan', 'jatuhTempoCount'), ['title' => 'kategori']);
     }
 
     public function create()
     {
         //ambil master untuk dilooping di select option
         $ar_kategori = Kategori::all();
+
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
         //arahkan ke form input data
 
-        return view('kategori.form', compact('ar_kategori'), ['title' => 'kategori']);
+        return view('kategori.form', compact('ar_kategori', 'jatuhTempoCount'), ['title' => 'kategori']);
     }
 
 
@@ -78,7 +82,8 @@ class KategoriController extends Controller
     public function show(string $id)
     {
         $rs = Barang::where('kategori_id', $id)->get();
-        return view('kategori.detail', compact('rs'), ['title' => 'Data Barang']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('kategori.detail', compact('rs', 'jatuhTempoCount'), ['title' => 'Data Barang']);
     }
 
     /**
@@ -91,7 +96,9 @@ class KategoriController extends Controller
         //tampilkan data lama di form
         $row = Kategori::find($id);
 
-        return view('kategori.form_edit', compact('row', 'ar_barang'), ['title' => 'Edit Data Kategori']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+
+        return view('kategori.form_edit', compact('row', 'ar_barang', 'jatuhTempoCount'), ['title' => 'Edit Data Kategori']);
     }
 
     /**
@@ -153,7 +160,8 @@ class KategoriController extends Controller
         $ar_kategori = DB::table('kategori')
             ->orderBy('kategori.id', 'desc')
             ->get();
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('kategori.index', compact('ar_kategori'), ['title' => 'Data Kategori']);
+        return view('kategori.index', compact('ar_kategori', 'jatuhTempoCount'), ['title' => 'Data Kategori']);
     }
 }

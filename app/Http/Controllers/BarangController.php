@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang; //panggil model
 use App\Models\Kategori; //panggil model
 use App\Models\Bahan; //panggil model
+use App\Models\Transaksi; //panggil model
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // jika pakai query builder
@@ -27,14 +28,16 @@ class BarangController extends Controller
             ->select('barang.*', 'kategori.nama as kategori')
             ->orderBy('barang.id', 'desc')
             ->get();
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('barang.index', compact('ar_barang'), ['title' => 'Data Barang']);
+        return view('barang.index', compact('ar_barang', 'jatuhTempoCount'), ['title' => 'Data Barang']);
     }
 
     public function dataBahan()
     {
         $ar_bahan = Barang::all(); //eloquent
-        return view('landingpage.hero', compact('ar_bahan'), ['title' => 'Data Barang']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('landingpage.hero', compact('ar_bahan', 'jatuhTempoCount'), ['title' => 'Data Barang']);
     }
 
     /**
@@ -46,8 +49,9 @@ class BarangController extends Controller
         $ar_kategori = Kategori::all();
         //ambil bahan untuk dilooping di select option
         $ar_bahan = Bahan::all();
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
         //arahkan ke form input data
-        return view('barang.form', compact('ar_kategori', 'ar_bahan'), ['title' => 'Tambah Data Barang']);
+        return view('barang.form', compact('ar_kategori', 'ar_bahan', 'jatuhTempoCount'), ['title' => 'Tambah Data Barang']);
     }
 
     /**
@@ -130,8 +134,9 @@ class BarangController extends Controller
     {   
         //ambil data barang sesuai id dan dapatkan bahan dasarnya
         $rs = Barang::find($id);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
         
-        return view('barang.detail', compact('rs'), ['title' => 'Detail Barang']);
+        return view('barang.detail', compact('rs', 'jatuhTempoCount'), ['title' => 'Detail Barang']);
     }
 
     /**
@@ -146,7 +151,9 @@ class BarangController extends Controller
         //tamplikan bahan untuk dilooping di select option
         $ar_bahan = Bahan::all();
 
-        return view('barang.form_edit', compact('row', 'ar_kategori', 'ar_bahan'), ['title' => 'Edit Barang']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+
+        return view('barang.form_edit', compact('row', 'ar_kategori', 'ar_bahan', 'jatuhTempoCount'), ['title' => 'Edit Barang']);
     }
 
     /**
@@ -284,8 +291,9 @@ class BarangController extends Controller
             ->select('barang.*', 'kategori.nama as kategori')
             ->orderBy('barang.id', 'desc')
             ->get();
+            $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('barang.index', compact('ar_barang'), ['title' => 'Data Barang']);
+        return view('barang.index', compact('ar_barang', 'jatuhTempoCount'), ['title' => 'Data Barang']);
     }
     //--------------------Rest API-----------------------
     public function apiBarang()

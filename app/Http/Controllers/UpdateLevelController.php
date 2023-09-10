@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Transaksi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
@@ -18,8 +19,9 @@ class UpdateLevelController extends Controller
         Auth::user()->level == 'admin';
         //tampilkan data lama di form
         $row = user::find($id);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('user.updatelevel', compact('row'), ['title' => 'Update Level']);
+        return view('user.updatelevel', compact('row', 'jatuhTempoCount'), ['title' => 'Update Level']);
     }
 
     public function update(Request $request, string $id)

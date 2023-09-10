@@ -77,16 +77,25 @@
                 </div>
             </div>
 
-            <div class="form-group form-floating mb-3">
-                <input class="form-control" name="tgl" value="{{ $row->tgl }}" id="date" type="date"
-                    placeholder="date" data-sb-validations="required" readonly />
-                <label for="date">date</label>
-                <div class="invalid-feedback" data-sb-feedback="date:required">date is required.</div>
+            <div class="row">
+                <div class="form-group form-floating mb-3 col-md">
+                    <input class="form-control" name="tgl" value="{{ $row->tgl }}" id="date" type="date"
+                        placeholder="date" data-sb-validations="required" />
+                    <label for="date">Tanggal Transaksi</label>
+                    <div class="invalid-feedback" data-sb-feedback="date:required">date is required.</div>
+                </div>
+
+                <div class="form-group form-floating mb-3 col-md">
+                    <input class="form-control" name="jatuh_tempo" value="{{ $row->jatuh_tempo }}" id="jatuhTempo"
+                        type="date" placeholder="jatuhTempo" data-sb-validations="required" />
+                    <label for="jatuhTempo">Tanggal Jatuh Tempo</label>
+                    <div class="invalid-feedback" data-sb-feedback="jatuhTempo:required">Jatuh Tempo is required.</div>
+                </div>
             </div>
 
             <div class="form-group form-floating mb-3">
-                <input class="form-control" name="keterangan" value="{{ $row->keterangan }}" id="keterangan" type="text"
-                    placeholder="keterangan" data-sb-validations="required" readonly />
+                <input class="form-control" name="keterangan" value="{{ $row->keterangan }}" id="keterangan"
+                    type="text" placeholder="keterangan" data-sb-validations="required" readonly />
                 <label for="keterangan">keterangan</label>
                 <div class="invalid-feedback" data-sb-feedback="keterangan:required">keterangan is required.</div>
             </div>
