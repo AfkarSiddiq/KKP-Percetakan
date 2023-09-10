@@ -125,7 +125,7 @@
                         <option value="cash"{{ $row->pembayaran == 'cash' ? 'selected' : '' }}>
                             Cash
                         </option>
-                        <option value="transfer">Transfer</option>
+                        <option value="transfer"{{ $row->pembayaran == 'transfer' ? 'selected' : '' }}>Transfer</option>
                     </select>
                 </div>
                 <div class="form-group form-floating col-md sisa" style="display: block">

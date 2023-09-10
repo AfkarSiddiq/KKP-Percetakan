@@ -99,17 +99,18 @@
                 <label for="keterangan">keterangan</label>
                 <div class="invalid-feedback" data-sb-feedback="keterangan:required">keterangan is required.</div>
             </div>
+            <div class="row">
+                <div class="form-group form-floating mb-3 col-md">
+                    <input value="{{ $row->total_harga }}" class="form-control" name="total_harga" id="total_harga"
+                        type="text" placeholder="total_harga" readonly />
+                    <label for="total_harga">Harga Total</label>
+                </div>
 
-            <div class="form-group form-floating mb-3">
-                <input value="{{ $row->total_harga }}" class="form-control" name="total_harga" id="total_harga"
-                    type="text" placeholder="total_harga" readonly />
-                <label for="total_harga">Harga Total</label>
-            </div>
-
-            <div class="form-group form-floating mb-3">
-                <input value="{{ $row->total_bayar }}" class="form-control" name="dp" id="dp"
-                    type="text" placeholder="dp" readonly />
-                <label for="dp">Yang sudah dibayar(DP)</label>
+                <div class="form-group form-floating mb-3 col-md">
+                    <input value="{{ $row->total_bayar }}" class="form-control" name="dp" id="dp"
+                        type="text" placeholder="dp" readonly />
+                    <label for="dp">Yang sudah dibayar(DP)</label>
+                </div>
             </div>
 
             <div class="row align-items-center mb-3">
@@ -133,6 +134,16 @@
             <div class="form-check mb-3">
                 <input class="form-check-input" type="checkbox" id="lunas" onchange="toggleLunas()">
                 <label class="form-check-label" for="lunas">Lunas</label>
+            </div>
+
+            <div class="form-group from-floating col-md mb-3">
+                <select id="pembayaran" name="pembayaran" class="form-select">
+                    <option value="">--Pilih Metode Pembayaran</option>
+                    <option value="cash"{{ $row->pembayaran == 'cash' ? 'selected' : '' }}>
+                        Cash
+                    </option>
+                    <option value="transfer"{{ $row->pembayaran == 'transfer' ? 'selected' : '' }}>Transfer</option>
+                </select>
             </div>
 
             <script>

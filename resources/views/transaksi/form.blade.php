@@ -124,8 +124,8 @@
                 <div class="form-group from-floating col-md">
                     <select id="pembayaran" name="pembayaran" class="form-select">
                         <option value="">--Pilih Metode Pembayaran--</option>
-                        <option value="Cash">Cash</option>
-                        <option value="Transfer">Transfer</option>
+                        <option value="cash">Cash</option>
+                        <option value="transfer">Transfer</option>
                     </select>
                 </div>
                 <div class="form-group form-floating col-md sisa" style="display: block">
