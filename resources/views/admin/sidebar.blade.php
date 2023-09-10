@@ -10,12 +10,12 @@
                         Dashboard
                     </a>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                        data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                        data-bs-target="#collapseTransaksi" aria-expanded="false" aria-controls="collapseTransaksi">
                         <div class="sb-nav-link-icon"><i class="fas fa-cash-register"></i></div>
                         Transaksi
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
-                    <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                    <div class="collapse" id="collapseTransaksi" aria-labelledby="headingTwo"
                         data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                             <a class="nav-link" href="{{ url('/transaksi') }}">Data Transaksi</a>
@@ -31,7 +31,8 @@
                         Pelunasan DP
                     </a> --}}
                     <a class="nav-link" href="{{ url('/jatuhTempo') }}">
-                        <div class="sb-nav-link-icon"><i class="fa-solid fa-bell"></i></div>
+                        <div class="sb-nav-link-icon"><i
+                                class="fa-solid fa-bell {{ $jatuhTempoCount > 0 ? 'text-danger' : '' }}"></i></div>
                         Jatuh Tempo
                     </a>
 

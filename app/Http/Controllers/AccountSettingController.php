@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Unique;
+use App\Models\Transaksi;
 
 
 class AccountSettingController extends Controller
@@ -13,7 +14,8 @@ class AccountSettingController extends Controller
     public function index()
     {
         $ar_user = Auth::user();
-        return view('user.setting', compact('ar_user'), ['title' => 'Setting']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('user.setting', compact('ar_user', 'jatuhTempoCount'), ['title' => 'Setting']);
     }
 
     public function update(Request $request)

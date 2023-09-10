@@ -5,20 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SuplaiBahan;
 use App\Models\Bahan;
+use App\Models\Transaksi;
 
 class SuplaiBahanController extends Controller
 {
     public function index(){
         $ar_suplai_bahan = SuplaiBahan::with('bahan')->get();
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('suplaiBahan.index', compact('ar_suplai_bahan'), ['title'=>'Data Suplai Bahan']);
+        return view('suplaiBahan.index', compact('ar_suplai_bahan', 'jatuhTempoCount'), ['title'=>'Data Suplai Bahan']);
     }
 
     public function create(){
 
         $ar_bahan = Bahan::all();
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('suplaiBahan.form', compact('ar_bahan'), ['title'=>'Tambah Data Suplai Bahan']);
+        return view('suplaiBahan.form', compact('ar_bahan', 'jatuhTempoCount'), ['title'=>'Tambah Data Suplai Bahan']);
     }
 
     public function store(Request $request){
@@ -60,8 +63,9 @@ class SuplaiBahanController extends Controller
     public function edit($id){
         $row = SuplaiBahan::find($id);
         $ar_bahan = Bahan::find($row->bahan_id);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('suplaiBahan.form_edit', compact('row', 'ar_bahan'), ['title'=>'Edit Data Suplai Bahan']);
+        return view('suplaiBahan.form_edit', compact('row', 'ar_bahan', 'jatuhTempoCount'), ['title'=>'Edit Data Suplai Bahan']);
     }
 
     public function update(Request $request, $id){

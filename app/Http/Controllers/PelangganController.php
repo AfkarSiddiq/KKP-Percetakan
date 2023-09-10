@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pelanggan; // Import the correct model
+use App\Models\Transaksi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,8 +26,9 @@ class PelangganController extends Controller
                 ->count();
             $p->save();
         }
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('pelanggan.index', compact('ar_pelanggan'), ['title' => 'Data Pelanggan']);
+        return view('pelanggan.index', compact('ar_pelanggan', 'jatuhTempoCount'), ['title' => 'Data Pelanggan']);
     }
 
     /* public function dataBahan()
@@ -40,8 +42,9 @@ class PelangganController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        return view('pelanggan.form', ['title' => 'Input Pelanggan Baru']);
+    {   
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('pelanggan.form', compact('jatuhTempoCount') , ['title' => 'Input Pelanggan Baru']);
     }
 
     /**
@@ -81,8 +84,8 @@ class PelangganController extends Controller
             ->where('pelanggan_id', '=', $id)
             ->count();
         $rs->save();
-
-        return view('pelanggan.detail', compact('rs'), ['title' => 'Detail Pelanggan']);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
+        return view('pelanggan.detail', compact('rs', 'jatuhTempoCount'), ['title' => 'Detail Pelanggan']);
     }
 
     /**
@@ -91,8 +94,9 @@ class PelangganController extends Controller
     public function edit(string $id)
     {
         $row = Pelanggan::find($id);
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('pelanggan.form_edit', compact('row'), ['title' => 'Edit Pelanggan']);
+        return view('pelanggan.form_edit', compact('row', 'jatuhTempoCount'), ['title' => 'Edit Pelanggan']);
     }
 
     /**
@@ -155,7 +159,8 @@ class PelangganController extends Controller
     public function batal()
     {
         $ar_pelanggan = DB::table('pelanggan')->orderBy('pelanggan.id', 'desc')->get();
+        $jatuhTempoCount = Transaksi::where('status', 2)->count();
 
-        return view('pelanggan.index', compact('ar_pelanggan'), ['title' => 'Data Pelanggan']);
+        return view('pelanggan.index', compact('ar_pelanggan', 'jatuhTempoCount'), ['title' => 'Data Pelanggan']);
     }
 }

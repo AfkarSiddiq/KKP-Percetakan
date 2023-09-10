@@ -27,12 +27,30 @@ class DashboardController extends Controller
                         ->orderBy('jumlah', 'desc')
                         ->get();
 
+                $ar_stok_not_meter = DB::table('barang')
+                        ->selectRaw('sum(transaksi.jumlah * transaksi.luas) as jumlah, bahan.nama_bahan as nama_bahan')
+                        ->where('bahan.satuan', 'NOT LIKE' , '%meter%')
+                        ->whereRaw('transaksi.created_at >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)')
+                        ->join('transaksi', 'barang_id', '=', 'barang.id')
+                        ->join('bahan', 'barang.bahan_id', '=', 'bahan.id')
+                        ->groupBy('nama_bahan')
+                        ->orderBy('jumlah', 'desc')
+                        ->get();
+
 
                 //query untuk menampilkan jumlah barang per kategori (pie chart) menggunakan model
+                // $ar_jumlah = DB::table('barang')
+                //         ->join('kategori', 'kategori.id', '=', 'barang.kategori_id')
+                //         ->selectRaw('kategori.nama, count(barang.kategori_id) as jumlah')
+                //         ->groupBy('kategori.nama')
+                //         ->get();
                 $ar_jumlah = DB::table('barang')
-                        ->join('kategori', 'kategori.id', '=', 'barang.kategori_id')
-                        ->selectRaw('kategori.nama, count(barang.kategori_id) as jumlah')
-                        ->groupBy('kategori.nama')
+                        ->selectRaw('sum(transaksi.jumlah * transaksi.luas) as jumlah, barang.nama_barang as nama_barang')
+                        ->whereRaw('transaksi.created_at >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)')
+                        ->join('transaksi', 'barang_id', '=', 'barang.id')
+                        ->join('bahan', 'barang.bahan_id', '=', 'bahan.id')
+                        ->groupBy('nama_barang')
+                        ->orderBy('jumlah', 'desc')
                         ->get();
 
                 //query untuk grafik uang belum masuk bulan ini
@@ -60,6 +78,7 @@ class DashboardController extends Controller
                         ->orderBy('jumlah', 'desc')
                         ->get();
 
-                return view('dashboard.index', compact('ar_stok', 'ar_jumlah', 'jml_pelanggan', 'jml_transaksi','jml_pendapatan', 'brg_laris'), ['title' => 'Dashboard']);
+                $jatuhTempoCount = Transaksi::where('status', 2)->count();
+                return view('dashboard.index', compact('ar_stok_not_meter', 'jatuhTempoCount', 'ar_stok', 'ar_jumlah', 'jml_pelanggan', 'jml_transaksi','jml_pendapatan', 'brg_laris'), ['title' => 'Dashboard']);
         }
 }
