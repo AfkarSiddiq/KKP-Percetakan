@@ -104,18 +104,21 @@
                 <div class="invalid-feedback" data-sb-feedback="keterangan:required">keterangan is required.</div>
             </div>
 
-            <div class="form-group form-floating mb-3">
-                <input value="{{ $row->total_harga }}" class="form-control" name="total_harga" id="total_harga"
-                    type="text" placeholder="total_harga" readonly />
-                <label for="total_harga">Harga Total</label>
-            </div>
-
-            <div class="row align-items-center mb-3">
+            <div class="row">
                 <div class="form-group form-floating col-md">
                     <input onchange="updateSisa()" class="form-control" name="total_bayar" id="total_bayar"
                         type="number" placeholder="total_bayar" />
                     <label for="total_bayar">Total Bayar</label>
                 </div>
+
+                <div class="form-group form-floating mb-3 col-md">
+                    <input value="{{ $row->total_harga }}" class="form-control" name="total_harga" id="total_harga"
+                        type="text" placeholder="total_harga" readonly />
+                    <label for="total_harga">Harga Total</label>
+                </div>
+            </div>
+
+            <div class="row align-items-center mb-3">
                 <div class="form-group from-floating col-md">
                     <select id="pembayaran" name="pembayaran" class="form-select">
                         <option value="">--Pilih Metode Pembayaran</option>
