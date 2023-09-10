@@ -30,13 +30,35 @@ class TransaksiController extends Controller
         $ar_transaksi = Transaksi::all(); //eloquent
         // sort by newest date
         $ar_transaksi = $ar_transaksi->sortByDesc('created_at');
+        // set status to 2 if jatuh tempo is less than today
+        foreach($ar_transaksi as $transaksi){
+            if($transaksi->total_bayar == $transaksi->total_harga){
+                $transaksi->status = 1;
+                $transaksi->save();
+            }else{
+                if($transaksi->jatuh_tempo <= date('Y-m-d')){
+                    $transaksi->status = 2;
+                    $transaksi->save();
+                }else{
+                    $transaksi->status = 0;
+                    $transaksi->save();
+                }
+            }
+        }
         return view('transaksi.index', compact('ar_transaksi'), ['title' => 'Data Transaksi']);
     }
 
     public function pelunasan()
     {
-        $ar_transaksi = Transaksi::where('status', 0)->get(); //eloquent
-        return view('transaksi.pelunasan', compact('ar_transaksi'), ['title' => 'Data Transaksi yang belum lunas']);
+        $ar_transaksi = Transaksi::where('status', 0)->orWhere('status', 2)->get(); //eloquent
+        return view('transaksi.pelunasan', compact('ar_transaksi'), ['title' => 'Transaksi yang belum lunas']);
+    }
+
+    public function jatuhTempo()
+    {
+        // transaksi where status 0 dan tanggal jatuh tempo lebih dari = hari ini
+        $ar_transaksi = Transaksi::where('status', 2)->get(); //eloquent
+        return view('transaksi.jatuh_tempo', compact('ar_transaksi'), ['title' => 'Transaksi yang jatuh tempo']);
     }
 
     public function struk($id)
@@ -82,6 +104,7 @@ class TransaksiController extends Controller
             'total_bayar' => 'required|numeric',
             'sisa' => 'required|numeric',
             'pembayaran' => 'required',
+            'jatuh_tempo' => 'required|date',
         ]);
 
         $request->all();
@@ -126,6 +149,7 @@ class TransaksiController extends Controller
             $status = 0;
         }
         $pembayaran = $request->pembayaran;
+        $total_bayar = $request->total_bayar - $request->kembalian;
         $transaksi = new Transaksi([
             'pelanggan_id' => $idPelanggan,
             'barang_id' => $idBarang,
@@ -141,6 +165,7 @@ class TransaksiController extends Controller
             'status' => $status,
             'keterangan' => $request->keterangan,
             'pembayaran' => $pembayaran,
+            'jatuh_tempo' => $request->jatuh_tempo,
         ]);
         // DB::table('barang')->where('id', $idBarang)->update(
         //     [
@@ -186,6 +211,7 @@ class TransaksiController extends Controller
             'total_bayar' => 'required|numeric',
             'sisa' => 'required|numeric',
             'pembayaran' => 'required',
+            'jatuh_tempo' => 'required|date',
         ]);
 
         //lakukan update data dari request form edit
@@ -228,7 +254,7 @@ class TransaksiController extends Controller
         if ($jumlahBahanBaru < 0) {
             return back()->with('errors', 'Stok bahan tidak cukup');
         }
-
+        $total_bayar = $request->total_bayar - $request->kembalian;
         // Update the attributes
         $transaksi->pelanggan_id = $idPelanggan;
         $transaksi->barang_id = $idBarang;
@@ -240,8 +266,9 @@ class TransaksiController extends Controller
         $transaksi->luas = $panjang * $lebar;
         $transaksi->total_harga = $request->total_harga;
         $transaksi->keterangan = $request->keterangan;
-        $transaksi->total_bayar = $request->total_bayar;
+        $transaksi->total_bayar = $total_bayar;
         $transaksi->pembayaran = $request->pembayaran;
+        $transaksi->jatuh_tempo = $request->jatuh_tempo;
 
         $sisa = $request->sisa;
         $status = $transaksi->status;
@@ -288,7 +315,8 @@ class TransaksiController extends Controller
         }
         $transaksi->status = $status;
         $transaksi->sisa = $sisa;
-        $transaksi->total_bayar += $request->total_bayar;
+        $total_bayar = $request->total_bayar - $request->kembalian;
+        $transaksi->total_bayar += $total_bayar;
 
         if($transaksi->save()){
             return redirect()->route('transaksi.show', $id)->with('success', 'Data Transaksi Berhasil Diubah');
@@ -309,9 +337,26 @@ class TransaksiController extends Controller
     public function destroy(string $id)
     {
         //hapus data di database
-        Transaksi::where('id', $id)->delete();
-        return redirect()->route('transaksi.index')
-            ->with('success', 'Data Transaksi Berhasil Dihapus');
+        $transaksi = Transaksi::where('id', $id)->first();
+        $barang = Barang::where('id', $transaksi->barang_id)->first();
+        $bahan = Bahan::where('id', $barang->bahan_id)->first();
+        $jumlahBahan = $bahan->jumlah;
+
+        $jumlahBahanDikembalikan = 0;
+        
+        if(strtolower($bahan->satuan) == strtolower($barang->satuan)){
+            $jumlahBahanDikembalikan = $transaksi->luas * $transaksi->jumlah;
+        }
+        else if(strtolower($bahan->satuan) == 'lembar' && strtolower($barang->satuan) == 'pcs'){
+            $jumlahBahanDikembalikan = $transaksi->luas * $transaksi->jumlah * 0.2;
+        }
+        $delete = $transaksi->delete();
+        if($delete){
+            $bahan->jumlah = $jumlahBahan + $jumlahBahanDikembalikan;
+            $bahan->save();
+            return redirect()->route('transaksi.index')
+                ->with('success', 'Data Transaksi Berhasil Dihapus');
+        }
     }
 
     public function batal()
@@ -353,9 +398,17 @@ class TransaksiController extends Controller
             $query->where('pelanggan_id', $idPelanggan);
             $pelanggan = Pelanggan::find($idPelanggan);
         }
-    
+        $lunas_box = "";
         if ($status) {
-            $query->where('status', $status == 'Lunas' ? 1 : 0);
+            // $query->where('status', $status == 'Lunas' ? 1 : 0);
+            // where status Lunas = 1, Belum Lunas = 0 else 2
+            if($status == 'Lunas'){
+                $query->where('status', 1);
+            }else if($status == 'Belum Lunas'){
+                $query->where('status', 0)->orWhere('status', 2);
+            }else if($status == 'Jatuh Tempo'){
+                $query->where('status', 2);
+            }
         }
         
         $ar_transaksi = $query->whereBetween('tgl', [$tgl_mulai, $tgl_akhir])->get();

@@ -100,7 +100,7 @@
         .transaction-table-2 .lunas-luar {
             border: 1px solid #000;
             padding: 2px;
-            width: 20%;
+            width: 25%;
             justify-content: center;
             display: flex;
         }
@@ -252,8 +252,10 @@
                             <td>{{ $transaksi->barang->kode }} - {{ $transaksi->barang->nama_barang }}</td>
                             @if ($transaksi->status == 1)
                                 <td>Lunas</td>
-                            @else
+                            @elseif($transaksi->status == 0)
                                 <td>Belum Lunas</td>
+                            @else
+                                <td>Jatuh Tempo</td>
                             @endif
                             {{-- covert harga to fromat rupiah from numeric --}}
                             @php

@@ -39,6 +39,7 @@
                     <option value="">Semua</option>
                     <option value="Belum Lunas">Belum Lunas</option>
                     <option value="Lunas">Lunas</option>
+                    <option value="Jatuh Tempo">Jatuh Tempo</option>
                 </select>
             </div>
 

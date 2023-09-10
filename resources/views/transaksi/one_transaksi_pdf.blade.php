@@ -94,7 +94,7 @@
         .transaction-table-2 .lunas-luar {
             border: 1px solid #000;
             padding: 2px;
-            width: 20%;
+            width: 25%;
             justify-content: center;
             display: flex;
         }
@@ -261,9 +261,13 @@
                     @php
                         $lunas = 'Lunas';
                     @endphp
-                @else
+                @elseif($ar_transaksi->status == '0')
                     @php
                         $lunas = 'Belum Lunas';
+                    @endphp
+                @else
+                    @php
+                        $lunas = 'Jatuh Tempo';
                     @endphp
                 @endif
                 <div class="lunas-luar">

@@ -20,7 +20,7 @@
                 @endif
                 <br />
                 <div class="container row mt-3 mb-3">
-                    <tr>
+                    <div style="display: none">
                         <div class="col-md form-control me-1">
                             <td>Minimum date:</td>
                             <td><input style="border: none" type="text" id="minDate" name="minDate"></td>
@@ -32,7 +32,24 @@
                         <select class="col-md ms-1 form-select" name="status" id="status">
                             <option selected value="">Belum Lunas</option>
                         </select>
-                    </tr>
+                    </div>
+                    <div class="row">
+                        <div class="col-md form-control me-1">
+                            <td>Tanggal Hari Ini</td>
+                            <td>:</td>
+                            <td>
+                                {{-- tampilkan tanggal hari ini --}}
+                                @php
+                                    $tgl = date('d/m/Y');
+                                @endphp
+                                <input style="border: none" type="text" id="tgl" name="tgl"
+                                    value="{{ $tgl }}" readonly>
+                            </td>
+                        </div>
+                        <div class="col-md form-control ms-1">
+                            <td>Jatuh Tempo</td>
+                        </div>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover" id="datatablesSimple">
@@ -73,19 +90,17 @@
                                     <td>{{ $trs->lebar }}</td>
                                     <td>Rp. {{ $trs->total_harga }}</td>
                                     <td>
-                                        @if ($trs->status == 0)
-                                            <span class="badge bg-warning">Belum Lunas</span>
-                                        @elseif ($trs->status == 1)
-                                            <span class="badge bg-success">Lunas</span>
-                                        @elseif ($trs->status == 2)
-                                            <span class="badge bg-danger">Jatuh Tempo</span>
-                                        @endif
+                                        <span class="badge bg-danger">Jatuh Tempo</span>
                                     </td>
                                     <td>
                                         <form id='deleteForm' method="POST"
                                             action="{{ route('transaksi.destroy', $trs->id) }}">
                                             @csrf
                                             @method('DELETE')
+                                            <a target="_blank" class="btn btn-primary btn-sm"
+                                                href="{{ url('/struk', $trs->id) }}" title="Print Struk">
+                                                <i class="fas fa-print"></i>
+                                            </a>
                                             <a class="btn btn-warning btn-sm"
                                                 href="{{ route('transaksi.editLunas', $trs->id) }}" title="Pelunasan">
                                                 <i class="fas fa-edit"></i>
