@@ -6,15 +6,12 @@
           &copy; Copyright <strong><span>Printing Manajemen</span></strong>. All Rights Reserved
         </div>
         <div class="credits">
-          Designed by <a href="https://bootstrapmade.com/">Printing Manajement</a>
+          Designed by <a href="https://bootstrapmade.com/">Printing Management</a>
         </div>
       </div>
       <div class="social-links text-center text-md-right pt-3 pt-md-0">
-        <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-        <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-        <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-        <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        <a href="https://www.instagram.com/pacific_digitalprinting/" target="_blank" class="instagram"><i class="bx bxl-instagram"></i></a>
+        <a href="https://www.tiktok.com/@pacific_digitalprinting" target="_blank" class="linkedin"><i class="bx bxl-tiktok"></i></a>
       </div>
     </div>
   </footer>
