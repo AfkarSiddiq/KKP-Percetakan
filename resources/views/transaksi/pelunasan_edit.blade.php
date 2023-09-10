@@ -127,6 +127,8 @@
             </div>
 
             <script>
+                checkSatuan();
+
                 function updateSisa() {
                     var totalHarga = document.getElementById("total_harga").value;
                     var totalBayar = document.getElementById("total_bayar").value;

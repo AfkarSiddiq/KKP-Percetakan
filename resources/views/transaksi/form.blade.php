@@ -84,11 +84,20 @@
                 <label class="form-check-label" for="useDefaultPrice">Gunakan Harga Default</label>
             </div>
 
-            <div class="form-group form-floating mb-3">
-                <input class="form-control" name="tgl" value="" id="date" type="date" placeholder="date"
-                    data-sb-validations="required" />
-                <label for="date">date</label>
-                <div class="invalid-feedback" data-sb-feedback="date:required">date is required.</div>
+            <div class="row">
+                <div class="form-group form-floating mb-3 col-md">
+                    <input class="form-control" name="tgl" value="" id="date" type="date"
+                        placeholder="date" data-sb-validations="required" />
+                    <label for="date">Tanggal Transaksi</label>
+                    <div class="invalid-feedback" data-sb-feedback="date:required">date is required.</div>
+                </div>
+
+                <div class="form-group form-floating mb-3 col-md">
+                    <input class="form-control" name="jatuh_tempo" value="" id="jatuhTempo" type="date"
+                        placeholder="jatuhTempo" data-sb-validations="required" />
+                    <label for="jatuhTempo">Tanggal Jatuh Tempo</label>
+                    <div class="invalid-feedback" data-sb-feedback="jatuhTempo:required">Jatuh Tempo is required.</div>
+                </div>
             </div>
 
             <div class="form-group form-floating mb-3">
@@ -98,18 +107,20 @@
                 <div class="invalid-feedback" data-sb-feedback="keterangan:required">keterangan is required.</div>
             </div>
 
-            <div class="form-group form-floating mb-3">
-                <input class="form-control" name="total_harga" id="total_harga" type="number"
-                    placeholder="total_harga" readonly />
-                <label for="total_harga">Harga Total</label>
-            </div>
-
-            <div class="row align-items-center mb-3">
+            <div class="row">
                 <div class="form-group form-floating col-md">
                     <input onchange="updateSisa()" class="form-control" name="total_bayar" id="total_bayar"
                         type="number" placeholder="total_bayar" />
                     <label for="total_bayar">Total Bayar</label>
                 </div>
+                <div class="form-group form-floating mb-3 col-md">
+                    <input class="form-control" name="total_harga" id="total_harga" type="number"
+                        placeholder="total_harga" readonly />
+                    <label for="total_harga">Harga Total</label>
+                </div>
+            </div>
+
+            <div class="row align-items-center mb-3">
                 <div class="form-group from-floating col-md">
                     <select id="pembayaran" name="pembayaran" class="form-select">
                         <option value="">--Pilih Metode Pembayaran--</option>
@@ -259,9 +270,13 @@
 
                 // Format the date as YYYY-MM-DD
                 var formattedDate = currentDate.toISOString().slice(0, 10);
+                // jatuh tempo 7 hari
+                var jatuhTempo = new Date(currentDate.getTime() + (7 * 24 * 60 * 60 * 1000));
+                var formattedJatuhTempo = jatuhTempo.toISOString().slice(0, 10);
 
                 // Set the value of the date input field
                 document.getElementById("date").value = formattedDate;
+                document.getElementById("jatuhTempo").value = formattedJatuhTempo;
             </script>
 
             <button class="btn btn-primary" name="proses" value="simpan" id="simpan" type="submit">Simpan</button>

@@ -84,6 +84,8 @@
                             <span class="badge bg-danger">Belum Lunas</span>
                         @elseif ($trs->status == 1)
                             <span class="badge bg-success">Lunas</span>
+                        @elseif ($trs->status == 2)
+                            <span class="badge bg-warning">Jatuh Tempo</span>
                         @endif
                     </td>
                 </tr>

@@ -74,9 +74,11 @@
                                     <td>Rp. {{ $trs->total_harga }}</td>
                                     <td>
                                         @if ($trs->status == 0)
-                                            <span class="badge bg-danger">Belum Lunas</span>
+                                            <span class="badge bg-warning">Belum Lunas</span>
                                         @elseif ($trs->status == 1)
                                             <span class="badge bg-success">Lunas</span>
+                                        @elseif ($trs->status == 2)
+                                            <span class="badge bg-danger">Jatuh Tempo</span>
                                         @endif
                                     </td>
                                     <td>

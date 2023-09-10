@@ -81,16 +81,25 @@
                 <label class="form-check-label" for="useDefaultPrice">Gunakan Harga Default</label>
             </div>
 
-            <div class="form-group form-floating mb-3">
-                <input class="form-control" name="tgl" value="{{ $row->tgl }}" id="date" type="date"
-                    placeholder="date" data-sb-validations="required" />
-                <label for="date">date</label>
-                <div class="invalid-feedback" data-sb-feedback="date:required">date is required.</div>
+            <div class="row">
+                <div class="form-group form-floating mb-3 col-md">
+                    <input class="form-control" name="tgl" value="{{ $row->tgl }}" id="date" type="date"
+                        placeholder="date" data-sb-validations="required" />
+                    <label for="date">Tanggal Transaksi</label>
+                    <div class="invalid-feedback" data-sb-feedback="date:required">date is required.</div>
+                </div>
+
+                <div class="form-group form-floating mb-3 col-md">
+                    <input class="form-control" name="jatuh_tempo" value="{{ $row->jatuh_tempo }}" id="jatuhTempo"
+                        type="date" placeholder="jatuhTempo" data-sb-validations="required" />
+                    <label for="jatuhTempo">Tanggal Jatuh Tempo</label>
+                    <div class="invalid-feedback" data-sb-feedback="jatuhTempo:required">Jatuh Tempo is required.</div>
+                </div>
             </div>
 
             <div class="form-group form-floating mb-3">
-                <input class="form-control" name="keterangan" value="{{ $row->keterangan }}" id="keterangan" type="text"
-                    placeholder="keterangan" data-sb-validations="required" />
+                <input class="form-control" name="keterangan" value="{{ $row->keterangan }}" id="keterangan"
+                    type="text" placeholder="keterangan" data-sb-validations="required" />
                 <label for="keterangan">keterangan</label>
                 <div class="invalid-feedback" data-sb-feedback="keterangan:required">keterangan is required.</div>
             </div>
@@ -129,6 +138,7 @@
             </div>
 
             <script>
+                checkSatuan();
                 // function to update sisa
                 function updateSisa() {
                     var totalHarga = document.getElementById("total_harga").value;
@@ -170,6 +180,8 @@
                     var useDefaultPrice = document.getElementById("useDefaultPrice").checked;
                     var hargaField = document.getElementById("harga");
                     var selectedPelanggan = document.getElementById("nama").value;
+                    var luas = document.getElementsByClassName("luas");
+
                     var harga = 0;
 
                     // If the user chooses to use default price, update harga with the price of the selected barang
@@ -185,6 +197,11 @@
                             }
                         } else {
                             harga = barang[1];
+                        }
+                        if (barang[4].toLowerCase() == "meter") {
+                            luas.style.display = "block";
+                        } else {
+                            luas.style.display = "none";
                         }
                     }
 
@@ -230,6 +247,7 @@
                     // Update the harga total field with the calculated value
                     hargaTotalField.value = hargaTotal;
                     updateSisa();
+                    checkSatuan();
                 }
 
                 // Function to toggle the custom price input field based on user's choice

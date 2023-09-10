@@ -150,6 +150,7 @@ Route::get('/transaksi-pdf', [TransaksiController::class, 'transaksiPDF'])->name
 Route::get('/transaksi-pdf/cetak', [TransaksiController::class, 'transaksiPDFCetak'])->name('transaksi.pdf.cetak')->middleware('auth');
 Route::get('/struk/{id}', [TransaksiController::class, 'struk'])->middleware('auth');
 Route::get('/pelunasan', [TransaksiController::class, 'pelunasan']);
+Route::get('/jatuhTempo', [TransaksiController::class, 'jatuhTempo']);
 Route::get('/transaksi/{id}/pelunasan', [TransaksiController::class, 'editLunas'])->name('transaksi.editLunas')->middleware('auth');
 Route::put('/transaksi/{id}/pelunasan', [TransaksiController::class, 'lunas'])->name('transaksi.lunas')->middleware('auth');
 Route::get('/suplaibahan-pdf', [SuplaiBahanController::class, 'suplaibahanPDF'])->middleware('auth');

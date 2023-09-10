@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('barang_id');
             $table->foreignId('pelanggan_id');
             $table->date('tgl');
+            $table->date('jatuh_tempo');
             $table->integer('jumlah');
             $table->double('harga');    
             $table->double('panjang');

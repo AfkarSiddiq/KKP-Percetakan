@@ -23,6 +23,7 @@ class PelangganController extends Controller
             $p->jumlah_pesanan = DB::table('transaksi')
                 ->where('pelanggan_id', '=', $p->id)
                 ->count();
+            $p->save();
         }
 
         return view('pelanggan.index', compact('ar_pelanggan'), ['title' => 'Data Pelanggan']);
@@ -79,6 +80,7 @@ class PelangganController extends Controller
         $rs->jumlah_pesanan = DB::table('transaksi')
             ->where('pelanggan_id', '=', $id)
             ->count();
+        $rs->save();
 
         return view('pelanggan.detail', compact('rs'), ['title' => 'Detail Pelanggan']);
     }
@@ -111,15 +113,20 @@ class PelangganController extends Controller
             ]
         );
 
-        DB::table('pelanggan')->where('id', $id)->update([
-            'nama' => $request->nama,
-            'alamat' => $request->alamat,
-            'no_hp' => $request->no_hp,
-            'status_member' => $request->status_member,
-            'jumlah_pesanan' => 0,
-        ]);
-
-        return redirect()->route('pelanggan.index')->with('success', 'Data pelanggan Berhasil Diubah');
+        // make to model base
+        $pelanggan = Pelanggan::find($id);
+        $pelanggan->nama = $request->nama;
+        $pelanggan->alamat = $request->alamat;
+        $pelanggan->no_hp = $request->no_hp;
+        $pelanggan->status_member = $request->status_member;
+        $pelanggan->jumlah_pesanan = 0;
+        
+        if($pelanggan->save()){
+            return redirect()->route('pelanggan.index')->with('success', 'Data pelanggan Berhasil Diubah');
+        }
+        else{
+            return redirect()->route('pelanggan.index')->with('error', 'Data pelanggan Gagal Diubah');
+        }
     }
 
     /**
@@ -129,10 +136,6 @@ class PelangganController extends Controller
     {
         try {
             $pelanggan = Pelanggan::findOrFail($id);
-
-            if ($pelanggan->foto && Storage::exists('admin/assets/img/' . $pelanggan->foto)) {
-                Storage::delete('admin/assets/img/' . $pelanggan->foto);
-            }
 
             $pelanggan->delete();
 
