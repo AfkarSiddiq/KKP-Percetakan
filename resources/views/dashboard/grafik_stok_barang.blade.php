@@ -2,7 +2,7 @@
     <div class="card mb-12">
         <div class="card-header">
             <i class="fas fa-chart-bar me-1"></i>
-            Bahan Paling banyak habis 1 bulan terakhir
+            Bahan yang habis 1 bulan terakhir
         </div>
 
         <!-- Bar Chart -->

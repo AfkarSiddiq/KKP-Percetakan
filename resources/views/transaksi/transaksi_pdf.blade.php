@@ -29,7 +29,7 @@
                 <th>No</th>
                 <th>Nama Barang</th>
                 <th>Customer</th>
-                <th>Status</th>
+                <th>No. HP</th>
                 <th>Tanggal</th>
                 <th>Qty</th>
                 <th>Size</th>
@@ -58,15 +58,9 @@
                         $sisa = number_format($trs->sisa, 0, ',', '.');
                     @endphp
                     <th>{{ $no }}</th>
-                    <td>{{ $trs->barang->kode }} - {{ $trs->barang->nama_barang }}</td>
+                    <td>{{ $trs->barang->nama_barang }}</td>
                     <td>{{ $trs->pelanggan->nama }}</td>
-                    @if ($trs->pelanggan->status_member == 1)
-                        <td>Member</td>
-                    @elseif ($trs->pelanggan->status_member == 2)
-                        <td>Studio</td>
-                    @elseif ($trs->pelanggan->status_member == 0)
-                        <td>Bukan Member</td>
-                    @endif
+                    <td>{{ $trs->pelanggan->no_hp }}</td>
                     <td>{{ $trs->tgl }}</td>
                     <td>{{ $trs->jumlah }}</td>
                     <td>
