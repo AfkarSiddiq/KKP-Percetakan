@@ -300,8 +300,9 @@ class TransaksiController extends Controller
 
         $transaksi->sisa = $sisa;
         $transaksi->status = $status;
-
-        $pemasukan = Pemasukan::where('transaksi_id', $id)->first();
+        
+        // pemasukan with order by oldest data
+        $pemasukan = Pemasukan::where('transaksi_id', $id)->orderBy('updated_at', 'asc')->first();
         $pemasukan->jumlah = $total_bayar;
 
         if ($transaksi->save()) {
@@ -357,7 +358,9 @@ class TransaksiController extends Controller
             'pembayaran' => $request->pembayaran,
         ]);
         if($transaksi->save()){
-            return redirect()->route('transaksi.show', $id)->with('success', 'Data Transaksi Berhasil Diubah');
+            if($pemasukan->save()){
+                return redirect()->route('transaksi.show', $id)->with('success', 'Data Transaksi Berhasil Diubah');
+            }
         }
     }
     //     return redirect()->back()
@@ -389,11 +392,17 @@ class TransaksiController extends Controller
             $jumlahBahanDikembalikan = $transaksi->luas * $transaksi->jumlah * 0.2;
         }
         $delete = $transaksi->delete();
+
+        $pemasukan = Pemasukan::where('transaksi_id', $id);
         if($delete){
             $bahan->jumlah = $jumlahBahan + $jumlahBahanDikembalikan;
-            $bahan->save();
-            return redirect()->route('transaksi.index')
-                ->with('success', 'Data Transaksi Berhasil Dihapus');
+            if($bahan->save()){
+                if($pemasukan->delete()){
+                    return redirect()->route('transaksi.index')->with('success', 'Data Transaksi Berhasil Dihapus');
+                }
+            }
+        }else{
+            return redirect()->route('transaksi.index')->with('error', 'Data Transaksi Gagal Dihapus');
         }
     }
 
