@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Pemasukan extends Model
 {
     use HasFactory;
+    protected $table = 'pemasukan';
+
+    protected $fillable = [
+        'transaksi_id', 'jumlah', 'pembayaran',
+    ];
+
+    public function transaksi()
+    {
+        return $this->belongsTo(Transaksi::class);
+    }
 }
