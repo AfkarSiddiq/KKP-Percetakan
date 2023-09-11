@@ -207,7 +207,14 @@ class BarangController extends Controller
         //------------apakah user  ingin ubah upload foto baru--------- --
         if (!empty($request->foto)) {
             //jika ada foto lama, hapus foto lamanya terlebih dahulu
-            if (!empty($namaFileFotoLama)) unlink('admin/assets/img/' . $namaFileFotoLama);
+            if (!empty($namaFileFotoLama)){
+                // check if file exists
+                $file_path = public_path('admin/assets/img/' . $namaFileFotoLama);
+                if (file_exists($file_path)) {
+                    //File exists, delete file
+                    unlink($file_path);
+                }
+            }
             //lalukan proses ubah foto lama menjadi foto baru
             $fileName = 'barang_' . $request->kode . '.' . $request->foto->extension();
             //$fileName = $request->foto->getClientOriginalName();
