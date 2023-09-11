@@ -44,7 +44,7 @@
                                         From: Rp {{ $barang->harga_member }},-
                                     </p>
                                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                        <div class="text-center"><a class="btn btn-outline-dark mt-auto bg-new shadow" href="https://wa.me/6282169019974"><i class="bi-whatsapp">&nbsp;Pesan ke Whatsapp</i></a>
+                                        <div class="text-center"><a class="btn btn-outline-dark mt-auto bg-new shadow" target="_blank" href="https://wa.me/6282169019974"><i class="bi-whatsapp">&nbsp;Pesan ke Whatsapp</i></a>
                                         </div>
                                     </div>
                                 </div>
