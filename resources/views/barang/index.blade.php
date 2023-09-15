@@ -64,7 +64,7 @@
                                     <td>Rp. {{ number_format($data->harga_member, 0, ',', '.') }}</td>
                                     <td>Rp. {{ number_format($data->harga_studio, 0, ',', '.') }}</td>
                                     <td>
-                                        <form id='deleteForm' method="POST"
+                                        <form class="d-flex justify-content-around" id='deleteForm' method="POST"
                                             action="{{ route('barang.destroy', $data->id) }}">
                                             @csrf
                                             @method('DELETE')

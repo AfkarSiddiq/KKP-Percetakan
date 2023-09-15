@@ -7,6 +7,12 @@ DataTable.ext.search.push(function (settings, data, dataIndex) {
     var selectedStatus = $('#status').val();
 
     let date = new Date(data[3]);
+    // if on 4th column no date is found then it will be null
+    if (date == "Invalid Date") {
+        date = new Date(data[2]);
+        console.log(date);
+    }
+
     var statusColumn = data[8]; // Assuming "Status" is the 9th column
     statusColumn = statusColumn;
 

@@ -45,7 +45,7 @@
                                     <td>{{ $data->tgl }}</td>
                                     <td>{{ $data->keterangan }}</td>
                                     <td align="justify">
-                                        <form id='deleteForm' method="POST"
+                                        <form class="d-flex justify-content-around" id='deleteForm' method="POST"
                                             action="{{ route('suplaibahan.destroy', $data->id) }}">
                                             @csrf
                                             @method('DELETE')

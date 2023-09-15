@@ -11,7 +11,7 @@ class Pemasukan extends Model
     protected $table = 'pemasukan';
 
     protected $fillable = [
-        'transaksi_id', 'jumlah', 'pembayaran',
+        'transaksi_id', 'jumlah', 'pembayaran', 'tgl'
     ];
 
     public function transaksi()
