@@ -12,7 +12,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TokoController;
-
+use App\Http\Controllers\PengeluaranController;
 
 
 use App\Http\Controllers\AccountSettingController;
@@ -146,8 +146,11 @@ Route::resource('updatelevel', UpdateLevelController::class)->middleware('auth')
 Route::resource('suplaibahan', SuplaiBahanController::class)->middleware('auth');
 Route::resource('member', MemberController::class)->middleware('auth');
 Route::resource('toko', TokoController::class)->middleware('auth');
+Route::resource('pengeluaran', PengeluaranController::class)->middleware('auth');
 Route::delete('/suplaibahan/deleteAll', [SuplaiBahanController::class, 'deleteAll'])->middleware('auth');
 Route::get('/transaksi-pdf', [TransaksiController::class, 'transaksiPDF'])->name('transaksi.pdf')->middleware('auth');
+Route::get('/pembukuan', [PengeluaranController::class, 'pembukuan'])->name('pembukuan.form')->middleware('auth');
+Route::get('/pembukuan/cetak', [PengeluaranController::class, 'pembukuanCetak'])->name('pembukuan.cetak')->middleware('auth');
 Route::get('/transaksi-pdf/cetak', [TransaksiController::class, 'transaksiPDFCetak'])->name('transaksi.pdf.cetak')->middleware('auth');
 Route::get('/struk/{id}', [TransaksiController::class, 'struk'])->middleware('auth');
 Route::get('/pelunasan', [TransaksiController::class, 'pelunasan']);

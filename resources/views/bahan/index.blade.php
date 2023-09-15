@@ -68,7 +68,7 @@
                                     @endforeach
                                 </td>
                                 <td align="justify">
-                                    <form id='deleteForm' method="POST"
+                                    <form class="d-flex justify-content-around" id='deleteForm' method="POST"
                                         action="{{ route('bahan.destroy', $data->id) }}">
                                         @csrf
                                         @method('DELETE')

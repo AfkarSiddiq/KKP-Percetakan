@@ -93,7 +93,7 @@
                                         <span class="badge bg-danger">Jatuh Tempo</span>
                                     </td>
                                     <td>
-                                        <form id='deleteForm' method="POST"
+                                        <form class="d-flex justify-content-around" id='deleteForm' method="POST"
                                             action="{{ route('transaksi.destroy', $trs->id) }}">
                                             @csrf
                                             @method('DELETE')
