@@ -31,7 +31,9 @@
                     </div>
                 @endif
                 <br />
-                <a href="{{ route('bahan.create') }}" class="btn btn-primary">Tambah</a>
+                @if (Auth::user()->level != 'kasir')
+                    <a href="{{ route('bahan.create') }}" class="btn btn-primary">Tambah</a>
+                @endif
                 <div class="table-responsive">
                     <br>
                     <table class="table table-hover" id="datatablesSimple">
