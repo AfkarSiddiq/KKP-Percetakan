@@ -71,7 +71,7 @@
                                             action="{{ route('user.destroy', $data->id) }}">
                                             @csrf
                                             @method('DELETE')
-                                            @if (Auth::user()->level != 'kasir')
+                                            @if (Auth::user()->level == 'admin')
                                                 <a class="btn btn-warning btn-sm"
                                                     href="{{ route('updatelevel.edit', $data->id) }}" title="Ubah">
                                                     Ubah Level
