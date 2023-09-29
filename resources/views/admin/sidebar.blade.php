@@ -80,8 +80,8 @@
                     <div class="collapse" id="collapseBahan" aria-labelledby="headingTwo"
                         data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                            <a class="nav-link" href="{{ url('/suplaibahan') }}">Data Transaksi</a>
-                            <a class="nav-link" href="{{ url('/bahan') }}">Pelunasan DP</a>
+                            <a class="nav-link" href="{{ url('/suplaibahan') }}">Suplai Bahan</a>
+                            <a class="nav-link" href="{{ url('/bahan') }}">Data Bahan</a>
                         </nav>
                     </div>
 

@@ -88,10 +88,12 @@
                                                 href="{{ url('/struk', $trs->id) }}" title="Print Struk">
                                                 <i class="fas fa-print"></i>
                                             </a>
-                                            <a class="btn btn-warning btn-sm"
-                                                href="{{ route('transaksi.edit', $trs->id) }}" title="Ubah">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
+                                            @if (Auth::user()->level != 'kasir')
+                                                <a class="btn btn-warning btn-sm"
+                                                    href="{{ route('transaksi.edit', $trs->id) }}" title="Ubah">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            @endif
                                             @if (Auth::user()->level == 'admin')
                                                 <!-- hapus data -->
                                                 <button onclick="deleteData(this)" type="button"

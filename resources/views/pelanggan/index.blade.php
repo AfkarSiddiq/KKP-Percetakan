@@ -45,7 +45,7 @@
                                 <th>Alamat</th>
                                 <th>No Handphone</th>
                                 <th>Status Member</th>
-                                <th>jumlah Transaksi</th>
+                                <th>Jumlah Transaksi</th>
                                 <th>action</th>
                             </tr>
                         </thead>
@@ -77,10 +77,12 @@
                                                 title="Detail">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a class="btn btn-warning btn-sm"
-                                                href="{{ route('pelanggan.edit', $data->id) }}" title="Ubah">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
+                                            @if (Auth::user()->level != 'kasir')
+                                                <a class="btn btn-warning btn-sm"
+                                                    href="{{ route('pelanggan.edit', $data->id) }}" title="Ubah">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            @endif
                                             @if (Auth::user()->level == 'admin')
                                                 <!-- hapus data -->
                                                 <button onclick="deleteData(this)" type="button"
