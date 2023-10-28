@@ -32,12 +32,14 @@
                         </script>
                     </div>
                 @endif
-                <div class="row">
-                    <div class="col-md-4 .offsife-md-8">
-                        <a href="{{ url('/register') }}"> <button type="button" class="btn btn-success">Daftarkan
-                                akun</button></a>
+                @if (Auth::user()->level == 'admin')
+                    <div class="row">
+                        <div class="col-md-4 .offsife-md-8">
+                            <a href="{{ url('/register') }}"> <button type="button" class="btn btn-success">Daftarkan
+                                    akun</button></a>
+                        </div>
                     </div>
-                </div>
+                @endif
                 <br />
                 <div class="table-responsive">
                     <table class="table text-nowrap mb-0 align-middle" id="datatablesSimple">
@@ -75,10 +77,12 @@
                                                     Ubah Level
                                                 </a>
                                             @endif
-                                            <button onclick="deleteData(this)" type="button"
-                                                class="btn btn-danger show_confirm btn-sm">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
+                                            @if (Auth::user()->level == 'admin')
+                                                <button onclick="deleteData(this)" type="button"
+                                                    class="btn btn-danger show_confirm btn-sm">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            @endif
                                         </form>
                                     </td>
                                 </tr>

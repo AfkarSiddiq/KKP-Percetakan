@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pemasukan', function (Blueprint $table) {
+        Schema::create('pengeluaran', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaksi_id');
+            $table->foreignId('user_id');
+            $table->string('nama');
             $table->double('jumlah');
+            $table->date('tanggal');
             $table->string('pembayaran');
+            $table->string('keterangan');
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pemasukan');
+        Schema::dropIfExists('pengeluaran');
     }
 };

@@ -265,8 +265,10 @@ class BarangController extends Controller
             $row = Barang::where('id', $id)->first();
 
             // hapus data
-            Barang::where('id', $id)->delete();
-            File::delete('admin/assets/img/' . $row->foto);
+            $deleteBarang = Barang::where('id', $id)->delete();
+            if($deleteBarang){
+                File::delete('admin/assets/img/' . $row->foto);
+            }
             // if (!empty($row->foto)) {
             //     unlink('admin/assets/img/' . $row->foto);
             //     Barang::where('id', $id)->delete();

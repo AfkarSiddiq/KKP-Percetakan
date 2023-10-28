@@ -13,6 +13,7 @@ use App\Models\Bahan;
 use App\Models\Pelanggan;
 //toko model
 use App\Models\Toko;
+use App\Models\Pemasukan;
 use Illuminate\Support\Facades\DB; // jika pakai query builder
 use Illuminate\Database\Eloquent\Model; //jika pakai eloquent
 use PDF;
@@ -167,7 +168,7 @@ class TransaksiController extends Controller
             'harga' => $request->harga,
             'luas' => $panjang * $lebar,
             'total_harga' => $request->total_harga,
-            'total_bayar' => $request->total_bayar,
+            'total_bayar' => $total_bayar,
             'sisa' => $sisa,
             'status' => $status,
             'keterangan' => $request->keterangan,
@@ -186,7 +187,17 @@ class TransaksiController extends Controller
                     'jumlah' => $jumlahBahan,
                 ]
             );
-            return redirect('transaksi')->with('pesan', 'Barang Masuk berhasil disimpan');
+            // buat pemasukan dari total bayar
+            $pemasukan = new Pemasukan([
+                'transaksi_id' => $transaksi->id,
+                'jumlah' => $total_bayar,
+                'pembayaran' => $pembayaran,
+            ]);
+            if($pemasukan->save()){
+                return redirect('transaksi')->with('pesan', 'Barang Masuk berhasil disimpan');
+            }else{
+                return back()->with('errror', 'Pemasukan gagal tercatat');
+            }
         } else {
             return back()->with('errror', 'Barang Masuk gagal disimpan');
         }
@@ -289,13 +300,20 @@ class TransaksiController extends Controller
 
         $transaksi->sisa = $sisa;
         $transaksi->status = $status;
+        
+        // pemasukan with order by oldest data
+        $pemasukan = Pemasukan::where('transaksi_id', $id)->orderBy('updated_at', 'asc')->first();
+        $pemasukan->jumlah = $total_bayar;
 
         if ($transaksi->save()) {
-            // Update bahan and other relevant data if needed
-            Bahan::where('id', $idBahan)->update([
-                'jumlah' => $jumlahBahanBaru,
-            ]);
-            return redirect()->route('transaksi.show', $id)->with('success', 'Data Transaksi Berhasil Diubah');
+            // update pemasukan dari transaksi yang di edit
+            if($pemasukan->save()){
+                // Update bahan and other relevant data if needed
+                Bahan::where('id', $idBahan)->update([
+                    'jumlah' => $jumlahBahanBaru,
+                ]);
+                return redirect()->route('transaksi.show', $id)->with('success', 'Data Transaksi Berhasil Diubah');
+            }
         } else {
             return back()->with('errors', 'Data Transaksi Gagal Diubah');
         }
@@ -315,7 +333,12 @@ class TransaksiController extends Controller
     }
 
     public function lunas(Request $request, string $id)
-    {
+    {   
+        // validate the data
+        $request->validate([
+            'pembayaran' => 'required',
+        ]);
+
         $transaksi = Transaksi::find($id);
         $sisa = $request->sisa;
         $status = $transaksi->status;
@@ -329,8 +352,15 @@ class TransaksiController extends Controller
         $total_bayar = $request->total_bayar - $request->kembalian;
         $transaksi->total_bayar += $total_bayar;
 
+        $pemasukan = new Pemasukan([
+            'transaksi_id' => $transaksi->id,
+            'jumlah' => $total_bayar,
+            'pembayaran' => $request->pembayaran,
+        ]);
         if($transaksi->save()){
-            return redirect()->route('transaksi.show', $id)->with('success', 'Data Transaksi Berhasil Diubah');
+            if($pemasukan->save()){
+                return redirect()->route('transaksi.show', $id)->with('success', 'Data Transaksi Berhasil Diubah');
+            }
         }
     }
     //     return redirect()->back()
@@ -362,11 +392,17 @@ class TransaksiController extends Controller
             $jumlahBahanDikembalikan = $transaksi->luas * $transaksi->jumlah * 0.2;
         }
         $delete = $transaksi->delete();
+
+        $pemasukan = Pemasukan::where('transaksi_id', $id);
         if($delete){
             $bahan->jumlah = $jumlahBahan + $jumlahBahanDikembalikan;
-            $bahan->save();
-            return redirect()->route('transaksi.index')
-                ->with('success', 'Data Transaksi Berhasil Dihapus');
+            if($bahan->save()){
+                if($pemasukan->delete()){
+                    return redirect()->route('transaksi.index')->with('success', 'Data Transaksi Berhasil Dihapus');
+                }
+            }
+        }else{
+            return redirect()->route('transaksi.index')->with('error', 'Data Transaksi Gagal Dihapus');
         }
     }
 

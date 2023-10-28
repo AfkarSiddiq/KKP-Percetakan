@@ -31,7 +31,9 @@
                     </div>
                 @endif
                 <br />
-                <a href="{{ route('bahan.create') }}" class="btn btn-primary">Tambah</a>
+                @if (Auth::user()->level != 'kasir')
+                    <a href="{{ route('bahan.create') }}" class="btn btn-primary">Tambah</a>
+                @endif
                 <div class="table-responsive">
                     <br>
                     <table class="table table-hover" id="datatablesSimple">
@@ -68,7 +70,7 @@
                                     @endforeach
                                 </td>
                                 <td align="justify">
-                                    <form id='deleteForm' method="POST"
+                                    <form class="d-flex justify-content-around" id='deleteForm' method="POST"
                                         action="{{ route('bahan.destroy', $data->id) }}">
                                         @csrf
                                         @method('DELETE')

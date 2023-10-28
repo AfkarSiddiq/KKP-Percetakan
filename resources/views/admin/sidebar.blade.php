@@ -3,7 +3,6 @@
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav">
-                    <div class="sb-sidenav-menu-heading">Core</div>
 
                     <a class="nav-link" href="{{ url('/dashboard') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
@@ -35,6 +34,14 @@
                                 class="fa-solid fa-bell {{ $jatuhTempoCount > 0 ? 'text-danger' : '' }}"></i></div>
                         Jatuh Tempo
                     </a>
+                    <a class="nav-link" href="{{ url('/pengeluaran') }}">
+                        <div class="sb-nav-link-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+                        Pengeluaran
+                    </a>
+                    <a class="nav-link" href="{{ url('/pembukuan') }}">
+                        <div class="sb-nav-link-icon"><i class="fa-solid fa-book"></i></div>
+                        Pembukuan
+                    </a>
 
                     <div class="sb-sidenav-menu-heading">Data</div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
@@ -63,16 +70,22 @@
                             <a class="nav-link" href="{{ url('/member') }}">Member</a>
                         </nav>
                     </div>
-                    <div class="sb-sidenav-menu-heading">Management</div>
-                    <a class="nav-link" href="{{ url('/suplaibahan') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-cart-plus"></i></div>
-                        Suplai Bahan
-                    </a>
 
-                    <a class="nav-link" href="{{ url('/bahan') }}">
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                        data-bs-target="#collapseBahan" aria-expanded="false" aria-controls="collapseBahan">
                         <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
-                        Bahan Mentah
+                        Bahan
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
+                    <div class="collapse" id="collapseBahan" aria-labelledby="headingTwo"
+                        data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                            <a class="nav-link" href="{{ url('/suplaibahan') }}">Suplai Bahan</a>
+                            <a class="nav-link" href="{{ url('/bahan') }}">Data Bahan</a>
+                        </nav>
+                    </div>
+
+                    <div class="sb-sidenav-menu-heading">Management</div>
                     <a class="nav-link" href="{{ url('/toko') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-solid fa-shop"></i></div>
                         Profil Toko

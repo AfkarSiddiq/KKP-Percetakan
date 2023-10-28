@@ -139,10 +139,10 @@
             <div class="form-group from-floating col-md mb-3">
                 <select id="pembayaran" name="pembayaran" class="form-select">
                     <option value="">--Pilih Metode Pembayaran</option>
-                    <option value="cash"{{ $row->pembayaran == 'cash' ? 'selected' : '' }}>
+                    <option value="cash">
                         Cash
                     </option>
-                    <option value="transfer"{{ $row->pembayaran == 'transfer' ? 'selected' : '' }}>Transfer</option>
+                    <option value="transfer">Transfer</option>
                 </select>
             </div>
 

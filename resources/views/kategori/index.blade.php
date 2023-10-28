@@ -32,7 +32,9 @@
                     </div>
                 @endif
                 <br />
-                <a href="{{ route('kategori.create') }}" class="btn btn-primary">Tambah</a>
+                @if (Auth::user()->level != 'kasir')
+                    <a href="{{ route('kategori.create') }}" class="btn btn-primary">Tambah</a>
+                @endif
                 <div class="table-responsive">
                     <br>
                     <table class="table table-hover" id="datatablesSimple">
@@ -52,17 +54,17 @@
                                     <td width="5%">{{ $no }}</td>
                                     <td>{{ $data->nama }}</td>
                                     <td>
-                                        <form id="deleteForm" method="POST"
+                                        <form class="d-flex justify-content-center" id="deleteForm" method="POST"
                                             action="{{ route('kategori.destroy', $data->id) }}">
                                             @csrf
                                             @method('DELETE')
-                                            <a class="btn btn-info btn-sm" href="{{ route('kategori.show', $data->id) }}"
-                                                title="detail">
+                                            <a class="btn btn-info btn-sm me-1 ms-1"
+                                                href="{{ route('kategori.show', $data->id) }}" title="detail">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                             @if (Auth::user()->level != 'kasir')
                                                 <!-- ubah data -->
-                                                <a class="btn btn-warning btn-sm"
+                                                <a class="btn btn-warning btn-sm ms-1 me-1"
                                                     href="{{ route('kategori.edit', $data->id) }}" title="ubah">
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </a>
@@ -70,7 +72,7 @@
                                             <!-- hapus data -->
                                             @if (Auth::user()->level == 'admin')
                                                 <button onclick="deleteData(this)" type="button"
-                                                    class="btn btn-danger show_confirm btn-sm">
+                                                    class="btn btn-danger show_confirm btn-sm ms-1 me-1">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             @endif

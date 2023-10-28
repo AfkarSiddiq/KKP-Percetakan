@@ -55,10 +55,11 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <a href="{{ route('toko.edit', $rs->id) }}" class="btn btn-success">
-                    <i class="fas fa-edit"></i> Edit
-                </a>
-
+                @if (Auth::user()->level != 'kasir')
+                    <a href="{{ route('toko.edit', $rs->id) }}" class="btn btn-success">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                @endif
             </div>
         </section>
     </div>

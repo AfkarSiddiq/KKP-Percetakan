@@ -31,8 +31,10 @@
                     </div>
                 @endif
                 <br />
-                <a href="{{ route('barang.create') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> <span
-                        style="font-weight: bold;">Tambah</span></a>
+                @if (Auth::user()->level != 'kasir')
+                    <a href="{{ route('barang.create') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> <span
+                            style="font-weight: bold;">Tambah</span></a>
+                @endif
                 <div class="table-responsive">
                     <br>
 
@@ -64,7 +66,7 @@
                                     <td>Rp. {{ number_format($data->harga_member, 0, ',', '.') }}</td>
                                     <td>Rp. {{ number_format($data->harga_studio, 0, ',', '.') }}</td>
                                     <td>
-                                        <form id='deleteForm' method="POST"
+                                        <form class="d-flex justify-content-around" id='deleteForm' method="POST"
                                             action="{{ route('barang.destroy', $data->id) }}">
                                             @csrf
                                             @method('DELETE')
@@ -72,10 +74,12 @@
                                                 title="Detail">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a class="btn btn-warning btn-sm" href="{{ route('barang.edit', $data->id) }}"
-                                                title="Ubah">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
+                                            @if (Auth::user()->level != 'kasir')
+                                                <a class="btn btn-warning btn-sm"
+                                                    href="{{ route('barang.edit', $data->id) }}" title="Ubah">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            @endif
                                             @if (Auth::user()->level == 'admin')
                                                 <!-- hapus data -->
                                                 <button onclick="deleteData(this)" type="button"

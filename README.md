@@ -1,6 +1,7 @@
 <br>
 <p align="center"><img src="public/assets/img/logo.png" alt="E-Hospital Logo" width="300"></p>
 <br>
+
 ## About Printing Management System
 <p>Welcome to the Printing Management System, your all-in-one solution for efficient and seamless management of digital printing operations. Designed exclusively for printing shops, our system streamlines the entire printing process, from order intake to final delivery. With an intuitive interface, the Digital Printing Shop Management System empowers you to effortlessly handle print orders, track materials, manage tasks, and oversee projects. Whether you're catering to a diverse clientele or managing intricate printing projects, our user-friendly platform equips you with the tools needed to enhance productivity and provide top-notch services.</p>
 
